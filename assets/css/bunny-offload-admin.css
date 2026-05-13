@@ -108,7 +108,8 @@
     .bmo-admin-header__brand img {
       display: block;
       height: auto;
-      max-width: min(208px, 100%);
+      /* Wider wordmark (750×140 viewBox); ~+100px vs old cap so on-screen size matches previous 208px-wide art. */
+      max-width: min(308px, 100%);
     }
   }
 
@@ -183,6 +184,110 @@
     }
     .bmo-section:last-of-type {
       padding-bottom: 0;
+    }
+  }
+
+  /* Settings tab: promo strip — layout ours; colors/typography aligned with Bunny CDN plugin
+   * references/bunnycdn/assets/admin.css (.bg-gradient / --gradient-blue-white, .bn-section-hero h1–p). */
+  .bmo-settings-promo {
+    box-sizing: border-box;
+    margin-block: calc(-1 * var(--bmo-space-5)) var(--bmo-space-5);
+    margin-inline: calc(-1 * var(--bmo-space-6));
+    padding: var(--bmo-space-6);
+    border-bottom: 1px solid var(--bmo-color-border);
+    border-radius: var(--bmo-radius-lg) var(--bmo-radius-lg) 0 0;
+    background-color: var(--bmo-color-white);
+    background-image: linear-gradient(180deg, #e1f2ff 0%, var(--bmo-color-white) 11.26%);
+    background-repeat: no-repeat;
+    /* Bunny .bg-gradient uses 100% 1500px so the 11.26% white stop lands far down; promo is shorter, so a taller virtual strip keeps ~50–60% of the card in the blue wash. */
+    background-size: 100% 2200px;
+    background-position: top center;
+
+    & .bmo-settings-promo__grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 264px);
+      gap: var(--bmo-space-6);
+      align-items: center;
+    }
+
+    & .bmo-settings-promo__copy {
+      min-width: 0;
+    }
+
+    /* Mirrors #bunnycdn-admin-wrapper .bn-section-hero h2 — main headline under eyebrow. */
+    & .bmo-settings-promo__title--about {
+      margin: var(--bmo-space-3) 0;
+      font-size: var(--bmo-font-size-700);
+      font-weight: var(--bmo-font-weight-bold);
+      line-height: 1.25;
+      color: var(--bmo-color-bunny-dark);
+    }
+
+    & .bmo-settings-promo__body {
+      margin-top: var(--bmo-space-3);
+      margin-bottom: var(--bmo-space-3);
+      font-size: var(--bmo-font-size-300);
+      font-weight: var(--bmo-font-weight-regular);
+      line-height: 1.55;
+      color: var(--bmo-color-dark-7);
+    }
+
+    /* Mirrors #bunnycdn-admin-wrapper .bn-section-hero h1 (endpoints ≈ Bunny #ff7a53 → #ffa84a via our scale). */
+    & .bmo-settings-promo__eyebrow {
+      margin: 0 0 var(--bmo-space-2);
+      font-size: var(--bmo-font-size-400);
+      font-weight: var(--bmo-font-weight-bold);
+      line-height: 1.3;
+      background: linear-gradient(
+        180deg,
+        var(--bmo-color-orange-6) 0%,
+        var(--bmo-color-yellow-6) 100%
+      );
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+    }
+
+    & .bmo-settings-promo__actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--bmo-space-4);
+      margin: var(--bmo-space-4) 0 0;
+    }
+
+    & .bmo-settings-promo__cta.button {
+      margin: 0;
+    }
+
+    & .bmo-settings-promo__actions + .bmo-card__description {
+      margin-top: var(--bmo-space-3);
+    }
+
+    & .bmo-card__description a {
+      color: var(--bmo-color-blue-6);
+      font-weight: var(--bmo-font-weight-medium);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+
+      &:hover,
+      &:focus {
+        color: var(--bmo-color-bunny-dark);
+      }
+
+      &:focus-visible {
+        outline: 2px solid var(--bmo-color-blue-5);
+        outline-offset: 2px;
+      }
+    }
+
+    & .bmo-settings-promo__media img {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-width: 312px;
+      margin-inline: auto;
     }
   }
 
@@ -861,6 +966,11 @@
     .bmo-card {
       padding: var(--bmo-space-5);
     }
+
+    .bmo-settings-promo {
+      margin-block-start: calc(-1 * var(--bmo-space-5));
+      margin-inline: calc(-1 * var(--bmo-space-5));
+    }
   }
 }
 
@@ -872,6 +982,21 @@
     .bmo-settings-panel,
     .bmo-card {
       padding: var(--bmo-space-4);
+    }
+
+    .bmo-settings-promo {
+      margin-block: calc(-1 * var(--bmo-space-4)) var(--bmo-space-4);
+      margin-inline: calc(-1 * var(--bmo-space-4));
+      padding: var(--bmo-space-5) var(--bmo-space-4);
+    }
+
+    .bmo-settings-promo .bmo-settings-promo__grid {
+      grid-template-columns: 1fr;
+      gap: var(--bmo-space-4);
+    }
+
+    .bmo-settings-promo .bmo-settings-promo__media {
+      display: none;
     }
 
     .bmo-alert {

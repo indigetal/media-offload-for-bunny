@@ -43,6 +43,20 @@ class BunnySettings {
     const OPTION_DELETE_PLUGIN_DATA_ON_UNINSTALL = 'bunny_offload_delete_plugin_data_on_uninstall';
 
     /**
+     * Direct Bunny.net affiliate landing URL (must not be cloaked or redirected for WordPress.org compliance).
+     *
+     * @var string
+     */
+    private const BUNNY_NET_AFFILIATE_URL = 'https://bunny.net?ref=t6n8vh4ksm';
+
+    /**
+     * Bunny.net customer dashboard (no affiliate parameters).
+     *
+     * @var string
+     */
+    private const BUNNY_NET_DASHBOARD_URL = 'https://dash.bunny.net/';
+
+    /**
      * Supported Bunny Storage regions keyed by region code.
      */
     const STORAGE_REGIONS = [
@@ -152,6 +166,59 @@ class BunnySettings {
         }
 
         return $url;
+    }
+
+    /**
+     * Render the top-of-panel Bunny.net promo strip on the Settings tab (single layout; affiliate link in footnote).
+     *
+     * @return void
+     */
+    private function renderSettingsPromoBanner() {
+        $rocket_src = self::pluginAssetUrl('assets/bunny-rocket.png');
+
+        echo '<div class="bmo-settings-promo">';
+        echo '<div class="bmo-settings-promo__grid">';
+        echo '<div class="bmo-settings-promo__copy">';
+        echo '<p class="bmo-settings-promo__eyebrow">' . esc_html__('About bunny.net', 'media-offload-for-bunny') . '</p>';
+        echo '<p class="bmo-card__title bmo-settings-promo__title bmo-settings-promo__title--about">';
+        echo esc_html__('Supercharge your delivery', 'media-offload-for-bunny');
+        echo '</p>';
+        echo '<p class="bmo-card__description bmo-settings-promo__body">';
+        echo esc_html__(
+            'Bunny.net helps you accelerate your website and supercharge your web presence. Through a network of over 100 global datacenters, Bunny\'s CDN stores your files right next to your users and delivers them with lightning speed.',
+            'media-offload-for-bunny'
+        );
+        echo '</p>';
+        echo '<p class="bmo-settings-promo__actions">';
+        echo '<a class="button button-primary bmo-settings-promo__cta" href="' . esc_url(self::BUNNY_NET_DASHBOARD_URL) . '" target="_blank" rel="noopener noreferrer">';
+        echo esc_html__('Visit the Bunny.net Dashboard', 'media-offload-for-bunny');
+        echo '</a>';
+        echo '</p>';
+        echo '<p class="bmo-card__description">';
+        echo wp_kses(
+            sprintf(
+                /* translators: %s: affiliate signup URL (bunny.net with ref) */
+                __(
+                    'New to Bunny.net? Start a <a href="%s" target="_blank" rel="noopener noreferrer sponsored">14-day free trial</a> on bunny.net (affiliate link).',
+                    'media-offload-for-bunny'
+                ),
+                esc_url(self::BUNNY_NET_AFFILIATE_URL)
+            ),
+            [
+                'a' => [
+                    'href'   => true,
+                    'target' => true,
+                    'rel'    => true,
+                ],
+            ]
+        );
+        echo '</p>';
+        echo '</div>';
+        echo '<div class="bmo-settings-promo__media" aria-hidden="true">';
+        echo '<img src="' . esc_url($rocket_src) . '" alt="" width="336" height="264" loading="lazy" decoding="async">';
+        echo '</div>';
+        echo '</div>';
+        echo '</div>';
     }
 
     /**
@@ -1131,6 +1198,26 @@ class BunnySettings {
         echo '</header>';
         echo '</section>';
 
+        echo '<section class="bmo-section">';
+        echo '<header>';
+        echo '<h2>' . esc_html__('Create a Bunny.net account', 'media-offload-for-bunny') . '</h2>';
+        echo '<p>';
+        echo wp_kses(
+            sprintf(
+                /* translators: 1: Affiliate signup URL (bunny.net with ref), 2: Bunny affiliate program documentation URL */
+                __(
+                    'If you need a Bunny.net account, you can <a href="%1$s" target="_blank" rel="noopener noreferrer sponsored">open bunny.net with this affiliate link</a>. This is an affiliate link; if you become a paying customer, we may earn a commission at no extra cost to you. Bunny publishes its affiliate rules in the <a href="%2$s" target="_blank" rel="noopener noreferrer">affiliate program documentation</a>.',
+                    'media-offload-for-bunny'
+                ),
+                esc_url(self::BUNNY_NET_AFFILIATE_URL),
+                esc_url('https://docs.bunny.net/billing/affiliate-program')
+            ),
+            $allowed_links
+        );
+        echo '</p>';
+        echo '</header>';
+        echo '</section>';
+
         echo '</div>';
     }
 
@@ -1190,7 +1277,7 @@ class BunnySettings {
         echo '<div class="wrap"><div id="bunny-offload-admin-wrapper">';
         echo '<header class="bmo-admin-header">';
         echo '<h1 class="bmo-admin-header__brand">';
-        echo '<img src="' . esc_url(self::pluginAssetUrl('assets/bunny-offload-logo-type.svg')) . '" alt="' . esc_attr__('Media Offload for Bunny.net', 'media-offload-for-bunny') . '" width="208" height="53" decoding="async">';
+        echo '<img src="' . esc_url(self::pluginAssetUrl('assets/bunny-offload-logo-type.svg')) . '" alt="' . esc_attr__('Media Offload for Bunny.net', 'media-offload-for-bunny') . '" width="308" height="58" decoding="async">';
         echo '</h1>';
         echo '</header>';
         self::renderAdminTabs($active_tab);
@@ -1222,6 +1309,7 @@ class BunnySettings {
         }
 
         echo '<div class="bmo-settings-panel">';
+        $this->renderSettingsPromoBanner();
         echo "<form action='options.php' method='post'>";
         settings_fields('bunny_net_settings');
         $this->renderSettingsForm();

@@ -4,7 +4,7 @@ Tags: bunny, media, offload, video, streaming, cdn
 Requires at least: 6.5
 Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 0.8.11
+Stable tag: 1.0.0-beta.1
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -94,6 +94,9 @@ Deleting a WordPress attachment may delete matching remote objects as described 
 
 == Changelog ==
 
+= 1.0.0-beta.1 =
+* Settings: add Bunny.net promo hero (dashboard CTA + disclosed affiliate trial link) and About tab account/affiliate copy; admin styling aligned with Bunny CDN reference patterns; responsive promo layout and header logo sizing for the wider wordmark.
+
 = 0.8.11 =
 * Uninstall: default path preserves offload-critical options, credentials, manifests, and attachment/user meta; full deletion runs only when `bunny_offload_delete_plugin_data_on_uninstall` is exactly `1`, then that opt-in option is removed. Runtime upload/collection lock transients and the Stream thumbnail sync cron are always cleared on uninstall. Removed Pro-only tool session/lock options and attachment lease meta from the aggressive cleanup list.
 
@@ -111,6 +114,9 @@ Deleting a WordPress attachment may delete matching remote objects as described 
 * Initial Stream + Media Library integration direction (pre–Free extraction readme described a broader feature set; current Free scope is described in this file from 0.8.9 onward).
 
 == Upgrade Notice ==
+
+= 1.0.0-beta.1 =
+First 1.0 beta train: verify Media → Media Offload for Bunny.net → Settings and About & Privacy after upgrade; no database migration required for the version bump alone.
 
 = 0.8.11 =
 Uninstall now preserves database offload data by default. Review **About & Privacy** and the Settings Advanced checkbox before relying on uninstall to wipe plugin metadata.
