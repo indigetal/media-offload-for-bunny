@@ -1,0 +1,12 @@
+{
+  "name": "media-offload-for-bunny",
+  "version": "0.8.11",
+  "private": true,
+  "description": "Offload media files to Bunny Storage and stream videos from Bunny Stream via the WordPress Media Library.",
+  "license": "GPL-2.0-or-later",
+  "scripts": {
+    "clean": "rm -rf media-offload-for-bunny-build media-offload-for-bunny.zip",
+    "make-build": "npm run clean && mkdir -p media-offload-for-bunny-build && rsync -av --exclude-from=.distignore . media-offload-for-bunny-build/",
+    "package": "npm run make-build && cd media-offload-for-bunny-build && zip -r ../media-offload-for-bunny.zip . && cd .. && rm -rf media-offload-for-bunny-build"
+  }
+}

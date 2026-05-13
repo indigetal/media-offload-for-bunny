@@ -1,0 +1,15 @@
+# Operating System Files
+.DS_Store
+
+# IDE/Editor Files
+.vscode/
+.cursor/
+
+# Development Files
+memory-bank/
+references/
+
+# Build Artifacts
+node_modules/
+media-offload-for-bunny-build/
+media-offload-for-bunny.zip
