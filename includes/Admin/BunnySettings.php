@@ -938,6 +938,13 @@ class BunnySettings {
      * @return void
      */
     private function renderSettingsForm() {
+        /**
+         * Fires before the Stream settings section on the Media admin screen (inside the same `options.php` form).
+         *
+         * Pro add-ons use this to render the Bunny.net Account (Account API key) block.
+         */
+        do_action('bunny_offload_render_settings_before_stream_section');
+
         $stream_section_class = BunnyConfigurationStore::isStreamEnabled()
             ? 'bmo-section bmo-section--stream bmo-section--stream-enabled'
             : 'bmo-section bmo-section--stream bmo-section--stream-off';
@@ -1059,6 +1066,19 @@ class BunnySettings {
             self::OPTION_STORAGE_PULL_ZONE,
             __('Storage delivery Pull Zone hostname', 'media-offload-for-bunny'),
             [$this, 'renderStoragePullZoneField'],
+            $storage_dependent_row_class,
+            $storage_dependent_row_attributes
+        );
+        /**
+         * Fires after the Storage Pull Zone field inside the Storage `<ul>`, before dependent controls reset.
+         *
+         * @param bool                 $storage_enabled                    Whether Storage offload is enabled.
+         * @param string               $storage_dependent_row_class        Row class for dependent fields.
+         * @param array<string, mixed> $storage_dependent_row_attributes Row attributes (e.g. data-bmo-storage-dependent-field, hidden).
+         */
+        do_action(
+            'bunny_offload_render_settings_storage_dependent_fields',
+            $storage_enabled,
             $storage_dependent_row_class,
             $storage_dependent_row_attributes
         );
@@ -1316,6 +1336,13 @@ class BunnySettings {
         submit_button(__('Save Settings', 'media-offload-for-bunny'));
         echo '</form>';
         echo '</div>';
+
+        /**
+         * After the main Settings tab form panel; still inside `#bunny-offload-admin-wrapper`.
+         *
+         * @param string $active_tab Active tab slug (here always `self::TAB_SETTINGS`).
+         */
+        do_action('bunny_offload_render_settings_after_settings_panel', $active_tab);
 
         echo '</div></div>';
     }
