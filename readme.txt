@@ -84,6 +84,26 @@ By default, uninstall **keeps** this plugin’s settings, saved credentials, off
 = Can I edit images or regenerate thumbnails after a fully offloaded image has local files removed? =
 WordPress flows that require a local original on disk may not work once aggressive local deletion has removed those files. Plan backups before enabling local removal.
 
+= What developer hooks and APIs does Free expose? =
+Media Offload for Bunny.net documents an intentional extension surface for companion plugins (including optional Pro). Treat these symbols as a stable add-on contract across Free releases unless a release explicitly documents a breaking change.
+
+**Lifecycle and admin UI**
+
+* **bunny_offload_loaded** (action) — Fires after Free registers settings, configuration storage, attachment metadata, Stream metadata sync, REST status routes, Storage URL rewriting, Storage offload, user integration, and Stream Media Library hooks. Use it to bootstrap add-on code that depends on Free services.
+* **bunny_offload_free_version()** (function) — Returns the active Free version string (same value as the BUNNY_OFFLOAD_VERSION constant). Pro companions call this for compatibility checks after Free is active. Pro must not ship code loaded from Free.
+* **bunny_offload_admin_tabs** (filter) — Receives the default tab map for **Media → Media Offload for Bunny.net** (each entry: label and admin URL). Add-ons append tabs here and render tab bodies with the **bunny_offload_render_admin_tab** action using the same slug keys.
+
+**Read-only attachment helpers (no remote Bunny API calls)**
+
+These four static methods are reserved for add-on tooling; Free does not call them internally. They read WordPress post/user meta and configuration state only:
+
+* **BunnyStorageOffloader::getAttachmentStorageManifest( $attachment_id )** — Normalized Storage manifest rows from post meta (raw manifest, not the filtered manifest from other hooks).
+* **BunnyStorageOffloader::getAttachmentStorageOffloadStatus( $attachment_id )** — Storage offload summary state, last error, and whether manifest rows report errors.
+* **BunnyMediaLibrary::getAttachmentStreamMetadata( $attachment_id )** — Stream-related meta snapshot (video id, embed URL, thumbnail URL, dimensions, author collection id).
+* **BunnyMediaLibrary::getAttachmentStreamStatus( $attachment_id )** — Whether Stream upload runtime is configured and whether the attachment stores a Stream video id.
+
+Fully qualified class names in source: Bunny_Offload\Integration\BunnyStorageOffloader and Bunny_Offload\Integration\BunnyMediaLibrary. See PHPDoc on each method for return field details.
+
 == Privacy ==
 
 This plugin sends media and configuration-related data to **Bunny.net** only when you enable Stream and/or Storage features and use the workflows described in this readme. Bunny.net terms of use and privacy policy: https://bunny.net/terms/ — https://bunny.net/privacy/

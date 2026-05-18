@@ -6,6 +6,7 @@
   "license": "GPL-2.0-or-later",
   "scripts": {
     "clean": "rm -rf media-offload-for-bunny-build media-offload-for-bunny.zip",
+    "make-pot": "mkdir -p languages && wp i18n make-pot . languages/media-offload-for-bunny.pot --domain=media-offload-for-bunny --slug=media-offload-for-bunny --exclude=references,memory-bank,node_modules,media-offload-for-bunny-build,blocks,docs,vendor,bin,scripts,tools,__tests__,tests,test,coverage",
     "make-build": "npm run clean && mkdir -p media-offload-for-bunny-build && rsync -av --exclude-from=.distignore . media-offload-for-bunny-build/",
     "package": "npm run make-build && cd media-offload-for-bunny-build && zip -r ../media-offload-for-bunny.zip . && cd .. && rm -rf media-offload-for-bunny-build"
   }

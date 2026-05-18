@@ -257,20 +257,34 @@ class BunnyStorageOffloader {
     }
 
     /**
-     * Read-only normalized Storage manifest rows for add-on tooling (raw meta, not filter-wrapped).
+     * Read-only Storage manifest accessor for Pro and companion add-ons.
+     *
+     * Stable Free extension surface: method name, parameters, and return shape are maintained
+     * for add-on compatibility unless a release explicitly documents a breaking change. Does
+     * not call Bunny APIs. Returns normalized manifest rows from post meta via
+     * BunnyAttachmentManifest::getRawManifest() (not the manifest passed through
+     * bunny_offload_attachment_manifest).
      *
      * @param int $attachment_id Attachment ID.
-     * @return array<string, array<string, string>>
+     * @return array<string, array<string, string>> Manifest path key => row fields.
      */
     public static function getAttachmentStorageManifest($attachment_id) {
         return BunnyAttachmentManifest::getRawManifest(absint($attachment_id));
     }
 
     /**
-     * Read-only Storage offload summary/error snapshot for add-on tooling.
+     * Read-only Storage offload status snapshot for Pro and companion add-ons.
+     *
+     * Stable Free extension surface: method name, parameters, and return keys are maintained
+     * for add-on compatibility unless a release explicitly documents a breaking change. Does
+     * not call Bunny APIs. Keys: summary_state (manifest summary), last_error, has_manifest_errors.
      *
      * @param int $attachment_id Attachment ID.
-     * @return array<string, mixed>
+     * @return array<string, mixed> {
+     *     @type string      $summary_state       Manifest summary state constant.
+     *     @type string|null  $last_error          Last offload error message, if any.
+     *     @type bool         $has_manifest_errors Whether any manifest row is in an error state.
+     * }
      */
     public static function getAttachmentStorageOffloadStatus($attachment_id) {
         $attachment_id = absint($attachment_id);

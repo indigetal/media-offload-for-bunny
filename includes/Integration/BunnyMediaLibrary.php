@@ -787,10 +787,22 @@ class BunnyMediaLibrary {
     }
 
     /**
-     * Read-only Stream attachment metadata for add-on tooling (does not call remote APIs).
+     * Read-only Stream attachment metadata for Pro and companion add-ons.
+     *
+     * Stable Free extension surface: method name, parameters, and return keys are maintained
+     * for add-on compatibility unless a release explicitly documents a breaking change. Does
+     * not call Bunny APIs. Keys: video_id, iframe_url, thumbnail_url, video_width, video_height,
+     * collection_id (author user meta).
      *
      * @param int $attachment_id Attachment ID.
-     * @return array<string, mixed>
+     * @return array<string, mixed> {
+     *     @type string $video_id      Bunny Stream video GUID, if stored.
+     *     @type string $iframe_url    Embed URL meta, if stored.
+     *     @type string $thumbnail_url Bunny thumbnail URL meta, if stored.
+     *     @type string $video_width   Reported width meta, if stored.
+     *     @type string $video_height  Reported height meta, if stored.
+     *     @type string $collection_id Author's Bunny collection id user meta, if stored.
+     * }
      */
     public static function getAttachmentStreamMetadata($attachment_id) {
         $attachment_id = absint($attachment_id);
@@ -810,10 +822,18 @@ class BunnyMediaLibrary {
     }
 
     /**
-     * Read-only Stream offload/upload status snapshot for add-on tooling (does not call remote APIs).
+     * Read-only Stream offload status snapshot for Pro and companion add-ons.
+     *
+     * Stable Free extension surface: method name, parameters, and return keys are maintained
+     * for add-on compatibility unless a release explicitly documents a breaking change. Does
+     * not call Bunny APIs. Keys: attachment_id, stream_runtime_ready, has_stream_video_id.
      *
      * @param int $attachment_id Attachment ID.
-     * @return array<string, mixed>
+     * @return array<string, mixed> {
+     *     @type int  $attachment_id        Attachment ID (0 when input invalid).
+     *     @type bool $stream_runtime_ready Whether Stream upload runtime is configured.
+     *     @type bool $has_stream_video_id  Whether _bunny_video_id meta is non-empty.
+     * }
      */
     public static function getAttachmentStreamStatus($attachment_id) {
         $attachment_id = absint($attachment_id);
