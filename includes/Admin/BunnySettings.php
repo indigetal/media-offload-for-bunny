@@ -1148,7 +1148,7 @@ class BunnySettings {
         echo wp_kses(
             sprintf(
                 /* translators: 1: Bunny terms URL, 2: Bunny privacy URL */
-                __('Media Offload for Bunny.net connects this site to <strong>Bunny.net</strong> when you enable Storage or Stream features. Review Bunny.net’s <a href="%1$s" target="_blank" rel="noopener noreferrer">terms</a> and <a href="%2$s" target="_blank" rel="noopener noreferrer">privacy policy</a> before enabling offload.', 'media-offload-for-bunny'),
+                __('Media Offload for Bunny.net sends media and configuration-related data to <strong>Bunny.net</strong> only when you enable Stream and/or Storage features and use the workflows this plugin provides. Review Bunny.net’s <a href="%1$s" target="_blank" rel="noopener noreferrer">terms</a> and <a href="%2$s" target="_blank" rel="noopener noreferrer">privacy policy</a> before enabling offload.', 'media-offload-for-bunny'),
                 esc_url('https://bunny.net/terms/'),
                 esc_url('https://bunny.net/privacy/')
             ),
@@ -1164,17 +1164,24 @@ class BunnySettings {
         echo '<p>' . esc_html__('Depending on what you enable, the plugin may send the following kinds of data to Bunny.net:', 'media-offload-for-bunny') . '</p>';
         echo '</header>';
         echo '<div class="bmo-section__content">';
-        echo '<p>' . esc_html__('Storage: media files and derived object paths, filenames, MIME types, upload metadata, and API-authenticated requests to regional Storage hosts and your configured Storage delivery Pull Zone hostname.', 'media-offload-for-bunny') . '</p>';
-        echo '<p>' . esc_html__('Stream: video files, encoding status, thumbnails, dimensions, library identifiers, collection identifiers where used, and API-authenticated requests to Bunny Stream (for example video.bunnycdn.com) plus your configured Stream Pull Zone hostname for playback URLs.', 'media-offload-for-bunny') . '</p>';
-        echo '<p>' . esc_html__('Credentials you save here are stored encrypted in the WordPress database and are used only to perform the operations you configure.', 'media-offload-for-bunny') . '</p>';
+        echo '<p>' . esc_html__('Stream (when enabled): the server makes requests to Bunny Stream API hosts such as video.bunnycdn.com to create, update, inspect, and delete videos and collections. Playback-related URLs may use hostnames such as player.mediadelivery.net and the Stream Pull Zone hostname you configure in settings.', 'media-offload-for-bunny') . '</p>';
+        echo '<p>' . esc_html__('Storage (when enabled): the server makes requests to the regional Bunny Storage API host for the zone you select, and public file URLs use the Storage Pull Zone hostname you configure.', 'media-offload-for-bunny') . '</p>';
+        echo '<p>' . esc_html__('API keys, passwords, zone identifiers, and related options are stored in the WordPress database (encrypted where this plugin applies encryption) and are used only to contact Bunny services on your behalf.', 'media-offload-for-bunny') . '</p>';
         echo '</div>';
         echo '</section>';
 
         echo '<section class="bmo-section">';
         echo '<header>';
+        echo '<h2>' . esc_html__('Admin help links', 'media-offload-for-bunny') . '</h2>';
+        echo '<p>' . esc_html__('On the Settings tab, help text may link to Bunny.net documentation on docs.bunny.net, the customer dashboard on dash.bunny.net, a support article on support.bunny.net, and CDN product pages used to explain pull-zone hostnames. Opening those links is optional; they remain under Bunny.net’s terms and privacy policy linked above.', 'media-offload-for-bunny') . '</p>';
+        echo '</header>';
+        echo '</section>';
+
+        echo '<section class="bmo-section">';
+        echo '<header>';
         echo '<h2>' . esc_html__('Delivery scope in Free', 'media-offload-for-bunny') . '</h2>';
-        echo '<p>' . esc_html__('This Free release is intended for public/basic delivery: it rewrites attachment URLs to your configured Pull Zone hostnames and does not implement tokenized URLs, HMAC-protected CDN URLs from WordPress, or access-controlled member-only media delivery from WordPress.', 'media-offload-for-bunny') . '</p>';
-        echo '<p>' . esc_html__('CDN edge rules are configured in the Bunny.net dashboard. If your Pull Zone requires token query parameters on every request, media served by this Free plugin may not load for visitors until a compatible add-on layer exists (for example a future Pro add-on).', 'media-offload-for-bunny') . '</p>';
+        echo '<p>' . esc_html__('This Free release does not generate HMAC-signed or token-authenticated CDN URLs from PHP for Storage or Stream.', 'media-offload-for-bunny') . '</p>';
+        echo '<p>' . esc_html__('Whether URLs are publicly readable or restricted is determined by your Bunny Pull Zone, Storage, and Stream configuration outside WordPress.', 'media-offload-for-bunny') . '</p>';
         echo '</header>';
         echo '</section>';
 
@@ -1195,9 +1202,11 @@ class BunnySettings {
         echo '<section class="bmo-section">';
         echo '<header>';
         echo '<h2>' . esc_html__('Uninstall and data retention', 'media-offload-for-bunny') . '</h2>';
-        echo '<p>' . esc_html__('By default, uninstalling this plugin preserves offload-critical WordPress data such as saved settings, encrypted credentials, Storage manifests, Stream attachment metadata, and related state needed for continued delivery if you reinstall.', 'media-offload-for-bunny') . '</p>';
-        echo '<p>' . esc_html__('Default uninstall does not delete local media files or remote Bunny objects.', 'media-offload-for-bunny') . '</p>';
-        echo '<p>' . esc_html__('The Advanced section on the Settings tab includes a strongly warned option to remove plugin-owned WordPress options and metadata on uninstall when enabled; even then, the plugin does not delete local media files or remote Bunny objects.', 'media-offload-for-bunny') . '</p>';
+        echo '<p>' . esc_html__('By default, uninstall keeps this plugin’s settings, saved credentials, offload records, and media-related metadata in WordPress so you can reinstall and keep using media already stored at Bunny.net.', 'media-offload-for-bunny') . '</p>';
+        echo '<p>' . esc_html__('Unless you turn on Advanced → Remove plugin-owned WordPress data on uninstall on the Settings tab (and only if you intend to wipe that data), nothing in that list is removed on uninstall.', 'media-offload-for-bunny') . '</p>';
+        echo '<p>' . esc_html__('Uninstall never deletes your site’s media files on disk or removes objects in your Bunny Storage zones or Stream library.', 'media-offload-for-bunny') . '</p>';
+        echo '<p>' . esc_html__('When that Advanced option is enabled, uninstall removes this plugin’s saved settings and the WordPress-stored offload data it relies on, then clears the opt-in so it does not remain after removal; local media files and Bunny.net objects are still never deleted by the plugin.', 'media-offload-for-bunny') . '</p>';
+        echo '<p>' . esc_html__('A small amount of internal cleanup always runs on uninstall so WordPress does not keep scheduled work pointing at removed plugin code.', 'media-offload-for-bunny') . '</p>';
         echo '</header>';
         echo '</section>';
 
