@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-05-18T19:22:54+00:00\n"
+"POT-Creation-Date: 2026-05-18T19:27:37+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: media-offload-for-bunny\n"
@@ -18,7 +18,7 @@ msgstr ""
 #: media-offload-for-bunny.php
 #: includes/Admin/BunnySettings.php:229
 #: includes/Admin/BunnySettings.php:230
-#: includes/Admin/BunnySettings.php:1310
+#: includes/Admin/BunnySettings.php:1311
 #: includes/Bootstrap/BunnyPlugin.php:92
 msgid "Media Offload for Bunny.net"
 msgstr ""
@@ -285,78 +285,82 @@ msgid "This Free release does not generate HMAC-signed or token-authenticated CD
 msgstr ""
 
 #: includes/Admin/BunnySettings.php:1184
+msgid "This Free release does not include operator Tools tabs, bulk batch or retry queues, a block-based Stream upload experience, or resumable chunked video uploads. Those workflows belonged to older monolith-era builds and are out of scope here."
+msgstr ""
+
+#: includes/Admin/BunnySettings.php:1185
 msgid "Whether URLs are publicly readable or restricted is determined by your Bunny Pull Zone, Storage, and Stream configuration outside WordPress."
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1190
+#: includes/Admin/BunnySettings.php:1191
 msgid "Local media files after offload"
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1191
+#: includes/Admin/BunnySettings.php:1192
 msgid "On the Settings tab, separate toggles control whether local media files are removed from this server after successful Storage offload and after successful Stream video offload. When a toggle is enabled, WordPress may no longer have a local file behind the attachment URL even though delivery continues from Bunny.net."
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1197
+#: includes/Admin/BunnySettings.php:1198
 msgid "Remote Bunny objects when you delete attachments"
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1198
+#: includes/Admin/BunnySettings.php:1199
 msgid "Deleting a WordPress attachment for media that was offloaded to Bunny Storage or Bunny Stream may delete the corresponding remote Bunny object where that behavior is implemented, so visitors should not retain a working hotlink to the removed object."
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1204
+#: includes/Admin/BunnySettings.php:1205
 msgid "Uninstall and data retention"
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1205
+#: includes/Admin/BunnySettings.php:1206
 msgid "By default, uninstall keeps this plugin’s settings, saved credentials, offload records, and media-related metadata in WordPress so you can reinstall and keep using media already stored at Bunny.net."
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1206
+#: includes/Admin/BunnySettings.php:1207
 msgid "Unless you turn on Advanced → Remove plugin-owned WordPress data on uninstall on the Settings tab (and only if you intend to wipe that data), nothing in that list is removed on uninstall."
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1207
+#: includes/Admin/BunnySettings.php:1208
 msgid "Uninstall never deletes your site’s media files on disk or removes objects in your Bunny Storage zones or Stream library."
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1208
+#: includes/Admin/BunnySettings.php:1209
 msgid "When that Advanced option is enabled, uninstall removes this plugin’s saved settings and the WordPress-stored offload data it relies on, then clears the opt-in so it does not remain after removal; local media files and Bunny.net objects are still never deleted by the plugin."
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1209
+#: includes/Admin/BunnySettings.php:1210
 msgid "A small amount of internal cleanup always runs on uninstall so WordPress does not keep scheduled work pointing at removed plugin code."
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1215
+#: includes/Admin/BunnySettings.php:1216
 msgid "Optional Pro companion"
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1216
+#: includes/Admin/BunnySettings.php:1217
 msgid "An optional Pro companion (sold and updated outside the WordPress.org plugin directory) may extend this Free base plugin with additional operator workflows and delivery features—for example compatible URL token support—while Free remains the shared offload runtime."
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1217
+#: includes/Admin/BunnySettings.php:1218
 msgid "This Free plugin does not bundle that companion, surface off–WordPress.org update prompts for it in wp-admin, or require it for core Media Library Storage and Stream offload."
 msgstr ""
 
 #. translators: %s: URL to the Settings tab
-#: includes/Admin/BunnySettings.php:1222
+#: includes/Admin/BunnySettings.php:1223
 #, php-format
 msgid "Configure credentials and feature toggles on the <a href=\"%s\" target=\"_blank\" rel=\"noopener noreferrer\">Settings</a> tab; this screen is informational only."
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1233
+#: includes/Admin/BunnySettings.php:1234
 msgid "Create a Bunny.net account"
 msgstr ""
 
 #. translators: 1: Affiliate signup URL (bunny.net with ref), 2: Bunny affiliate program documentation URL
-#: includes/Admin/BunnySettings.php:1238
+#: includes/Admin/BunnySettings.php:1239
 #, php-format
 msgid "If you need a Bunny.net account, you can <a href=\"%1$s\" target=\"_blank\" rel=\"noopener noreferrer sponsored\">open bunny.net with this affiliate link</a>. This is an affiliate link; if you become a paying customer, we may earn a commission at no extra cost to you. Bunny publishes its affiliate rules in the <a href=\"%2$s\" target=\"_blank\" rel=\"noopener noreferrer\">affiliate program documentation</a>."
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1346
+#: includes/Admin/BunnySettings.php:1347
 msgid "Save Settings"
 msgstr ""
 

@@ -25,7 +25,7 @@ Connect Bunny.net Storage (non-video) and Stream (video) to the WordPress Media 
 
 **What Free does not include**
 
-This Free plugin does **not** implement member-only or token-authenticated media delivery from PHP: no HMAC-signed CDN URLs, no Stream embed token signing, no privacy filters, and no Pull Zone token query parameters added by this codebase. It does **not** ship operator **Tools** tabs, bulk batch or retry queues, a block-based Stream upload experience, or **TUS** resumable uploads—those patterns existed in older monolith-era trees and are out of scope here. Expect **public/basic** delivery from WordPress unless you add another layer—for example, a **Pro** companion obtained separately from this plugin, or a custom integration using the documented extension hooks.
+This Free plugin does **not** implement member-only or token-authenticated media delivery from PHP: no HMAC-signed CDN URLs, no Stream embed token signing, no privacy filters, and no Pull Zone token query parameters added by this codebase. It does **not** ship operator **Tools** tabs, bulk batch or retry queues, a block-based Stream upload experience, or resumable chunked video uploads—those patterns are out of scope here. Expect **public/basic** delivery from WordPress unless you add another layer—for example, a **Pro** companion obtained separately from this plugin, or a custom integration using the documented extension hooks.
 
 Configure advanced Bunny.net edge rules (including token auth at the CDN) in the Bunny.net dashboard. If your Pull Zone requires signed or tokenized requests on every request, URLs produced by this Free plugin alone may not satisfy that edge policy until a compatible integration supplies those parameters.
 
@@ -43,7 +43,7 @@ Configure advanced Bunny.net edge rules (including token auth at the CDN) in the
 
 1. **Install:** Upload `media-offload-for-bunny.zip` via **Plugins → Add New → Upload Plugin**, or copy the plugin folder to `wp-content/plugins/media-offload-for-bunny/` (folder name must match that path after extraction).
 2. **Activate:** In **Plugins → Installed Plugins**, activate **Media Offload for Bunny.net**.
-3. **Configure:** Open **Media → Media Offload for Bunny.net**, use the **Settings** tab for Stream (required) and Storage (optional), then read **About & Privacy** for Bunny.net data use, delivery scope, and uninstall retention.
+3. **Configure:** Open **Media → Media Offload for Bunny.net**, use the **Settings** tab to enable **Stream** and/or **Storage** offload as needed, then read **About & Privacy** for Bunny.net data use, delivery scope, and uninstall retention.
 4. **Plan uninstall (optional):** Removing the plugin under **Plugins → Installed Plugins** **keeps** this plugin’s settings, encrypted credentials, Storage manifests, Stream-related metadata, and related offload data in WordPress **by default** so you can reinstall and keep serving media from Bunny.net. Turn on **Advanced → Remove plugin-owned WordPress data on uninstall** on the **Settings** tab only when you deliberately want that WordPress-side data removed on the next uninstall; it never deletes media files on your server or objects at Bunny.net.
 
 == Development ==
@@ -132,7 +132,7 @@ This plugin sends media and configuration-related data to **Bunny.net** only whe
 
 = 0.8.9 =
 * Final Free token/private-delivery sweep: remove unused signing and Storage token-state resolver classes; drop Account API client methods that only served those paths; align readme and About copy with public/basic Media Library offload.
-* Uninstall post-meta list: stop targeting legacy Stream TUS upload-state keys removed from Free earlier in the extraction.
+* Uninstall post-meta list: stop targeting legacy Stream upload-state post meta from pre-split builds removed from Free earlier in the extraction.
 
 = 0.1.2 =
 * Hardened Bunny API retry handling and stricter Stream upload success checks before writing attachment meta.

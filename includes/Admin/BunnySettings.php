@@ -1181,6 +1181,7 @@ class BunnySettings {
         echo '<header>';
         echo '<h2>' . esc_html__('Delivery scope in Free', 'media-offload-for-bunny') . '</h2>';
         echo '<p>' . esc_html__('This Free release does not generate HMAC-signed or token-authenticated CDN URLs from PHP for Storage or Stream.', 'media-offload-for-bunny') . '</p>';
+        echo '<p>' . esc_html__('This Free release does not include operator Tools tabs, bulk batch or retry queues, a block-based Stream upload experience, or resumable chunked video uploads.', 'media-offload-for-bunny') . '</p>';
         echo '<p>' . esc_html__('Whether URLs are publicly readable or restricted is determined by your Bunny Pull Zone, Storage, and Stream configuration outside WordPress.', 'media-offload-for-bunny') . '</p>';
         echo '</header>';
         echo '</section>';
