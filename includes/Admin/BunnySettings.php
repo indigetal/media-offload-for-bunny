@@ -1212,8 +1212,9 @@ class BunnySettings {
 
         echo '<section class="bmo-section">';
         echo '<header>';
-        echo '<h2>' . esc_html__('Pro add-on direction', 'media-offload-for-bunny') . '</h2>';
-        echo '<p>' . esc_html__('A future Pro add-on is expected to extend this Free base plugin with additional operator workflows and premium delivery features (for example compatible URL token support) while keeping Free installed as the shared offload runtime.', 'media-offload-for-bunny') . '</p>';
+        echo '<h2>' . esc_html__('Optional Pro companion', 'media-offload-for-bunny') . '</h2>';
+        echo '<p>' . esc_html__('An optional Pro companion (sold and updated outside the WordPress.org plugin directory) may extend this Free base plugin with additional operator workflows and delivery features—for example compatible URL token support—while Free remains the shared offload runtime.', 'media-offload-for-bunny') . '</p>';
+        echo '<p>' . esc_html__('This Free plugin does not bundle that companion, surface off–WordPress.org update prompts for it in wp-admin, or require it for core Media Library Storage and Stream offload.', 'media-offload-for-bunny') . '</p>';
         echo '<p>';
         echo wp_kses(
             sprintf(
