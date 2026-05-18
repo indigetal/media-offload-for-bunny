@@ -1120,7 +1120,7 @@ class BunnySettings {
         echo '<span class="bmo-toggle__text"><span class="bmo-toggle__state bmo-toggle__state--on">' . esc_html__('Enabled', 'media-offload-for-bunny') . '</span><span class="bmo-toggle__state bmo-toggle__state--off">' . esc_html__('Disabled', 'media-offload-for-bunny') . '</span></span>';
         echo '</label>';
         echo '<p class="description">';
-        echo esc_html__('When enabled, uninstall deletes the plugin-owned WordPress options, transients, user meta, and attachment meta listed in uninstall.php, then removes this opt-in flag. When disabled, those records are preserved; uninstall.php still clears internal upload/collection lock rows and the Stream thumbnail sync cron entry only, so WordPress does not keep scheduled callbacks into removed plugin code. Local media files and remote Bunny objects are never removed by this setting.', 'media-offload-for-bunny');
+        echo esc_html__('When enabled, uninstall removes this plugin\'s saved settings and the WordPress-stored offload data it relies on (credentials, manifests, Stream-related attachment metadata, and similar), then clears this opt-in so it does not remain after removal. When disabled, that data is kept so you can reinstall. In both cases, uninstall performs a small amount of internal cleanup so WordPress does not keep scheduled work pointing at removed plugin code. Local media files on your server and content stored at Bunny.net are never deleted by this setting.', 'media-offload-for-bunny');
         echo '</p>';
     }
 

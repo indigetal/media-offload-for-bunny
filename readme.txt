@@ -4,7 +4,7 @@ Tags: bunny, media, offload, video, streaming, cdn
 Requires at least: 6.5
 Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 1.0.0-beta.2
+Stable tag: 0.8.11
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -44,7 +44,13 @@ Configure advanced Bunny.net edge rules (including token auth at the CDN) in the
 1. Upload the plugin folder to `/wp-content/plugins/media-offload-for-bunny/` or install the zip from the WordPress Plugins screen.
 2. Activate **Media Offload for Bunny.net** through the Plugins menu.
 3. Open **Media → Media Offload for Bunny.net**, complete the **Settings** tab, and read **About & Privacy** for data use and retention.
-4. **Uninstall:** Removing the plugin through the Plugins screen runs `uninstall.php`. By default, settings, encrypted credentials, Storage manifests, Stream metadata, and related offload state **stay in the database** so you can reinstall and continue serving from Bunny. Only enable **Advanced → Delete plugin data on uninstall** on the Settings tab (strongly warned) if you intentionally want that WordPress-side data removed on uninstall; it never deletes local media files or remote Bunny objects.
+4. **Uninstall:** When you remove the plugin from the Plugins screen, WordPress **keeps** this plugin’s settings, encrypted credentials, Storage manifests, Stream metadata, and related offload data **by default** so you can reinstall and keep serving media from Bunny.net. Turn on **Advanced → Remove plugin-owned WordPress data on uninstall** on the Settings tab only if you deliberately want that WordPress-side data removed; it never deletes media files on your server or objects at Bunny.net.
+
+== Development ==
+
+Source code is available in public version control at https://github.com/indigetal/media-offload-for-bunny.git
+
+To build the same style of installable archive this project publishes (`media-offload-for-bunny.zip`), run **`npm run package`** from a repository checkout (see **`package.json`**). That script uses **`.distignore`** when assembling the zip so development-only paths stay out of the distributed bundle, which keeps the package aligned with WordPress.org directory expectations.
 
 == Frequently Asked Questions ==
 
@@ -73,29 +79,28 @@ Where implemented, deleting the attachment can delete the related remote Storage
 Scheduled plugin events are cleared; settings, credentials, and attachment metadata remain. Local files and remote Bunny objects are not bulk-deleted on deactivation.
 
 = What happens when I uninstall the plugin? =
-`uninstall.php` checks the option `bunny_offload_delete_plugin_data_on_uninstall`. When it is **not** exactly `1` (the default), **no** plugin settings, credentials, manifests, Stream meta, or user collection meta are deleted; only runtime lock transients and the internal Stream thumbnail sync cron entry are cleared. When the operator has set that option to **`1`** in the Settings tab Advanced section, the plugin removes its listed options, transients, user meta, and attachment meta from WordPress, then removes the cleanup flag itself. **At no point** does uninstall delete files under `wp-content/uploads` or delete remote Bunny Storage or Stream objects. See **About & Privacy** for the same policy in plain language.
+By default, uninstall **keeps** this plugin’s settings, saved credentials, offload records, and media-related metadata in WordPress so you can reinstall and keep using media already stored at Bunny.net. Unless you turn on **Advanced → Remove plugin-owned WordPress data on uninstall** on the Settings tab (and only if you intend to wipe that data), nothing in that list is removed on uninstall. Uninstall **never** deletes your site’s media files on disk or removes objects in your Bunny Storage zones or Stream library—clean those up in WordPress or the Bunny.net dashboard if you need to. See **About & Privacy** in the plugin settings for the same policy with a bit more detail.
 
 = Can I edit images or regenerate thumbnails after a fully offloaded image has local files removed? =
 WordPress flows that require a local original on disk may not work once aggressive local deletion has removed those files. Plan backups before enabling local removal.
 
 == Privacy ==
 
-Media Offload for Bunny.net sends media and metadata to Bunny.net only as needed for the features you enable. Bunny.net terms: https://bunny.net/terms/ — privacy policy: https://bunny.net/privacy/
+This plugin sends media and configuration-related data to **Bunny.net** only when you enable Stream and/or Storage features and use the workflows described in this readme. Bunny.net terms of use and privacy policy: https://bunny.net/terms/ — https://bunny.net/privacy/
 
-**Stream (enabled):** Server-side requests to `video.bunnycdn.com` (and related Stream API hosts) to create, update, inspect, and delete videos and collections; delivery uses hostnames such as `player.mediadelivery.net` and your configured Stream Pull Zone hostname for playback URLs.
+**Stream (when enabled):** The site’s server makes requests to Bunny Stream API hosts such as `video.bunnycdn.com` to create, update, inspect, and delete videos and collections. Playback-related URLs may use hostnames such as `player.mediadelivery.net` and the **Stream Pull Zone hostname** you configure in settings.
 
-**Storage (enabled):** Server-side requests to regional Bunny Storage API hosts to upload, read, and delete objects; public file URLs use your configured Storage Pull Zone hostname.
+**Storage (when enabled):** The site’s server makes requests to the **regional Bunny Storage API** host for the zone you select, and public file URLs use the **Storage Pull Zone hostname** you configure.
 
-**Credentials:** Stored in WordPress options (encrypted where the plugin applies encryption) and used only to authenticate configured operations.
+**Credentials:** API keys, passwords, zone identifiers, and related options are stored in the WordPress database (encrypted where this plugin applies encryption) and are used only to contact Bunny services on your behalf.
 
-**Free delivery scope:** This plugin does not implement tokenized or HMAC-signed URLs from PHP for Storage or Stream. Edge access rules are owned by your Bunny.net configuration.
+**Admin help links:** On **Media → Media Offload for Bunny.net → Settings**, help text may link to Bunny.net documentation on `docs.bunny.net`, the Bunny.net customer dashboard on `dash.bunny.net`, a Bunny.net support article on `support.bunny.net`, and CDN product pages used to explain pull-zone hostnames. Opening those links is optional; they remain under Bunny.net’s terms and privacy policy above.
 
-Deleting a WordPress attachment may delete matching remote objects as described above. Uninstall behavior is described on the **About & Privacy** tab and in this readme.
+**Delivery scope (Free):** This Free release does not generate HMAC-signed or token-authenticated CDN URLs from PHP for Storage or Stream. Whether URLs are publicly readable or restricted is determined by your Bunny Pull Zone, Storage, and Stream configuration outside WordPress.
+
+**Deleting content:** Removing a WordPress attachment can remove the linked Bunny Storage objects and Stream video as described elsewhere in this readme. Uninstall data retention is summarized on the plugin’s **About & Privacy** tab and in the FAQ above.
 
 == Changelog ==
-
-= 1.0.0-beta.1 =
-* Settings: add Bunny.net promo hero (dashboard CTA + disclosed affiliate trial link) and About tab account/affiliate copy; admin styling aligned with Bunny CDN reference patterns; responsive promo layout and header logo sizing for the wider wordmark.
 
 = 0.8.11 =
 * Uninstall: default path preserves offload-critical options, credentials, manifests, and attachment/user meta; full deletion runs only when `bunny_offload_delete_plugin_data_on_uninstall` is exactly `1`, then that opt-in option is removed. Runtime upload/collection lock transients and the Stream thumbnail sync cron are always cleared on uninstall. Removed Pro-only tool session/lock options and attachment lease meta from the aggressive cleanup list.
@@ -115,11 +120,8 @@ Deleting a WordPress attachment may delete matching remote objects as described 
 
 == Upgrade Notice ==
 
-= 1.0.0-beta.1 =
-First 1.0 beta train: verify Media → Media Offload for Bunny.net → Settings and About & Privacy after upgrade; no database migration required for the version bump alone.
-
 = 0.8.11 =
 Uninstall now preserves database offload data by default. Review **About & Privacy** and the Settings Advanced checkbox before relying on uninstall to wipe plugin metadata.
 
 = 0.8.9 =
-Free scope documentation and dead signing/token resolver code removed; behavior for direct Media Library Storage and Stream offload is unchanged. Review **About & Privacy** if you relied on any previously described signing or Tools features.
+Free scope documentation and dead signing/token resolver code removed; behavior for direct Media Library Storage and Stream offload is unchanged.
