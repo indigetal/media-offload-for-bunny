@@ -4,6 +4,10 @@ namespace Bunny_Offload\Bunny;
 
 use Bunny_Offload\Utils\BunnyLogger;
 
+if (!defined('ABSPATH')) {
+    exit; // Exit if accessed directly.
+}
+
 class BunnyCollectionHandler {
     private static $instance = null;
     private $apiClient;

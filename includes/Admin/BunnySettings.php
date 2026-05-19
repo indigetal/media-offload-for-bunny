@@ -57,6 +57,14 @@ class BunnySettings {
     private const BUNNY_NET_DASHBOARD_URL = 'https://dash.bunny.net/';
 
     /**
+     * Public URL for information about the optional Pro companion (author site).
+     *
+     *
+     * @var string
+     */
+    private const PRO_COMPANION_INFO_URL = 'https://indigetal.com/';
+
+    /**
      * Supported Bunny Storage regions keyed by region code.
      */
     const STORAGE_REGIONS = [
@@ -1214,18 +1222,20 @@ class BunnySettings {
         echo '<section class="bmo-section">';
         echo '<header>';
         echo '<h2>' . esc_html__('Optional Pro companion', 'media-offload-for-bunny') . '</h2>';
-        echo '<p>' . esc_html__('An optional Pro companion (sold and updated outside the WordPress.org plugin directory) may extend this Free base plugin with additional operator workflows and delivery features—for example compatible URL token support—while Free remains the shared offload runtime.', 'media-offload-for-bunny') . '</p>';
-        echo '<p>' . esc_html__('This Free plugin does not bundle that companion, surface off–WordPress.org update prompts for it in wp-admin, or require it for core Media Library Storage and Stream offload.', 'media-offload-for-bunny') . '</p>';
         echo '<p>';
         echo wp_kses(
             sprintf(
-                /* translators: %s: URL to the Settings tab */
-                __('Configure credentials and feature toggles on the <a href="%s" target="_blank" rel="noopener noreferrer">Settings</a> tab; this screen is informational only.', 'media-offload-for-bunny'),
-                esc_url(admin_url('upload.php?page=' . self::PAGE_SLUG . '&tab=' . self::TAB_SETTINGS))
+                /* translators: %s: URL to author / Pro addon commercial information. */
+                __(
+                    'A Pro addon is available to extend this Free base plugin with additional operator workflows and delivery features—such as token-compatible URL delivery. For availability and feature details, visit <a href="%s" target="_blank" rel="noopener noreferrer">Indigetal WebCraft</a>.',
+                    'media-offload-for-bunny'
+                ),
+                esc_url(self::PRO_COMPANION_INFO_URL)
             ),
             $allowed_links
         );
         echo '</p>';
+        echo '<p>' . esc_html__('This Free plugin does not bundle that companion, surface off–WordPress.org update prompts for it in wp-admin, or require it for core Media Library Storage and Stream offload.', 'media-offload-for-bunny') . '</p>';
         echo '</header>';
         echo '</section>';
 

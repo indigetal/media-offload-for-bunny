@@ -6,6 +6,10 @@ use Bunny_Offload\Integration\BunnyVideoMetadataSync;
 use Bunny_Offload\Settings\BunnyConfigurationStore;
 use Bunny_Offload\Utils\BunnyLogger;
 
+if (!defined('ABSPATH')) {
+    exit; // Exit if accessed directly.
+}
+
 class BunnyVideoHandler {
     private static $instance = null;
     private const DIRECT_UPLOAD_MEMORY_SAFETY_BUFFER = 16777216; // 16 MiB.
@@ -356,7 +360,12 @@ class BunnyVideoHandler {
             return new \WP_Error('video_creation_failed', __('Failed to create video object.', 'media-offload-for-bunny'));
         }
 
-        return $response['guid'];
+        $videoId = $this->normalizeExistingVideoId($response['guid']);
+        if ('' === $videoId) {
+            return new \WP_Error('invalid_video_id', __('Bunny returned an invalid video ID.', 'media-offload-for-bunny'));
+        }
+
+        return $videoId;
     }
 
     /**

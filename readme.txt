@@ -4,7 +4,7 @@ Tags: bunny, media, offload, video, streaming, cdn
 Requires at least: 6.5
 Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 1.0.0-beta.2
+Stable tag: 1.0.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -122,6 +122,9 @@ This plugin sends media and configuration-related data to **Bunny.net** only whe
 
 == Changelog ==
 
+= 1.0.0 =
+* First stable release. Security hardening for WordPress.org review. No intentional breaking change to core Media Library Storage/Stream offload behavior for sites upgrading from `1.0.0-beta.2` or `0.8.11`.
+
 = 1.0.0-beta.2 =
 * Readme and metadata aligned with this **Stable tag** and plugin header version (`1.0.0-beta.2`): Installation paths and admin labels, Changelog/Upgrade Notice ordering, and continued alignment between **About & Privacy**, suggested Privacy Policy guide content, and readme **Privacy** / uninstall FAQ.
 * No intentional breaking change to core Media Library Storage/Stream offload behavior for sites upgrading from `0.8.11`; review **About & Privacy** if you rely on uninstall cleanup options.
@@ -144,6 +147,9 @@ This plugin sends media and configuration-related data to **Bunny.net** only whe
 * Initial Stream + Media Library integration direction (pre–Free extraction readme described a broader feature set; current Free scope is described in this file from 0.8.9 onward).
 
 == Upgrade Notice ==
+
+= 1.0.0 =
+First stable release. Sites on `1.0.0-beta.2` or `0.8.x` can upgrade; review **About & Privacy** for uninstall retention.
 
 = 1.0.0-beta.2 =
 Beta aligned with readme **Stable tag** `1.0.0-beta.2`. Skim **Installation** for admin menu paths and **About & Privacy** for uninstall retention before upgrading from older `0.8.x` builds.

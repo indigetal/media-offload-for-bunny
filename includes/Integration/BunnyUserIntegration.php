@@ -46,7 +46,7 @@ class BunnyUserIntegration {
         }
 
         // Sanitize post ID.
-        $postId = (int) sanitize_text_field($request['post_id']);
+        $postId = absint( wp_unslash( (string) ( $request['post_id'] ?? 0 ) ) );
         return [
             'file' => $request['file'],
             'post_id' => $postId,

@@ -1,6 +1,10 @@
 <?php
 namespace Bunny_Offload\Utils;
 
+if (!defined('ABSPATH')) {
+    exit; // Exit if accessed directly.
+}
+
 class BunnyLogger {
     public static function log($message, $type = 'info') {
         if (defined('WP_DEBUG') && WP_DEBUG) {

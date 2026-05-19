@@ -7,6 +7,10 @@ use Bunny_Offload\Settings\BunnyConfigurationStore;
 use Bunny_Offload\Utils\BunnyLogger;
 use Bunny_Offload\Utils\Constants;
 
+if (!defined('ABSPATH')) {
+    exit; // Exit if accessed directly.
+}
+
 class BunnyApiClient {
     private static $instance = null;
     public $video_base_url = 'https://video.bunnycdn.com/';
