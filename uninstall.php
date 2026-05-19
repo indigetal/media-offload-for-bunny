@@ -114,6 +114,7 @@ function bunny_offload_uninstall_delete_dynamic_transients() {
         $transient_like = $wpdb->esc_like('_transient_' . $prefix) . '%';
         $timeout_like = $wpdb->esc_like('_transient_timeout_' . $prefix) . '%';
 
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Uninstall cleanup of plugin transients.
         $wpdb->query(
             $wpdb->prepare(
                 "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s OR option_name LIKE %s",

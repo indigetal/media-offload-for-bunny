@@ -128,6 +128,7 @@ class BunnyVideoHandler {
             $uploadError = new \WP_Error(
                 'video_upload_failed',
                 sprintf(
+                    /* translators: 1: HTTP status code, 2: response body from Bunny.net */
                     __('Bunny.net rejected the video upload (HTTP %1$d): %2$s', 'media-offload-for-bunny'),
                     $uploadResponseCode,
                     $responseBody ?: 'No response body'
@@ -145,7 +146,7 @@ class BunnyVideoHandler {
         }
 
         // Log the full response from Bunny.net
-        BunnyLogger::log("uploadVideo: Bunny.net Response - " . print_r($responseBody, true), 'debug');
+        BunnyLogger::log('uploadVideo: Bunny.net Response - ' . ($responseBody ?: 'No response body'), 'debug');
 
         $pullZone = BunnyConfigurationStore::getStreamPullZoneHostname();
         if (empty($pullZone)) {

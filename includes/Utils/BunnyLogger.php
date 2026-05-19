@@ -12,6 +12,7 @@ class BunnyLogger {
             $message = self::normalizeMessage($message);
             $context = self::getRuntimeContext();
 
+            // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug-only when WP_DEBUG.
             error_log(sprintf('[BunnyOffload] [%s] [%s] %s', strtoupper($type), $context, $message));
         }
     }

@@ -386,6 +386,8 @@ class BunnyStorageOffloader {
             return true;
         }
 
+        // Read-only request classification for core upgrader uploads (security-nonce-audit.md).
+        // phpcs:disable WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
         $request_action = '';
 
         if (isset($_REQUEST['action'])) {
@@ -393,10 +395,14 @@ class BunnyStorageOffloader {
         }
 
         if (in_array($request_action, ['upload-plugin', 'upload-theme'], true)) {
+            // phpcs:enable WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
             return true;
         }
 
-        return $this->hasCoreUpgraderUploadField('pluginzip') || $this->hasCoreUpgraderUploadField('themezip');
+        $is_upgrader_upload = $this->hasCoreUpgraderUploadField('pluginzip') || $this->hasCoreUpgraderUploadField('themezip');
+        // phpcs:enable WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+
+        return $is_upgrader_upload;
     }
 
     /**
@@ -406,10 +412,12 @@ class BunnyStorageOffloader {
      * @return bool
      */
     private function hasCoreUpgraderUploadField($field_name) {
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Read-only request classification; filename sanitized below.
         if (!isset($_FILES[$field_name]) || !is_array($_FILES[$field_name])) {
             return false;
         }
 
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Read-only request classification; filename sanitized on next line.
         $file_name = isset($_FILES[$field_name]['name']) ? wp_unslash($_FILES[$field_name]['name']) : '';
         $file_name = is_string($file_name) ? sanitize_file_name($file_name) : '';
 

@@ -38,6 +38,8 @@ scripts
 tools
 .husky
 memory-bank
+package.json
+package-lock.json
 
 # Block sources/build removed from Free (Phase 7b Step 10); ignore if reintroduced locally
 blocks/

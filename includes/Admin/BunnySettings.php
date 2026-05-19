@@ -461,6 +461,7 @@ class BunnySettings {
      */
     public function sanitizeStreamLibraryIdSetting($value) {
         if ($this->shouldPreserveOmittedStreamOption(self::OPTION_LIBRARY_ID)
+            // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified by options.php + settings_fields.
             || !isset($_POST[self::OPTION_LIBRARY_ID])) {
             return BunnyConfigurationStore::normalizeStoredStreamLibraryId((string) get_option(self::OPTION_LIBRARY_ID, ''));
         }
@@ -564,24 +565,29 @@ class BunnySettings {
      * @return bool
      */
     private function shouldPreserveOmittedStorageOption($option_name) {
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified by options.php + settings_fields (security-nonce-audit.md).
         if (isset($_POST[$option_name])) {
             return false;
         }
 
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified by options.php + settings_fields (security-nonce-audit.md).
         if (!isset($_POST['option_page'])) {
             return false;
         }
 
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified by options.php + settings_fields (security-nonce-audit.md).
         $option_page = sanitize_key(wp_unslash((string) $_POST['option_page']));
 
         if ('bunny_net_settings' !== $option_page) {
             return false;
         }
 
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified by options.php + settings_fields (security-nonce-audit.md).
         if (!isset($_POST[self::OPTION_STORAGE_ENABLED])) {
             return false;
         }
 
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified by options.php + settings_fields (security-nonce-audit.md).
         return !rest_sanitize_boolean(wp_unslash($_POST[self::OPTION_STORAGE_ENABLED]));
     }
 
@@ -592,24 +598,29 @@ class BunnySettings {
      * @return bool
      */
     private function shouldPreserveOmittedStreamOption($option_name) {
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified by options.php + settings_fields (security-nonce-audit.md).
         if (isset($_POST[$option_name])) {
             return false;
         }
 
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified by options.php + settings_fields (security-nonce-audit.md).
         if (!isset($_POST['option_page'])) {
             return false;
         }
 
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified by options.php + settings_fields (security-nonce-audit.md).
         $option_page = sanitize_key(wp_unslash((string) $_POST['option_page']));
 
         if ('bunny_net_settings' !== $option_page) {
             return false;
         }
 
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified by options.php + settings_fields (security-nonce-audit.md).
         if (!isset($_POST[self::OPTION_STREAM_ENABLED])) {
             return false;
         }
 
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified by options.php + settings_fields (security-nonce-audit.md).
         return !rest_sanitize_boolean(wp_unslash($_POST[self::OPTION_STREAM_ENABLED]));
     }
 
@@ -715,6 +726,7 @@ class BunnySettings {
      */
     public function renderAccessKeyField() {
         $value = esc_attr(BunnyConfigurationStore::decrypt_api_key(get_option(self::OPTION_ACCESS_KEY, '')));
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- esc_attr / static attributes; see security-escape-audit.md.
         echo "<input type='password' id='" . esc_attr(self::OPTION_ACCESS_KEY) . "' name='" . esc_attr(self::OPTION_ACCESS_KEY) . "' value='" . $value . "' class='regular-text' autocomplete='off'" . $this->getStreamDependentControlAttributes() . ' />';
 
         $allowed = [
@@ -744,6 +756,7 @@ class BunnySettings {
      */
     public function renderLibraryIdField() {
         $library_id = esc_attr(BunnyConfigurationStore::getStreamLibraryId());
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- esc_attr / static attributes; see security-escape-audit.md.
         echo "<input type='text' id='" . esc_attr(self::OPTION_LIBRARY_ID) . "' name='" . esc_attr(self::OPTION_LIBRARY_ID) . "' value='" . $library_id . "' class='regular-text'" . $this->getStreamDependentControlAttributes() . ' />';
 
         echo '<p class="description">';
@@ -756,6 +769,7 @@ class BunnySettings {
      */
     public function renderPullZoneField() {
         $pull_zone = esc_attr(get_option(self::OPTION_PULL_ZONE, ''));
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- esc_attr / static attributes; see security-escape-audit.md.
         echo "<input type='text' id='" . esc_attr(self::OPTION_PULL_ZONE) . "' name='" . esc_attr(self::OPTION_PULL_ZONE) . "' value='" . $pull_zone . "' class='regular-text'" . $this->getStreamDependentControlAttributes() . ' />';
 
         echo '<p class="description">';
@@ -804,8 +818,10 @@ class BunnySettings {
     public function renderRemoveLocalVideoFilesField() {
         $dependent_attributes = $this->getStreamDependentControlAttributes();
 
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- esc_attr / static attributes; see security-escape-audit.md.
         echo '<input type="hidden" name="' . esc_attr(self::OPTION_REMOVE_LOCAL_VIDEO_FILES) . '" value="0"' . $dependent_attributes . ' />';
         echo '<label class="bmo-toggle">';
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- esc_attr / static attributes; see security-escape-audit.md.
         echo '<input class="bmo-toggle__input" type="checkbox" role="switch" id="' . esc_attr(self::OPTION_REMOVE_LOCAL_VIDEO_FILES) . '" name="' . esc_attr(self::OPTION_REMOVE_LOCAL_VIDEO_FILES) . '" value="1" autocomplete="off" ' . checked(BunnyConfigurationStore::shouldRemoveLocalVideoFiles(), true, false) . $dependent_attributes . ' />';
         echo '<span class="bmo-toggle__track" aria-hidden="true"><span class="bmo-toggle__thumb"></span></span>';
         echo '<span class="bmo-toggle__text"><span class="bmo-toggle__state bmo-toggle__state--on">' . esc_html__('Enabled', 'media-offload-for-bunny') . '</span><span class="bmo-toggle__state bmo-toggle__state--off">' . esc_html__('Disabled', 'media-offload-for-bunny') . '</span></span>';
@@ -853,8 +869,10 @@ class BunnySettings {
     public function renderRemoveLocalFilesField() {
         $dependent_attributes = $this->getStorageDependentControlAttributes();
 
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- esc_attr / static attributes; see security-escape-audit.md.
         echo '<input type="hidden" name="' . esc_attr(self::OPTION_REMOVE_LOCAL_FILES) . '" value="0"' . $dependent_attributes . ' />';
         echo '<label class="bmo-toggle">';
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- esc_attr / static attributes; see security-escape-audit.md.
         echo '<input class="bmo-toggle__input" type="checkbox" role="switch" id="' . esc_attr(self::OPTION_REMOVE_LOCAL_FILES) . '" name="' . esc_attr(self::OPTION_REMOVE_LOCAL_FILES) . '" value="1" autocomplete="off" ' . checked(BunnyConfigurationStore::shouldRemoveLocalFiles(), true, false) . $dependent_attributes . ' />';
         echo '<span class="bmo-toggle__track" aria-hidden="true"><span class="bmo-toggle__thumb"></span></span>';
         echo '<span class="bmo-toggle__text"><span class="bmo-toggle__state bmo-toggle__state--on">' . esc_html__('Enabled', 'media-offload-for-bunny') . '</span><span class="bmo-toggle__state bmo-toggle__state--off">' . esc_html__('Disabled', 'media-offload-for-bunny') . '</span></span>';
@@ -869,6 +887,7 @@ class BunnySettings {
      */
     public function renderStorageZoneField() {
         $storage_zone = esc_attr(get_option(self::OPTION_STORAGE_ZONE, ''));
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- esc_attr / static attributes; see security-escape-audit.md.
         echo "<input type='text' id='" . esc_attr(self::OPTION_STORAGE_ZONE) . "' name='" . esc_attr(self::OPTION_STORAGE_ZONE) . "' value='" . $storage_zone . "' class='regular-text'" . $this->getStorageDependentControlAttributes() . ' />';
         echo '<p class="description">';
         echo esc_html__('Enter the Bunny Storage Zone name exactly as it appears in the Bunny dashboard.', 'media-offload-for-bunny');
@@ -881,6 +900,7 @@ class BunnySettings {
     public function renderStorageRegionField() {
         $current_region = get_option(self::OPTION_STORAGE_REGION, '');
 
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- esc_attr / static attributes; see security-escape-audit.md.
         echo "<select id='" . esc_attr(self::OPTION_STORAGE_REGION) . "' name='" . esc_attr(self::OPTION_STORAGE_REGION) . "'" . $this->getStorageDependentControlAttributes() . '>';
         echo "<option value=''>" . esc_html__('Select a storage region', 'media-offload-for-bunny') . '</option>';
 
@@ -904,6 +924,7 @@ class BunnySettings {
      */
     public function renderStoragePasswordField() {
         $value = esc_attr(BunnyConfigurationStore::getStoragePassword());
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- esc_attr / static attributes; see security-escape-audit.md.
         echo "<input type='password' id='" . esc_attr(self::OPTION_STORAGE_PASSWORD) . "' name='" . esc_attr(self::OPTION_STORAGE_PASSWORD) . "' value='" . $value . "' class='regular-text' autocomplete='off'" . $this->getStorageDependentControlAttributes() . ' />';
         echo '<p class="description">';
         echo wp_kses(
@@ -924,6 +945,7 @@ class BunnySettings {
      */
     public function renderStoragePullZoneField() {
         $pull_zone = esc_attr(get_option(self::OPTION_STORAGE_PULL_ZONE, ''));
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- esc_attr / static attributes; see security-escape-audit.md.
         echo "<input type='text' id='" . esc_attr(self::OPTION_STORAGE_PULL_ZONE) . "' name='" . esc_attr(self::OPTION_STORAGE_PULL_ZONE) . "' value='" . $pull_zone . "' class='regular-text'" . $this->getStorageDependentControlAttributes() . ' />';
         echo '<p class="description">';
         echo wp_kses(
@@ -1310,6 +1332,7 @@ class BunnySettings {
     public function renderSettingsPage() {
         $tabs = self::getAdminTabs();
         $allowed_slugs = array_keys($tabs);
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only tab routing; allowlisted slug (security-nonce-audit.md).
         $requested = isset($_GET['tab']) ? sanitize_key(wp_unslash((string) $_GET['tab'])) : self::TAB_SETTINGS;
         $active_tab = in_array($requested, $allowed_slugs, true)
             ? $requested

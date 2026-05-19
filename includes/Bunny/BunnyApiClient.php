@@ -305,6 +305,7 @@ class BunnyApiClient {
             return new \WP_Error(
                 $error_code,
                 sprintf(
+                    /* translators: 1: API label, 2: endpoint path, 3: JSON error message */
                     __('%1$s returned an invalid JSON response for %2$s: %3$s', 'media-offload-for-bunny'),
                     $api_label,
                     $endpoint,
@@ -402,6 +403,7 @@ class BunnyApiClient {
         return new \WP_Error(
             $error_code,
             sprintf(
+                /* translators: 1: API label, 2: endpoint path, 3: HTTP status code, 4: response body */
                 __('%1$s error for %2$s (HTTP %3$d): %4$s', 'media-offload-for-bunny'),
                 $api_label,
                 $endpoint,

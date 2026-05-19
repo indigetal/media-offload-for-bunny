@@ -303,7 +303,7 @@ class BunnyMediaLibrary {
     
         // Step 4: Optionally delete the local file.
         if (BunnyConfigurationStore::shouldRemoveLocalVideoFiles() && file_exists($filePath)) {
-            @unlink($filePath);
+            wp_delete_file($filePath);
         }
     
         // Step 5: Update the upload data with Bunny.net details.

@@ -1,6 +1,6 @@
 === Media Offload for Bunny.net ===
-Contributors: Brandon Meyer
-Tags: bunny, media, offload, video, streaming, cdn
+Contributors: indigetal
+Tags: bunny, media, offload, video, cdn
 Requires at least: 6.5
 Tested up to: 6.9
 Requires PHP: 8.0
@@ -8,11 +8,11 @@ Stable tag: 1.0.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Connect Bunny.net Storage (non-video) and Stream (video) to the WordPress Media Library: offload attachments, rewrite URLs to your Storage and Stream Pull Zone hostnames, and keep delivery public and basic in this release.
+Offload WordPress media to Bunny.net Storage and Stream; rewrite attachment URLs to your Pull Zone hostnames.
 
 == Description ==
 
-**Media Offload for Bunny.net** wires Bunny.net **Storage** and **Stream** into the WordPress Media Library. This **Free** plugin is a complete Media Library offload path on its own: direct uploads, manifest-backed Storage offload, Stream video offload, thumbnail and dimension metadata when Stream reports a playable encode (with bounded background retries when needed), URL rewriting for attachment and REST surfaces, remote delete where implemented, and an **About & Privacy** tab that explains data use, uninstall retention, and how Free relates to optional add-ons.
+**Media Offload for Bunny.net** wires Bunny.net **Storage** and **Stream** into the WordPress Media Library. This **Free** plugin is a complete Media Library offload path on its own: direct uploads, manifest-backed Storage offload, Stream video offload, thumbnail and dimension metadata when Stream reports a playable encode (with bounded background retries when needed), URL rewriting for attachment and REST surfaces, and remote delete where implemented.
 
 **What Free includes**
 

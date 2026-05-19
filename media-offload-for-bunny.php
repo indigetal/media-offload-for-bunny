@@ -97,4 +97,3 @@ spl_autoload_register(
 add_action('plugins_loaded', [\Bunny_Offload\Bootstrap\BunnyPlugin::class, 'boot']);
 register_deactivation_hook(__FILE__, 'bunny_offload_clear_removed_tool_cron_jobs');
 register_deactivation_hook(__FILE__, [\Bunny_Offload\Bootstrap\BunnyPlugin::class, 'deactivate']);
-add_action('plugins_loaded', [\Bunny_Offload\Bootstrap\BunnyPlugin::class, 'loadTextdomain']);

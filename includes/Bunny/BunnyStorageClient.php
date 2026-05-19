@@ -507,6 +507,7 @@ class BunnyStorageClient {
             );
         }
 
+        // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_is_writable -- Local download path check; not admin FTP filesystem.
         if (file_exists($destination_path) && !is_writable($destination_path)) {
             return new \WP_Error(
                 'bunny_storage_download_destination_not_writable',
@@ -540,6 +541,7 @@ class BunnyStorageClient {
             );
         }
 
+        // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_is_writable -- Local download path check; not admin FTP filesystem.
         if (!is_writable($destination_dir)) {
             return new \WP_Error(
                 'bunny_storage_download_directory_not_writable',
@@ -602,6 +604,7 @@ class BunnyStorageClient {
             );
         }
 
+        // phpcs:ignore WordPress.WP.AlternativeFunctions.rename_rename -- Atomic local temp-to-final move for Storage download.
         if (!@rename($temporary_path, $destination_path)) {
             $this->deleteTemporaryDownloadFile($temporary_path);
 
@@ -749,6 +752,7 @@ class BunnyStorageClient {
         return new \WP_Error(
             $error_code,
             sprintf(
+                /* translators: 1: operation name (upload or download), 2: remote object path, 3: HTTP status code, 4: error message */
                 __('Bunny Storage %1$s error for %2$s (HTTP %3$d): %4$s', 'media-offload-for-bunny'),
                 $operation,
                 $remotePath,

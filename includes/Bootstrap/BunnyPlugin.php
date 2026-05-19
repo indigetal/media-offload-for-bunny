@@ -171,13 +171,4 @@ class BunnyPlugin {
             }
         }
     }
-
-    /**
-     * Load plugin translations.
-     *
-     * @return void
-     */
-    public static function loadTextdomain() {
-        load_plugin_textdomain('media-offload-for-bunny', false, dirname(plugin_basename(__DIR__ . '/../../media-offload-for-bunny.php')) . '/languages');
-    }
 }
