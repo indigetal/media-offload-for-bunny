@@ -40,12 +40,21 @@ class BunnyAttachmentManifest {
     }
 
     /**
-     * Return whether any attachment currently has a non-local offload summary.
+     * Whether any attachment has a non-local Bunny Storage offload summary.
      *
-     * Used by the Pro add-on for storage URL token key admin warnings and Site Health
-     * (BunnyFreeHostedSettingsFields). Query is bounded to a single ID existence check.
+     * Stable Free extension surface: method name, signature, and semantics are maintained
+     * for add-on compatibility unless a release explicitly documents a breaking change.
+     * Free does not call this method internally. Companion add-ons (e.g. Media Offload for
+     * Bunny Pro) use it for storage URL token-key admin warnings and Site Health when token
+     * auth is enabled but no key is saved.
      *
-     * @return bool
+     * Answers: "Does any attachment have a non-local offload summary?" Uses post meta key
+     * SUMMARY_META_KEY (`_bunny_offloaded`) with summary states partial, complete, or error
+     * (excludes local). Bounded existence query: at most one attachment ID returned.
+     *
+     * Does not call Bunny APIs.
+     *
+     * @return bool True when at least one attachment has partial, complete, or error summary.
      */
     public static function hasAnyOffloadedAttachments() {
         $attachment_ids = get_posts([
@@ -54,7 +63,7 @@ class BunnyAttachmentManifest {
             'fields' => 'ids',
             'posts_per_page' => 1,
             'no_found_rows' => true,
-            // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Bounded existence probe (posts_per_page 1); Pro admin/Site Health only.
+            // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Extension API: bounded existence probe (posts_per_page 1).
             'meta_query' => [
                 [
                     'key' => self::SUMMARY_META_KEY,

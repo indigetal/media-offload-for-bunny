@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Media Offload for Bunny.net
+ * Plugin Name: Indigetal Media Offload for Bunny.net
  * Description: Seamlessly offload the WordPress Media Library to Bunny Storage and stream videos from Bunny Stream.
  * Version: 1.0.0
  * Requires at least: 6.5
@@ -9,7 +9,7 @@
  * Author URI: https://indigetal.com
  * License: GPL-2.0-or-later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain: media-offload-for-bunny
+ * Text Domain: indigetal-media-offload-for-bunny-net
  */
 
 if (!defined('ABSPATH')) {

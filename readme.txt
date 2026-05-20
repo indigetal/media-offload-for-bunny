@@ -1,4 +1,4 @@
-=== Media Offload for Bunny.net ===
+=== Indigetal Media Offload for Bunny.net ===
 Contributors: indigetal
 Tags: bunny, media, offload, video, cdn
 Requires at least: 6.5
@@ -12,7 +12,7 @@ Offload WordPress media to Bunny.net Storage and Stream; rewrite attachment URLs
 
 == Description ==
 
-**Media Offload for Bunny.net** wires Bunny.net **Storage** and **Stream** into the WordPress Media Library. This **Free** plugin is a complete Media Library offload path on its own: direct uploads, manifest-backed Storage offload, Stream video offload, thumbnail and dimension metadata when Stream reports a playable encode (with bounded background retries when needed), URL rewriting for attachment and REST surfaces, and remote delete where implemented.
+**Indigetal Media Offload for Bunny.net** wires Bunny.net **Storage** and **Stream** into the WordPress Media Library. This **Free** plugin is a complete Media Library offload path on its own: direct uploads, manifest-backed Storage offload, Stream video offload, thumbnail and dimension metadata when Stream reports a playable encode (with bounded background retries when needed), URL rewriting for attachment and REST surfaces, and remote delete where implemented.
 
 **What Free includes**
 
@@ -36,21 +36,21 @@ Configure advanced Bunny.net edge rules (including token auth at the CDN) in the
 * WordPress 6.5 or greater
 * PHP 8.0 or greater
 * A Bunny.net account
-* **Stream (optional):** Stream API access key, library ID, Stream Pull Zone hostname, and any Stream upload toggles you use—entered on **Media → Media Offload for Bunny.net → Settings**.
+* **Stream (optional):** Stream API access key, library ID, Stream Pull Zone hostname, and any Stream upload toggles you use—entered on **Media → Indigetal Media Offload for Bunny.net → Settings**.
 * **Storage (optional):** Storage zone credentials, region, Storage Pull Zone hostname, and related toggles when you enable non-video offload (same **Settings** screen).
 
 = Installation Instructions =
 
-1. **Install:** Upload `media-offload-for-bunny.zip` via **Plugins → Add New → Upload Plugin**, or copy the plugin folder to `wp-content/plugins/media-offload-for-bunny/` (folder name must match that path after extraction).
-2. **Activate:** In **Plugins → Installed Plugins**, activate **Media Offload for Bunny.net**.
-3. **Configure:** Open **Media → Media Offload for Bunny.net**, use the **Settings** tab to enable **Stream** and/or **Storage** offload as needed, then read **About & Privacy** for Bunny.net data use, delivery scope, and uninstall retention.
+1. **Install:** Upload `indigetal-media-offload-for-bunny-net.zip` via **Plugins → Add New → Upload Plugin**, or copy the plugin folder to `wp-content/plugins/indigetal-media-offload-for-bunny-net/` (folder name must match that path after extraction).
+2. **Activate:** In **Plugins → Installed Plugins**, activate **Indigetal Media Offload for Bunny.net**.
+3. **Configure:** Open **Media → Indigetal Media Offload for Bunny.net**, use the **Settings** tab to enable **Stream** and/or **Storage** offload as needed, then read **About & Privacy** for Bunny.net data use, delivery scope, and uninstall retention.
 4. **Plan uninstall (optional):** Removing the plugin under **Plugins → Installed Plugins** **keeps** this plugin’s settings, encrypted credentials, Storage manifests, Stream-related metadata, and related offload data in WordPress **by default** so you can reinstall and keep serving media from Bunny.net. Turn on **Advanced → Remove plugin-owned WordPress data on uninstall** on the **Settings** tab only when you deliberately want that WordPress-side data removed on the next uninstall; it never deletes media files on your server or objects at Bunny.net.
 
 == Development ==
 
 Source code is available in public version control at https://github.com/indigetal/media-offload-for-bunny.git
 
-To build the same style of installable archive this repository publishes (`media-offload-for-bunny.zip`), run **`npm run package`** from a repository checkout (see **`package.json`**). That script uses **`.distignore`** when assembling the zip so development-only paths stay out of the distributed bundle, which keeps the package aligned with WordPress.org directory expectations.
+To build the same style of installable archive this repository publishes (`indigetal-media-offload-for-bunny-net.zip`), run **`npm run package`** from a repository checkout (see **`package.json`**). That script uses **`.distignore`** when assembling the zip so development-only paths stay out of the distributed bundle, which keeps the package aligned with WordPress.org directory expectations.
 
 == Frequently Asked Questions ==
 
@@ -58,7 +58,7 @@ To build the same style of installable archive this repository publishes (`media
 Bunny.net operates global CDN, **Stream** (video), and **Storage** (object storage) services. This plugin uses those APIs and your Pull Zone hostnames so Media Library attachments can live on Bunny while WordPress keeps normal attachment records.
 
 = Do I need a Bunny.net account? =
-Yes. Create Stream libraries and Storage zones in the Bunny.net dashboard, then enter the credentials and hostnames this plugin requests on **Media → Media Offload for Bunny.net → Settings**.
+Yes. Create Stream libraries and Storage zones in the Bunny.net dashboard, then enter the credentials and hostnames this plugin requests on **Media → Indigetal Media Offload for Bunny.net → Settings**.
 
 = Does this work on multisite? =
 The plugin is intended to work when activated per site. If you network-enable it, treat behavior as site-specific unless you have tested your network layout; use separate Bunny libraries, zones, and Pull Zones per site when you need hard isolation.
@@ -85,24 +85,25 @@ By default, uninstall **keeps** this plugin’s settings, saved credentials, off
 WordPress flows that require a local original on disk may not work once aggressive local deletion has removed those files. Plan backups before enabling local removal.
 
 = What developer hooks and APIs does Free expose? =
-Media Offload for Bunny.net documents an intentional extension surface for companion plugins (including optional Pro). Treat these symbols as a stable add-on contract across Free releases unless a release explicitly documents a breaking change.
+Indigetal Media Offload for Bunny.net documents an intentional extension surface for companion plugins (including optional Pro). Treat these symbols as a stable add-on contract across Free releases unless a release explicitly documents a breaking change.
 
 **Lifecycle and admin UI**
 
 * **bunny_offload_loaded** (action) — Fires after Free registers settings, configuration storage, attachment metadata, Stream metadata sync, REST status routes, Storage URL rewriting, Storage offload, user integration, and Stream Media Library hooks. Use it to bootstrap add-on code that depends on Free services.
 * **bunny_offload_free_version()** (function) — Returns the active Free version string (same value as the BUNNY_OFFLOAD_VERSION constant). Pro companions call this for compatibility checks after Free is active. Pro must not ship code loaded from Free.
-* **bunny_offload_admin_tabs** (filter) — Receives the default tab map for **Media → Media Offload for Bunny.net** (each entry: label and admin URL). Add-ons append tabs here and render tab bodies with the **bunny_offload_render_admin_tab** action using the same slug keys.
+* **bunny_offload_admin_tabs** (filter) — Receives the default tab map for **Media → Indigetal Media Offload for Bunny.net** (each entry: label and admin URL). Add-ons append tabs here and render tab bodies with the **bunny_offload_render_admin_tab** action using the same slug keys.
 
 **Read-only attachment helpers (no remote Bunny API calls)**
 
-These four static methods are reserved for add-on tooling; Free does not call them internally. They read WordPress post/user meta and configuration state only:
+These five static methods are reserved for add-on tooling; Free does not call them internally. They read WordPress post/user meta and configuration state only:
 
 * **BunnyStorageOffloader::getAttachmentStorageManifest( $attachment_id )** — Normalized Storage manifest rows from post meta (raw manifest, not the filtered manifest from other hooks).
 * **BunnyStorageOffloader::getAttachmentStorageOffloadStatus( $attachment_id )** — Storage offload summary state, last error, and whether manifest rows report errors.
 * **BunnyMediaLibrary::getAttachmentStreamMetadata( $attachment_id )** — Stream-related meta snapshot (video id, embed URL, thumbnail URL, dimensions, author collection id).
 * **BunnyMediaLibrary::getAttachmentStreamStatus( $attachment_id )** — Whether Stream upload runtime is configured and whether the attachment stores a Stream video id.
+* **BunnyAttachmentManifest::hasAnyOffloadedAttachments()** — Whether any attachment has a non-local offload summary (`_bunny_offloaded` in partial, complete, or error). Bounded site-wide existence check; Pro uses this for storage URL token-key warnings and Site Health.
 
-Fully qualified class names in source: Bunny_Offload\Integration\BunnyStorageOffloader and Bunny_Offload\Integration\BunnyMediaLibrary. See PHPDoc on each method for return field details.
+Fully qualified class names in source: Bunny_Offload\Integration\BunnyStorageOffloader, Bunny_Offload\Integration\BunnyMediaLibrary, and Bunny_Offload\Integration\BunnyAttachmentManifest. See PHPDoc on each method for return field details.
 
 == Privacy ==
 
@@ -114,7 +115,7 @@ This plugin sends media and configuration-related data to **Bunny.net** only whe
 
 **Credentials:** API keys, passwords, zone identifiers, and related options are stored in the WordPress database (encrypted where this plugin applies encryption) and are used only to contact Bunny services on your behalf.
 
-**Admin help links:** On **Media → Media Offload for Bunny.net → Settings**, help text may link to Bunny.net documentation on `docs.bunny.net`, the Bunny.net customer dashboard on `dash.bunny.net`, a Bunny.net support article on `support.bunny.net`, and CDN product pages used to explain pull-zone hostnames. Opening those links is optional; they remain under Bunny.net’s terms and privacy policy above.
+**Admin help links:** On **Media → Indigetal Media Offload for Bunny.net → Settings**, help text may link to Bunny.net documentation on `docs.bunny.net`, the Bunny.net customer dashboard on `dash.bunny.net`, a Bunny.net support article on `support.bunny.net`, and CDN product pages used to explain pull-zone hostnames. Opening those links is optional; they remain under Bunny.net’s terms and privacy policy above.
 
 **Delivery scope (Free):** This Free release does not generate HMAC-signed or token-authenticated CDN URLs from PHP for Storage or Stream. Whether URLs are publicly readable or restricted is determined by your Bunny Pull Zone, Storage, and Stream configuration outside WordPress.
 

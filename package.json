@@ -1,13 +1,13 @@
 {
-  "name": "media-offload-for-bunny",
+  "name": "indigetal-media-offload-for-bunny-net",
   "version": "1.0.0",
   "private": true,
   "description": "Offload media files to Bunny Storage and stream videos from Bunny Stream via the WordPress Media Library.",
   "license": "GPL-2.0-or-later",
   "scripts": {
-    "clean": "rm -rf media-offload-for-bunny-build media-offload-for-bunny.zip",
-    "make-pot": "mkdir -p languages && wp i18n make-pot . languages/media-offload-for-bunny.pot --domain=media-offload-for-bunny --slug=media-offload-for-bunny --exclude=references,memory-bank,node_modules,media-offload-for-bunny-build,blocks,docs,vendor,bin,scripts,tools,__tests__,tests,test,coverage",
-    "make-build": "npm run clean && mkdir -p media-offload-for-bunny-build && rsync -av --exclude-from=.distignore . media-offload-for-bunny-build/",
-    "package": "npm run make-build && cd media-offload-for-bunny-build && zip -r ../media-offload-for-bunny.zip . && cd .. && rm -rf media-offload-for-bunny-build"
+    "clean": "rm -rf indigetal-media-offload-for-bunny-net-build indigetal-media-offload-for-bunny-net.zip",
+    "make-pot": "mkdir -p languages && wp i18n make-pot . languages/indigetal-media-offload-for-bunny-net.pot --domain=indigetal-media-offload-for-bunny-net --slug=indigetal-media-offload-for-bunny-net --exclude=references,memory-bank,node_modules,indigetal-media-offload-for-bunny-net-build,blocks,docs,vendor,bin,scripts,tools,__tests__,tests,test,coverage",
+    "make-build": "npm run clean && mkdir -p indigetal-media-offload-for-bunny-net-build && rsync -av --exclude-from=.distignore . indigetal-media-offload-for-bunny-net-build/",
+    "package": "npm run make-build && cd indigetal-media-offload-for-bunny-net-build && zip -r ../indigetal-media-offload-for-bunny-net.zip . && cd .. && rm -rf indigetal-media-offload-for-bunny-net-build"
   }
 }
