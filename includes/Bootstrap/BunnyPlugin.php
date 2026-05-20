@@ -89,7 +89,7 @@ class BunnyPlugin {
         $html = self::getPrivacyPolicySuggestedHtml();
 
         wp_add_privacy_policy_content(
-            __('Media Offload for Bunny.net', 'media-offload-for-bunny'),
+            __('Indigetal Media Offload for Bunny.net', 'indigetal-media-offload-for-bunny-net'),
             wp_kses_post($html)
         );
     }
@@ -114,24 +114,24 @@ class BunnyPlugin {
         $html .= '<p>' . wp_kses(
             sprintf(
                 /* translators: 1: Bunny.net terms URL, 2: Bunny.net privacy URL */
-                __('This plugin sends media and configuration-related data to <strong>Bunny.net</strong> only when you enable Stream and/or Storage features and use the workflows this plugin provides. See Bunny.net’s <a href="%1$s" target="_blank" rel="noopener noreferrer">terms of use</a> and <a href="%2$s" target="_blank" rel="noopener noreferrer">privacy policy</a>.', 'media-offload-for-bunny'),
+                __('This plugin sends media and configuration-related data to <strong>Bunny.net</strong> only when you enable Stream and/or Storage features and use the workflows this plugin provides. See Bunny.net’s <a href="%1$s" target="_blank" rel="noopener noreferrer">terms of use</a> and <a href="%2$s" target="_blank" rel="noopener noreferrer">privacy policy</a>.', 'indigetal-media-offload-for-bunny-net'),
                 esc_url('https://bunny.net/terms/'),
                 esc_url('https://bunny.net/privacy/')
             ),
             $link_allowed
         ) . '</p>';
 
-        $html .= '<p>' . esc_html__('Stream (when enabled): the site’s server makes requests to Bunny Stream API hosts such as video.bunnycdn.com to create, update, inspect, and delete videos and collections. Playback-related URLs may use hostnames such as player.mediadelivery.net and the Stream Pull Zone hostname you configure in settings.', 'media-offload-for-bunny') . '</p>';
+        $html .= '<p>' . esc_html__('Stream (when enabled): the site’s server makes requests to Bunny Stream API hosts such as video.bunnycdn.com to create, update, inspect, and delete videos and collections. Playback-related URLs may use hostnames such as player.mediadelivery.net and the Stream Pull Zone hostname you configure in settings.', 'indigetal-media-offload-for-bunny-net') . '</p>';
 
-        $html .= '<p>' . esc_html__('Storage (when enabled): the site’s server makes requests to the regional Bunny Storage API host for the zone you select, and public file URLs use the Storage Pull Zone hostname you configure.', 'media-offload-for-bunny') . '</p>';
+        $html .= '<p>' . esc_html__('Storage (when enabled): the site’s server makes requests to the regional Bunny Storage API host for the zone you select, and public file URLs use the Storage Pull Zone hostname you configure.', 'indigetal-media-offload-for-bunny-net') . '</p>';
 
-        $html .= '<p>' . esc_html__('Credentials: API keys, passwords, zone identifiers, and related options are stored in the WordPress database (encrypted where this plugin applies encryption) and are used only to contact Bunny services on your behalf.', 'media-offload-for-bunny') . '</p>';
+        $html .= '<p>' . esc_html__('Credentials: API keys, passwords, zone identifiers, and related options are stored in the WordPress database (encrypted where this plugin applies encryption) and are used only to contact Bunny services on your behalf.', 'indigetal-media-offload-for-bunny-net') . '</p>';
 
-        $html .= '<p>' . esc_html__('On Media → Media Offload for Bunny.net → Settings, help text may link to Bunny.net documentation on docs.bunny.net, the customer dashboard on dash.bunny.net, a support article on support.bunny.net, and CDN product pages used to explain pull-zone hostnames. Opening those links is optional; they remain under Bunny.net’s terms and privacy policy linked above.', 'media-offload-for-bunny') . '</p>';
+        $html .= '<p>' . esc_html__('On Media → Indigetal Media Offload for Bunny.net → Settings, help text may link to Bunny.net documentation on docs.bunny.net, the customer dashboard on dash.bunny.net, a support article on support.bunny.net, and CDN product pages used to explain pull-zone hostnames. Opening those links is optional; they remain under Bunny.net’s terms and privacy policy linked above.', 'indigetal-media-offload-for-bunny-net') . '</p>';
 
-        $html .= '<p>' . esc_html__('Delivery scope (Free): this Free release does not generate HMAC-signed or token-authenticated CDN URLs from PHP for Storage or Stream. Whether URLs are publicly readable or restricted is determined by your Bunny Pull Zone, Storage, and Stream configuration outside WordPress.', 'media-offload-for-bunny') . '</p>';
+        $html .= '<p>' . esc_html__('Delivery scope (Free): this Free release does not generate HMAC-signed or token-authenticated CDN URLs from PHP for Storage or Stream. Whether URLs are publicly readable or restricted is determined by your Bunny Pull Zone, Storage, and Stream configuration outside WordPress.', 'indigetal-media-offload-for-bunny-net') . '</p>';
 
-        $html .= '<p>' . esc_html__('Deleting content: removing a WordPress attachment can remove linked Bunny Storage objects and the Stream video where that behavior is implemented. By default, uninstall keeps this plugin’s settings, saved credentials, offload records, and media-related metadata unless you enable Advanced → Remove plugin-owned WordPress data on uninstall on the Settings tab; uninstall never deletes your site’s media files on disk or removes objects in your Bunny Storage zones or Stream library. See About & Privacy under the same Media menu for the same details.', 'media-offload-for-bunny') . '</p>';
+        $html .= '<p>' . esc_html__('Deleting content: removing a WordPress attachment can remove linked Bunny Storage objects and the Stream video where that behavior is implemented. By default, uninstall keeps this plugin’s settings, saved credentials, offload records, and media-related metadata unless you enable Advanced → Remove plugin-owned WordPress data on uninstall on the Settings tab; uninstall never deletes your site’s media files on disk or removes objects in your Bunny Storage zones or Stream library. See About & Privacy under the same Media menu for the same details.', 'indigetal-media-offload-for-bunny-net') . '</p>';
 
         return $html;
     }

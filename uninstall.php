@@ -1,6 +1,6 @@
 <?php
 /**
- * Uninstall handler for Media Offload for Bunny.net.
+ * Uninstall handler for Indigetal Media Offload for Bunny.net.
  *
  * By default this file preserves offload-critical WordPress data (settings,
  * encrypted credentials, Storage manifests, Stream attachment metadata, and

@@ -94,6 +94,18 @@ spl_autoload_register(
     }
 );
 
+add_action(
+    'plugins_loaded',
+    static function () {
+        load_plugin_textdomain(
+            'indigetal-media-offload-for-bunny-net',
+            false,
+            dirname(plugin_basename(__FILE__)) . '/languages'
+        );
+    },
+    0
+);
+
 add_action('plugins_loaded', [\Bunny_Offload\Bootstrap\BunnyPlugin::class, 'boot']);
 register_deactivation_hook(__FILE__, 'bunny_offload_clear_removed_tool_cron_jobs');
 register_deactivation_hook(__FILE__, [\Bunny_Offload\Bootstrap\BunnyPlugin::class, 'deactivate']);

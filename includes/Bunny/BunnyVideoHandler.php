@@ -61,11 +61,11 @@ class BunnyVideoHandler {
     public function uploadVideo($filePath, $collectionId = null, $postId = null) {
         $library_id = $this->apiClient->getLibraryId();
         if (empty($library_id)) {
-            return new \WP_Error('missing_library_id', __('Library ID is required to upload a video.', 'media-offload-for-bunny'));
+            return new \WP_Error('missing_library_id', __('Library ID is required to upload a video.', 'indigetal-media-offload-for-bunny-net'));
         }
 
         if (!is_string($filePath) || !file_exists($filePath)) {
-            return new \WP_Error('invalid_file_path', __('Invalid file path for video upload.', 'media-offload-for-bunny'));
+            return new \WP_Error('invalid_file_path', __('Invalid file path for video upload.', 'indigetal-media-offload-for-bunny-net'));
         }
 
         $memoryPreflight = $this->validateDirectUploadMemory($filePath);
@@ -86,7 +86,7 @@ class BunnyVideoHandler {
         // Step 3: Upload the video file using a PUT request
         if (empty($library_id) || empty($videoId)) {
             BunnyLogger::log("uploadVideo: ERROR - Missing Library ID or Video ID. Library ID: {$library_id}, Video ID: {$videoId}", 'error');
-            return new \WP_Error('missing_video_data', __('Missing library ID or video ID.', 'media-offload-for-bunny'));
+            return new \WP_Error('missing_video_data', __('Missing library ID or video ID.', 'indigetal-media-offload-for-bunny-net'));
         }
 
         $uploadEndpoint = "library/{$library_id}/videos/{$videoId}";
@@ -94,7 +94,7 @@ class BunnyVideoHandler {
         $videoData = file_get_contents($filePath);
         if ($videoData === false || strlen($videoData) === 0) {
             BunnyLogger::log("uploadVideo: Failed to read video file for {$filePath}.", 'error');
-            $readError = new \WP_Error('video_file_read_failed', __('Failed to read the video file before uploading.', 'media-offload-for-bunny'));
+            $readError = new \WP_Error('video_file_read_failed', __('Failed to read the video file before uploading.', 'indigetal-media-offload-for-bunny-net'));
             $this->rollbackJustCreatedVideo($library_id, $videoId, 'file read failure');
             return $readError;
         }
@@ -129,7 +129,7 @@ class BunnyVideoHandler {
                 'video_upload_failed',
                 sprintf(
                     /* translators: 1: HTTP status code, 2: response body from Bunny.net */
-                    __('Bunny.net rejected the video upload (HTTP %1$d): %2$s', 'media-offload-for-bunny'),
+                    __('Bunny.net rejected the video upload (HTTP %1$d): %2$s', 'indigetal-media-offload-for-bunny-net'),
                     $uploadResponseCode,
                     $responseBody ?: 'No response body'
                 ),
@@ -151,7 +151,7 @@ class BunnyVideoHandler {
         $pullZone = BunnyConfigurationStore::getStreamPullZoneHostname();
         if (empty($pullZone)) {
             BunnyLogger::log('uploadVideo: CDN hostname is missing.', 'error');
-            return new \WP_Error('missing_pull_zone', __('CDN hostname is required to build video playback URLs.', 'media-offload-for-bunny'));
+            return new \WP_Error('missing_pull_zone', __('CDN hostname is required to build video playback URLs.', 'indigetal-media-offload-for-bunny-net'));
         }
 
         if ($postId) {
@@ -187,7 +187,7 @@ class BunnyVideoHandler {
         if (false === $fileSize) {
             return new \WP_Error(
                 'video_file_size_unavailable',
-                __('Could not determine the video file size before uploading.', 'media-offload-for-bunny')
+                __('Could not determine the video file size before uploading.', 'indigetal-media-offload-for-bunny-net')
             );
         }
 
@@ -208,7 +208,7 @@ class BunnyVideoHandler {
             'video_direct_upload_memory_limit_exceeded',
             sprintf(
                 /* translators: 1: video file size, 2: remaining PHP memory, 3: required PHP memory */
-                __('This video is too large for the server-side Stream upload path. File size: %1$s. Available PHP memory: %2$s. Required memory: %3$s. Reduce the file size, raise the PHP memory limit, or upload from an environment with a higher memory ceiling.', 'media-offload-for-bunny'),
+                __('This video is too large for the server-side Stream upload path. File size: %1$s. Available PHP memory: %2$s. Required memory: %3$s. Reduce the file size, raise the PHP memory limit, or upload from an environment with a higher memory ceiling.', 'indigetal-media-offload-for-bunny-net'),
                 size_format((int) $fileSize),
                 size_format((int) $remainingMemory),
                 size_format((int) $requiredMemory)
@@ -272,12 +272,12 @@ class BunnyVideoHandler {
     public function getExistingVideoMetadata($videoId) {
         $library_id = $this->apiClient->getLibraryId();
         if (empty($library_id)) {
-            return new \WP_Error('missing_library_id', __('Library ID is required to read Bunny video metadata.', 'media-offload-for-bunny'));
+            return new \WP_Error('missing_library_id', __('Library ID is required to read Bunny video metadata.', 'indigetal-media-offload-for-bunny-net'));
         }
 
         $videoId = $this->normalizeExistingVideoId($videoId);
         if ('' === $videoId) {
-            return new \WP_Error('invalid_video_id', __('A valid Bunny video ID is required to read video metadata.', 'media-offload-for-bunny'));
+            return new \WP_Error('invalid_video_id', __('A valid Bunny video ID is required to read video metadata.', 'indigetal-media-offload-for-bunny-net'));
         }
 
         $response = $this->apiClient->getVideoDetails($library_id, $videoId);
@@ -302,12 +302,12 @@ class BunnyVideoHandler {
     public function updateExistingVideoMetadata($videoId, array $updates) {
         $library_id = $this->apiClient->getLibraryId();
         if (empty($library_id)) {
-            return new \WP_Error('missing_library_id', __('Library ID is required to update Bunny video metadata.', 'media-offload-for-bunny'));
+            return new \WP_Error('missing_library_id', __('Library ID is required to update Bunny video metadata.', 'indigetal-media-offload-for-bunny-net'));
         }
 
         $videoId = $this->normalizeExistingVideoId($videoId);
         if ('' === $videoId) {
-            return new \WP_Error('invalid_video_id', __('A valid Bunny video ID is required to update video metadata.', 'media-offload-for-bunny'));
+            return new \WP_Error('invalid_video_id', __('A valid Bunny video ID is required to update video metadata.', 'indigetal-media-offload-for-bunny-net'));
         }
 
         $current_metadata = $this->getExistingVideoMetadata($videoId);
@@ -334,11 +334,11 @@ class BunnyVideoHandler {
     public function createVideoObject($title, $collectionId) {
         $library_id = $this->apiClient->getLibraryId();
         if (empty($library_id)) {
-            return new \WP_Error('missing_library_id', __('Library ID is required to create a video object.', 'media-offload-for-bunny'));
+            return new \WP_Error('missing_library_id', __('Library ID is required to create a video object.', 'indigetal-media-offload-for-bunny-net'));
         }
 
         if (empty($collectionId)) {
-            return new \WP_Error('missing_collection_id', __('Collection ID is required to create a video object.', 'media-offload-for-bunny'));
+            return new \WP_Error('missing_collection_id', __('Collection ID is required to create a video object.', 'indigetal-media-offload-for-bunny-net'));
         }
 
         $videoData = [
@@ -358,12 +358,12 @@ class BunnyVideoHandler {
         }
 
         if (empty($response['guid'])) {
-            return new \WP_Error('video_creation_failed', __('Failed to create video object.', 'media-offload-for-bunny'));
+            return new \WP_Error('video_creation_failed', __('Failed to create video object.', 'indigetal-media-offload-for-bunny-net'));
         }
 
         $videoId = $this->normalizeExistingVideoId($response['guid']);
         if ('' === $videoId) {
-            return new \WP_Error('invalid_video_id', __('Bunny returned an invalid video ID.', 'media-offload-for-bunny'));
+            return new \WP_Error('invalid_video_id', __('Bunny returned an invalid video ID.', 'indigetal-media-offload-for-bunny-net'));
         }
 
         return $videoId;
@@ -378,7 +378,7 @@ class BunnyVideoHandler {
     private function resolveCollectionIdForUser($userId) {
         $userId = absint($userId);
         if ($userId < 1) {
-            return new \WP_Error('invalid_user', __('A valid user is required to resolve a Bunny Stream collection.', 'media-offload-for-bunny'));
+            return new \WP_Error('invalid_user', __('A valid user is required to resolve a Bunny Stream collection.', 'indigetal-media-offload-for-bunny-net'));
         }
 
         $collectionId = (string) get_user_meta($userId, '_bunny_collection_id', true);
@@ -408,17 +408,17 @@ class BunnyVideoHandler {
         $library_id = $this->apiClient->getLibraryId();
         if (empty($library_id)) {
             BunnyLogger::log('Library ID is missing or not set.', 'warning');
-            return new \WP_Error('missing_library_id', __('Library ID is required to set a thumbnail.', 'media-offload-for-bunny'));
+            return new \WP_Error('missing_library_id', __('Library ID is required to set a thumbnail.', 'indigetal-media-offload-for-bunny-net'));
         }
 
         if (empty($videoId)) {
-            return new \WP_Error('missing_video_id', __('Video ID is required to set a thumbnail.', 'media-offload-for-bunny'));
+            return new \WP_Error('missing_video_id', __('Video ID is required to set a thumbnail.', 'indigetal-media-offload-for-bunny-net'));
         }
 
         $pullZone = BunnyConfigurationStore::getStreamPullZoneHostname();
         if (empty($pullZone)) {
             BunnyLogger::log('Pull Zone is missing or not set.', 'warning');
-            return new \WP_Error('missing_pull_zone', __('Pull Zone is required to set a thumbnail.', 'media-offload-for-bunny'));
+            return new \WP_Error('missing_pull_zone', __('Pull Zone is required to set a thumbnail.', 'indigetal-media-offload-for-bunny-net'));
         }
 
         // If a timestamp is provided, make a request to update the thumbnail
@@ -443,7 +443,7 @@ class BunnyVideoHandler {
     public function validateMimeType($filePath) {
         $mime_type = mime_content_type($filePath);
         if (!in_array($mime_type, ['video/mp4', 'video/webm'])) {
-            return new \WP_Error('invalid_mime', __('Invalid file type.', 'media-offload-for-bunny'));
+            return new \WP_Error('invalid_mime', __('Invalid file type.', 'indigetal-media-offload-for-bunny-net'));
         }
         return true;
     }
@@ -520,13 +520,13 @@ class BunnyVideoHandler {
     public function getVideoStatus($videoId, $attachmentId = 0) {
         $library_id = $this->apiClient->getLibraryId();
         if (empty($library_id)) {
-            return new \WP_Error('missing_library_id', __('Library ID is required to check video status.', 'media-offload-for-bunny'));
+            return new \WP_Error('missing_library_id', __('Library ID is required to check video status.', 'indigetal-media-offload-for-bunny-net'));
         }
 
         $attachmentId = absint($attachmentId);
         $videoId = preg_replace('/[^a-f0-9\-]/i', '', (string) $videoId);
         if (empty($videoId)) {
-            return new \WP_Error('invalid_video_id', __('A valid video ID is required to check video status.', 'media-offload-for-bunny'));
+            return new \WP_Error('invalid_video_id', __('A valid video ID is required to check video status.', 'indigetal-media-offload-for-bunny-net'));
         }
 
         $response = $this->apiClient->sendJsonToBunny("library/{$library_id}/videos/{$videoId}", 'GET');
@@ -535,7 +535,7 @@ class BunnyVideoHandler {
         }
 
         if (!is_array($response) || !isset($response['status'])) {
-            return new \WP_Error('invalid_video_status_response', __('Unexpected response while checking Bunny video status.', 'media-offload-for-bunny'));
+            return new \WP_Error('invalid_video_status_response', __('Unexpected response while checking Bunny video status.', 'indigetal-media-offload-for-bunny-net'));
         }
 
         $status = (int) $response['status'];

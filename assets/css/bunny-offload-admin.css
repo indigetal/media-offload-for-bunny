@@ -1,7 +1,7 @@
 @import url("https://fonts.bunny.net/css?family=inter:400,500,600,700,800");
 
 /**
- * Media Offload for Bunny.net — admin settings visual system.
+ * Indigetal Media Offload for Bunny.net — admin settings visual system.
  *
  * Scoping: All rules are nested under #bunny-offload-admin-wrapper so WordPress
  * admin chrome outside the plugin page is unaffected. Specificity from the ID

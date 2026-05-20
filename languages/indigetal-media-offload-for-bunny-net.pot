@@ -2,365 +2,364 @@
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Media Offload for Bunny.net 1.0.0\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/media-offload-for-bunny\n"
+"Project-Id-Version: Indigetal Media Offload for Bunny.net 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/indigetal-media-offload-for-bunny-net\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-05-18T19:27:37+00:00\n"
+"POT-Creation-Date: 2026-05-20T21:34:59+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
-"X-Domain: media-offload-for-bunny\n"
+"X-Domain: indigetal-media-offload-for-bunny-net\n"
 
 #. Plugin Name of the plugin
-#: media-offload-for-bunny.php
-#: includes/Admin/BunnySettings.php:229
-#: includes/Admin/BunnySettings.php:230
-#: includes/Admin/BunnySettings.php:1311
+#: indigetal-media-offload-for-bunny-net.php
 #: includes/Bootstrap/BunnyPlugin.php:92
-msgid "Media Offload for Bunny.net"
+msgid "Indigetal Media Offload for Bunny.net"
 msgstr ""
 
 #. Description of the plugin
-#: media-offload-for-bunny.php
+#: indigetal-media-offload-for-bunny-net.php
 msgid "Seamlessly offload the WordPress Media Library to Bunny Storage and stream videos from Bunny Stream."
 msgstr ""
 
 #. Author of the plugin
-#: media-offload-for-bunny.php
+#: indigetal-media-offload-for-bunny-net.php
 msgid "Indigetal WebCraft"
 msgstr ""
 
 #. Author URI of the plugin
-#: media-offload-for-bunny.php
+#: indigetal-media-offload-for-bunny-net.php
 msgid "https://indigetal.com"
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:182
+#: includes/Admin/BunnySettings.php:190
 msgid "About bunny.net"
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:184
+#: includes/Admin/BunnySettings.php:192
 msgid "Supercharge your delivery"
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:187
+#: includes/Admin/BunnySettings.php:195
 msgid "Bunny.net helps you accelerate your website and supercharge your web presence. Through a network of over 100 global datacenters, Bunny's CDN stores your files right next to your users and delivers them with lightning speed."
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:194
+#: includes/Admin/BunnySettings.php:202
 msgid "Visit the Bunny.net Dashboard"
 msgstr ""
 
 #. translators: %s: affiliate signup URL (bunny.net with ref)
-#: includes/Admin/BunnySettings.php:201
+#: includes/Admin/BunnySettings.php:209
 #, php-format
 msgid "New to Bunny.net? Start a <a href=\"%s\" target=\"_blank\" rel=\"noopener noreferrer sponsored\">14-day free trial</a> on bunny.net (affiliate link)."
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:248
+#: includes/Admin/BunnySettings.php:237
+#: includes/Admin/BunnySettings.php:238
+#: includes/Admin/BunnySettings.php:1344
+msgid "Indigetal Media Offload"
+msgstr ""
+
+#: includes/Admin/BunnySettings.php:256
 msgid "Settings"
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:252
+#: includes/Admin/BunnySettings.php:260
 msgid "About & Privacy"
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:277
-msgid "Media Offload for Bunny.net tabs"
+#: includes/Admin/BunnySettings.php:285
+msgid "Indigetal Media Offload tabs"
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:474
+#: includes/Admin/BunnySettings.php:483
 msgid "The Video library ID was not saved because it did not match a supported format. Use the numeric library ID from your Bunny Stream library (or a standard UUID). Values that look like encrypted blobs are not accepted."
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:503
+#: includes/Admin/BunnySettings.php:512
 msgid "Stream could not be enabled because the Stream API key, Video library ID, and CDN hostname must all be saved first. Fill those fields (or save again after they appear), then enable Stream."
 msgstr ""
 
 #. translators: 1: Bunny Stream documentation URL, 2: Bunny dashboard Stream URL
-#: includes/Admin/BunnySettings.php:668
+#: includes/Admin/BunnySettings.php:687
 #, php-format
 msgid "Use <a href=\"%1$s\" target=\"_blank\" rel=\"noopener noreferrer\">Bunny Stream</a> for adaptive video streaming and delivery. In the Bunny dashboard, navigate to the <a href=\"%2$s\" target=\"_blank\" rel=\"noopener noreferrer\">Stream</a> section to create and manage your video libraries. A library stores, encodes, and streams your videos on bunny.net’s network. Once created, navigate to your library’s <strong>API tab</strong> to locate the settings needed below."
 msgstr ""
 
 #. translators: 1: Bunny Storage documentation URL, 2: Bunny dashboard Storage URL
-#: includes/Admin/BunnySettings.php:696
+#: includes/Admin/BunnySettings.php:715
 #, php-format
 msgid "<a href=\"%1$s\" target=\"_blank\" rel=\"noopener noreferrer\">Bunny Storage</a> lets you store and manage your files on bunny.net’s global network. In the Bunny dashboard, navigate to the <a href=\"%2$s\" target=\"_blank\" rel=\"noopener noreferrer\">Storage</a> section to create and manage your Storage Zone. If you did not create/connect a Pull Zone when you created your Storage Zone, click <strong>Connect Pull Zone</strong> while viewing your Storage Zone, or open the <strong>Connected pull zones</strong> tab."
 msgstr ""
 
 #. translators: 1: Bunny dashboard Stream URL, 2: Bunny support article URL
-#: includes/Admin/BunnySettings.php:725
+#: includes/Admin/BunnySettings.php:745
 #, php-format
 msgid "Copy from your library’s <strong>API</strong> tab in the Bunny dashboard (<a href=\"%1$s\" target=\"_blank\" rel=\"noopener noreferrer\">Stream</a> → your library → API). See <a href=\"%2$s\" target=\"_blank\" rel=\"noopener noreferrer\">How to find your Stream API key</a>."
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:742
+#: includes/Admin/BunnySettings.php:763
 msgid "Must belong to the same Stream library as your Stream API Key."
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:755
+#: includes/Admin/BunnySettings.php:777
 msgid "Example: <code>your-stream-zone.b-cdn.net</code>."
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:771
-#: includes/Admin/BunnySettings.php:803
-#: includes/Admin/BunnySettings.php:820
-#: includes/Admin/BunnySettings.php:852
-#: includes/Admin/BunnySettings.php:1120
+#: includes/Admin/BunnySettings.php:793
+#: includes/Admin/BunnySettings.php:827
+#: includes/Admin/BunnySettings.php:844
+#: includes/Admin/BunnySettings.php:878
+#: includes/Admin/BunnySettings.php:1150
 msgid "Enabled"
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:771
-#: includes/Admin/BunnySettings.php:803
-#: includes/Admin/BunnySettings.php:820
-#: includes/Admin/BunnySettings.php:852
-#: includes/Admin/BunnySettings.php:1120
+#: includes/Admin/BunnySettings.php:793
+#: includes/Admin/BunnySettings.php:827
+#: includes/Admin/BunnySettings.php:844
+#: includes/Admin/BunnySettings.php:878
+#: includes/Admin/BunnySettings.php:1150
 msgid "Disabled"
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:774
+#: includes/Admin/BunnySettings.php:796
 msgid "Enable to reveal Stream credentials and delivery settings for Bunny Stream. Disabling stops future offloads but keeps saved Stream settings and existing Stream-backed videos available."
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:806
+#: includes/Admin/BunnySettings.php:830
 msgid "When enabled, local video files are removed from this server after successful Bunny Stream upload, making Bunny Stream the remaining playback copy for those videos. Disable to keep local backup video files on the server while still serving offloaded video."
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:823
+#: includes/Admin/BunnySettings.php:847
 msgid "Enable to reveal Storage credentials and delivery settings for Bunny Storage offload. Disabling stops future offloads but keeps saved Storage settings and already-offloaded files."
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:855
+#: includes/Admin/BunnySettings.php:881
 msgid "When enabled, local originals and generated files are removed from this server after successful Bunny Storage upload. Disable to keep local backup files while still serving complete offloaded media from Bunny."
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:866
+#: includes/Admin/BunnySettings.php:893
 msgid "Enter the Bunny Storage Zone name exactly as it appears in the Bunny dashboard."
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:877
+#: includes/Admin/BunnySettings.php:905
 msgid "Select a storage region"
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:890
+#: includes/Admin/BunnySettings.php:918
 msgid "Select the Storage Zone's main storage region. This should match the zone's primary region and its Storage hostname family, such as ny.storage.bunnycdn.com for New York."
 msgstr ""
 
 #. translators: %s: Bunny Storage dashboard URL
-#: includes/Admin/BunnySettings.php:904
+#: includes/Admin/BunnySettings.php:933
 #, php-format
 msgid "Use the Password from <a href=\"%s\" target=\"_blank\" rel=\"noopener noreferrer\">Storage</a> → your storage zone → Access → API / HTTP. Do not use the read-only password."
 msgstr ""
 
 #. translators: %s: Bunny CDN dashboard URL
-#: includes/Admin/BunnySettings.php:924
+#: includes/Admin/BunnySettings.php:954
 #, php-format
 msgid "Copy the hostname of the Pull Zone connected to your Storage Zone from <a href=\"%s\" target=\"_blank\" rel=\"noopener noreferrer\">CDN</a> → the connected pull zone → Linked hostname, such as <code>your-storage-zone.b-cdn.net</code>. Do not enter the raw Storage hostname like <code>ny.storage.bunnycdn.com</code> here."
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:954
+#: includes/Admin/BunnySettings.php:984
 msgid "Stream"
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:960
+#: includes/Admin/BunnySettings.php:990
 msgid "Enable Stream"
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:979
+#: includes/Admin/BunnySettings.php:1009
 msgid "Remove local video files"
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:986
+#: includes/Admin/BunnySettings.php:1016
 msgid "Stream API Key"
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:993
+#: includes/Admin/BunnySettings.php:1023
 msgid "Video library ID"
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1000
+#: includes/Admin/BunnySettings.php:1030
 msgid "CDN hostname"
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1014
+#: includes/Admin/BunnySettings.php:1044
 msgid "Storage"
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1020
+#: includes/Admin/BunnySettings.php:1050
 msgid "Enable Storage Offload"
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1039
+#: includes/Admin/BunnySettings.php:1069
 msgid "Remove Local files"
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1046
+#: includes/Admin/BunnySettings.php:1076
 msgid "Storage zone name"
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1053
+#: includes/Admin/BunnySettings.php:1083
 msgid "Main storage region"
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1060
+#: includes/Admin/BunnySettings.php:1090
 msgid "Storage zone password"
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1067
+#: includes/Admin/BunnySettings.php:1097
 msgid "Storage delivery Pull Zone hostname"
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1090
+#: includes/Admin/BunnySettings.php:1120
 msgid "Advanced"
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1091
-msgid "By default, uninstalling Media Offload for Bunny.net preserves offload-critical WordPress data: saved settings, encrypted credentials, Storage manifests, Stream attachment metadata, and URL rewriting state. You normally do not need to change anything here."
+#: includes/Admin/BunnySettings.php:1121
+msgid "By default, uninstalling Indigetal Media Offload for Bunny.net preserves offload-critical WordPress data: saved settings, encrypted credentials, Storage manifests, Stream attachment metadata, and URL rewriting state. You normally do not need to change anything here."
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1094
+#: includes/Admin/BunnySettings.php:1124
 msgid "Warning:"
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1095
+#: includes/Admin/BunnySettings.php:1125
 msgid "Only enable the option below if you intend to remove plugin-owned WordPress data when the plugin is uninstalled. This does not delete local media files from your server and does not delete remote objects in Bunny Storage or Bunny Stream."
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1101
+#: includes/Admin/BunnySettings.php:1131
 msgid "Remove plugin-owned WordPress data on uninstall"
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1123
+#: includes/Admin/BunnySettings.php:1153
 msgid "When enabled, uninstall removes this plugin's saved settings and the WordPress-stored offload data it relies on (credentials, manifests, Stream-related attachment metadata, and similar), then clears this opt-in so it does not remain after removal. When disabled, that data is kept so you can reinstall. In both cases, uninstall performs a small amount of internal cleanup so WordPress does not keep scheduled work pointing at removed plugin code. Local media files on your server and content stored at Bunny.net are never deleted by this setting."
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1146
+#: includes/Admin/BunnySettings.php:1176
 msgid "Bunny.net external service"
 msgstr ""
 
 #. translators: 1: Bunny terms URL, 2: Bunny privacy URL
-#: includes/Admin/BunnySettings.php:1151
+#: includes/Admin/BunnySettings.php:1181
 #, php-format
-msgid "Media Offload for Bunny.net sends media and configuration-related data to <strong>Bunny.net</strong> only when you enable Stream and/or Storage features and use the workflows this plugin provides. Review Bunny.net’s <a href=\"%1$s\" target=\"_blank\" rel=\"noopener noreferrer\">terms</a> and <a href=\"%2$s\" target=\"_blank\" rel=\"noopener noreferrer\">privacy policy</a> before enabling offload."
+msgid "Indigetal Media Offload for Bunny.net sends media and configuration-related data to <strong>Bunny.net</strong> only when you enable Stream and/or Storage features and use the workflows this plugin provides. Review Bunny.net’s <a href=\"%1$s\" target=\"_blank\" rel=\"noopener noreferrer\">terms</a> and <a href=\"%2$s\" target=\"_blank\" rel=\"noopener noreferrer\">privacy policy</a> before enabling offload."
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1163
+#: includes/Admin/BunnySettings.php:1193
 msgid "Data sent to Bunny.net"
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1164
+#: includes/Admin/BunnySettings.php:1194
 msgid "Depending on what you enable, the plugin may send the following kinds of data to Bunny.net:"
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1167
+#: includes/Admin/BunnySettings.php:1197
 msgid "Stream (when enabled): the server makes requests to Bunny Stream API hosts such as video.bunnycdn.com to create, update, inspect, and delete videos and collections. Playback-related URLs may use hostnames such as player.mediadelivery.net and the Stream Pull Zone hostname you configure in settings."
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1168
+#: includes/Admin/BunnySettings.php:1198
 msgid "Storage (when enabled): the server makes requests to the regional Bunny Storage API host for the zone you select, and public file URLs use the Storage Pull Zone hostname you configure."
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1169
+#: includes/Admin/BunnySettings.php:1199
 msgid "API keys, passwords, zone identifiers, and related options are stored in the WordPress database (encrypted where this plugin applies encryption) and are used only to contact Bunny services on your behalf."
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1175
+#: includes/Admin/BunnySettings.php:1205
 msgid "Admin help links"
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1176
+#: includes/Admin/BunnySettings.php:1206
 msgid "On the Settings tab, help text may link to Bunny.net documentation on docs.bunny.net, the customer dashboard on dash.bunny.net, a support article on support.bunny.net, and CDN product pages used to explain pull-zone hostnames. Opening those links is optional; they remain under Bunny.net’s terms and privacy policy linked above."
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1182
+#: includes/Admin/BunnySettings.php:1212
 msgid "Delivery scope in Free"
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1183
+#: includes/Admin/BunnySettings.php:1213
 msgid "This Free release does not generate HMAC-signed or token-authenticated CDN URLs from PHP for Storage or Stream."
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1184
-msgid "This Free release does not include operator Tools tabs, bulk batch or retry queues, a block-based Stream upload experience, or resumable chunked video uploads. Those workflows belonged to older monolith-era builds and are out of scope here."
+#: includes/Admin/BunnySettings.php:1214
+msgid "This Free release does not include operator Tools tabs, bulk batch or retry queues, a block-based Stream upload experience, or resumable chunked video uploads."
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1185
+#: includes/Admin/BunnySettings.php:1215
 msgid "Whether URLs are publicly readable or restricted is determined by your Bunny Pull Zone, Storage, and Stream configuration outside WordPress."
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1191
+#: includes/Admin/BunnySettings.php:1221
 msgid "Local media files after offload"
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1192
+#: includes/Admin/BunnySettings.php:1222
 msgid "On the Settings tab, separate toggles control whether local media files are removed from this server after successful Storage offload and after successful Stream video offload. When a toggle is enabled, WordPress may no longer have a local file behind the attachment URL even though delivery continues from Bunny.net."
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1198
+#: includes/Admin/BunnySettings.php:1228
 msgid "Remote Bunny objects when you delete attachments"
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1199
+#: includes/Admin/BunnySettings.php:1229
 msgid "Deleting a WordPress attachment for media that was offloaded to Bunny Storage or Bunny Stream may delete the corresponding remote Bunny object where that behavior is implemented, so visitors should not retain a working hotlink to the removed object."
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1205
+#: includes/Admin/BunnySettings.php:1235
 msgid "Uninstall and data retention"
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1206
+#: includes/Admin/BunnySettings.php:1236
 msgid "By default, uninstall keeps this plugin’s settings, saved credentials, offload records, and media-related metadata in WordPress so you can reinstall and keep using media already stored at Bunny.net."
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1207
+#: includes/Admin/BunnySettings.php:1237
 msgid "Unless you turn on Advanced → Remove plugin-owned WordPress data on uninstall on the Settings tab (and only if you intend to wipe that data), nothing in that list is removed on uninstall."
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1208
+#: includes/Admin/BunnySettings.php:1238
 msgid "Uninstall never deletes your site’s media files on disk or removes objects in your Bunny Storage zones or Stream library."
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1209
+#: includes/Admin/BunnySettings.php:1239
 msgid "When that Advanced option is enabled, uninstall removes this plugin’s saved settings and the WordPress-stored offload data it relies on, then clears the opt-in so it does not remain after removal; local media files and Bunny.net objects are still never deleted by the plugin."
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1210
+#: includes/Admin/BunnySettings.php:1240
 msgid "A small amount of internal cleanup always runs on uninstall so WordPress does not keep scheduled work pointing at removed plugin code."
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1216
+#: includes/Admin/BunnySettings.php:1246
 msgid "Optional Pro companion"
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1217
-msgid "An optional Pro companion (sold and updated outside the WordPress.org plugin directory) may extend this Free base plugin with additional operator workflows and delivery features—for example compatible URL token support—while Free remains the shared offload runtime."
+#. translators: %s: URL to author / Pro addon commercial information.
+#: includes/Admin/BunnySettings.php:1251
+#, php-format
+msgid "A Pro addon is available to extend this Free base plugin with additional operator workflows and delivery features—such as token-compatible URL delivery. For availability and feature details, visit <a href=\"%s\" target=\"_blank\" rel=\"noopener noreferrer\">Indigetal WebCraft</a>."
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1218
+#: includes/Admin/BunnySettings.php:1260
 msgid "This Free plugin does not bundle that companion, surface off–WordPress.org update prompts for it in wp-admin, or require it for core Media Library Storage and Stream offload."
 msgstr ""
 
-#. translators: %s: URL to the Settings tab
-#: includes/Admin/BunnySettings.php:1223
-#, php-format
-msgid "Configure credentials and feature toggles on the <a href=\"%s\" target=\"_blank\" rel=\"noopener noreferrer\">Settings</a> tab; this screen is informational only."
-msgstr ""
-
-#: includes/Admin/BunnySettings.php:1234
+#: includes/Admin/BunnySettings.php:1266
 msgid "Create a Bunny.net account"
 msgstr ""
 
 #. translators: 1: Affiliate signup URL (bunny.net with ref), 2: Bunny affiliate program documentation URL
-#: includes/Admin/BunnySettings.php:1239
+#: includes/Admin/BunnySettings.php:1271
 #, php-format
 msgid "If you need a Bunny.net account, you can <a href=\"%1$s\" target=\"_blank\" rel=\"noopener noreferrer sponsored\">open bunny.net with this affiliate link</a>. This is an affiliate link; if you become a paying customer, we may earn a commission at no extra cost to you. Bunny publishes its affiliate rules in the <a href=\"%2$s\" target=\"_blank\" rel=\"noopener noreferrer\">affiliate program documentation</a>."
 msgstr ""
 
-#: includes/Admin/BunnySettings.php:1347
+#: includes/Admin/BunnySettings.php:1380
 msgid "Save Settings"
 msgstr ""
 
@@ -383,7 +382,7 @@ msgid "Credentials: API keys, passwords, zone identifiers, and related options a
 msgstr ""
 
 #: includes/Bootstrap/BunnyPlugin.php:130
-msgid "On Media → Media Offload for Bunny.net → Settings, help text may link to Bunny.net documentation on docs.bunny.net, the customer dashboard on dash.bunny.net, a support article on support.bunny.net, and CDN product pages used to explain pull-zone hostnames. Opening those links is optional; they remain under Bunny.net’s terms and privacy policy linked above."
+msgid "On Media → Indigetal Media Offload for Bunny.net → Settings, help text may link to Bunny.net documentation on docs.bunny.net, the customer dashboard on dash.bunny.net, a support article on support.bunny.net, and CDN product pages used to explain pull-zone hostnames. Opening those links is optional; they remain under Bunny.net’s terms and privacy policy linked above."
 msgstr ""
 
 #: includes/Bootstrap/BunnyPlugin.php:132
@@ -394,78 +393,80 @@ msgstr ""
 msgid "Deleting content: removing a WordPress attachment can remove linked Bunny Storage objects and the Stream video where that behavior is implemented. By default, uninstall keeps this plugin’s settings, saved credentials, offload records, and media-related metadata unless you enable Advanced → Remove plugin-owned WordPress data on uninstall on the Settings tab; uninstall never deletes your site’s media files on disk or removes objects in your Bunny Storage zones or Stream library. See About & Privacy under the same Media menu for the same details."
 msgstr ""
 
-#: includes/Bunny/BunnyApiClient.php:50
+#: includes/Bunny/BunnyApiClient.php:54
 msgid "Invalid HTTP method provided."
 msgstr ""
 
-#: includes/Bunny/BunnyApiClient.php:72
+#: includes/Bunny/BunnyApiClient.php:76
 msgid "Failed to encode the Bunny.net API request body."
 msgstr ""
 
-#: includes/Bunny/BunnyApiClient.php:171
+#: includes/Bunny/BunnyApiClient.php:175
 msgid "Bunny.net API failed after multiple attempts."
 msgstr ""
 
-#: includes/Bunny/BunnyApiClient.php:304
+#. translators: 1: API label, 2: endpoint path, 3: JSON error message
+#: includes/Bunny/BunnyApiClient.php:309
 #, php-format
 msgid "%1$s returned an invalid JSON response for %2$s: %3$s"
 msgstr ""
 
-#: includes/Bunny/BunnyApiClient.php:401
+#. translators: 1: API label, 2: endpoint path, 3: HTTP status code, 4: response body
+#: includes/Bunny/BunnyApiClient.php:407
 #, php-format
 msgid "%1$s error for %2$s (HTTP %3$d): %4$s"
 msgstr ""
 
-#: includes/Bunny/BunnyApiClient.php:428
+#: includes/Bunny/BunnyApiClient.php:434
 msgid "Library ID is required for Bunny video metadata requests."
 msgstr ""
 
-#: includes/Bunny/BunnyApiClient.php:432
+#: includes/Bunny/BunnyApiClient.php:438
 msgid "Video ID is required for Bunny video metadata requests."
 msgstr ""
 
-#: includes/Bunny/BunnyCollectionHandler.php:33
+#: includes/Bunny/BunnyCollectionHandler.php:37
 msgid "Library ID is required to create a collection."
 msgstr ""
 
-#: includes/Bunny/BunnyCollectionHandler.php:37
+#: includes/Bunny/BunnyCollectionHandler.php:41
 msgid "User ID is required to create a collection."
 msgstr ""
 
-#: includes/Bunny/BunnyCollectionHandler.php:46
+#: includes/Bunny/BunnyCollectionHandler.php:50
 msgid "Collection creation is already in progress. Try again later."
 msgstr ""
 
-#: includes/Bunny/BunnyCollectionHandler.php:73
+#: includes/Bunny/BunnyCollectionHandler.php:77
 msgid "Failed to create collection on Bunny.net."
 msgstr ""
 
-#: includes/Bunny/BunnyCollectionHandler.php:132
+#: includes/Bunny/BunnyCollectionHandler.php:136
 msgid "Library ID is required to delete a collection."
 msgstr ""
 
-#: includes/Bunny/BunnyCollectionHandler.php:136
-#: includes/Bunny/BunnyCollectionHandler.php:193
+#: includes/Bunny/BunnyCollectionHandler.php:140
+#: includes/Bunny/BunnyCollectionHandler.php:197
 msgid "Collection ID is required."
 msgstr ""
 
-#: includes/Bunny/BunnyCollectionHandler.php:161
+#: includes/Bunny/BunnyCollectionHandler.php:165
 msgid "Library ID is required to fetch collections."
 msgstr ""
 
-#: includes/Bunny/BunnyCollectionHandler.php:172
+#: includes/Bunny/BunnyCollectionHandler.php:176
 msgid "Invalid response from Bunny.net when listing collections."
 msgstr ""
 
-#: includes/Bunny/BunnyCollectionHandler.php:189
+#: includes/Bunny/BunnyCollectionHandler.php:193
 msgid "Library ID is required to update a collection."
 msgstr ""
 
-#: includes/Bunny/BunnyCollectionHandler.php:197
+#: includes/Bunny/BunnyCollectionHandler.php:201
 msgid "Update data is required and must be an array."
 msgstr ""
 
-#: includes/Bunny/BunnyCollectionHandler.php:208
+#: includes/Bunny/BunnyCollectionHandler.php:212
 msgid "No changes detected for the collection update."
 msgstr ""
 
@@ -502,143 +503,149 @@ msgstr ""
 msgid "The Bunny Storage download destination is a directory, not a file path."
 msgstr ""
 
-#: includes/Bunny/BunnyStorageClient.php:513
+#: includes/Bunny/BunnyStorageClient.php:514
 msgid "The existing local destination file is not writable for Bunny Storage download."
 msgstr ""
 
-#: includes/Bunny/BunnyStorageClient.php:525
+#: includes/Bunny/BunnyStorageClient.php:526
 msgid "A valid local destination directory is required for Bunny Storage download."
 msgstr ""
 
-#: includes/Bunny/BunnyStorageClient.php:535
+#: includes/Bunny/BunnyStorageClient.php:536
 msgid "The local destination directory could not be created for Bunny Storage download."
 msgstr ""
 
-#: includes/Bunny/BunnyStorageClient.php:546
+#: includes/Bunny/BunnyStorageClient.php:548
 msgid "The local destination directory is not writable for Bunny Storage download."
 msgstr ""
 
-#: includes/Bunny/BunnyStorageClient.php:570
+#: includes/Bunny/BunnyStorageClient.php:572
 msgid "A temporary file could not be created for Bunny Storage download."
 msgstr ""
 
-#: includes/Bunny/BunnyStorageClient.php:596
+#: includes/Bunny/BunnyStorageClient.php:598
 msgid "The streamed Bunny Storage download file was not available to finalize."
 msgstr ""
 
-#: includes/Bunny/BunnyStorageClient.php:610
+#: includes/Bunny/BunnyStorageClient.php:613
 msgid "The Bunny Storage download could not be moved into its final local path."
 msgstr ""
 
-#: includes/Bunny/BunnyStorageClient.php:736
+#: includes/Bunny/BunnyStorageClient.php:739
 msgid "Checksum and file contents mismatched."
 msgstr ""
 
-#: includes/Bunny/BunnyStorageClient.php:741
+#: includes/Bunny/BunnyStorageClient.php:744
 msgid "The Bunny Storage object was not found. Confirm the manifest remote path still exists in Bunny Storage."
 msgstr ""
 
-#: includes/Bunny/BunnyStorageClient.php:744
+#: includes/Bunny/BunnyStorageClient.php:747
 msgid "Bunny Storage rejected the download request. Confirm the Storage zone password still has access to this object."
 msgstr ""
 
-#: includes/Bunny/BunnyStorageClient.php:752
+#. translators: 1: operation name (upload or download), 2: remote object path, 3: HTTP status code, 4: error message
+#: includes/Bunny/BunnyStorageClient.php:756
 #, php-format
 msgid "Bunny Storage %1$s error for %2$s (HTTP %3$d): %4$s"
 msgstr ""
 
-#: includes/Bunny/BunnyVideoHandler.php:60
+#: includes/Bunny/BunnyVideoHandler.php:64
 msgid "Library ID is required to upload a video."
 msgstr ""
 
-#: includes/Bunny/BunnyVideoHandler.php:64
+#: includes/Bunny/BunnyVideoHandler.php:68
 msgid "Invalid file path for video upload."
 msgstr ""
 
-#: includes/Bunny/BunnyVideoHandler.php:85
+#: includes/Bunny/BunnyVideoHandler.php:89
 msgid "Missing library ID or video ID."
 msgstr ""
 
-#: includes/Bunny/BunnyVideoHandler.php:93
+#: includes/Bunny/BunnyVideoHandler.php:97
 msgid "Failed to read the video file before uploading."
 msgstr ""
 
-#: includes/Bunny/BunnyVideoHandler.php:127
+#. translators: 1: HTTP status code, 2: response body from Bunny.net
+#: includes/Bunny/BunnyVideoHandler.php:132
 #, php-format
 msgid "Bunny.net rejected the video upload (HTTP %1$d): %2$s"
 msgstr ""
 
-#: includes/Bunny/BunnyVideoHandler.php:149
+#: includes/Bunny/BunnyVideoHandler.php:154
 msgid "CDN hostname is required to build video playback URLs."
 msgstr ""
 
-#: includes/Bunny/BunnyVideoHandler.php:185
+#: includes/Bunny/BunnyVideoHandler.php:190
 msgid "Could not determine the video file size before uploading."
 msgstr ""
 
 #. translators: 1: video file size, 2: remaining PHP memory, 3: required PHP memory
-#: includes/Bunny/BunnyVideoHandler.php:206
+#: includes/Bunny/BunnyVideoHandler.php:211
 #, php-format
 msgid "This video is too large for the server-side Stream upload path. File size: %1$s. Available PHP memory: %2$s. Required memory: %3$s. Reduce the file size, raise the PHP memory limit, or upload from an environment with a higher memory ceiling."
 msgstr ""
 
-#: includes/Bunny/BunnyVideoHandler.php:270
+#: includes/Bunny/BunnyVideoHandler.php:275
 msgid "Library ID is required to read Bunny video metadata."
 msgstr ""
 
-#: includes/Bunny/BunnyVideoHandler.php:275
+#: includes/Bunny/BunnyVideoHandler.php:280
 msgid "A valid Bunny video ID is required to read video metadata."
 msgstr ""
 
-#: includes/Bunny/BunnyVideoHandler.php:300
+#: includes/Bunny/BunnyVideoHandler.php:305
 msgid "Library ID is required to update Bunny video metadata."
 msgstr ""
 
-#: includes/Bunny/BunnyVideoHandler.php:305
+#: includes/Bunny/BunnyVideoHandler.php:310
 msgid "A valid Bunny video ID is required to update video metadata."
 msgstr ""
 
-#: includes/Bunny/BunnyVideoHandler.php:332
+#: includes/Bunny/BunnyVideoHandler.php:337
 msgid "Library ID is required to create a video object."
 msgstr ""
 
-#: includes/Bunny/BunnyVideoHandler.php:336
+#: includes/Bunny/BunnyVideoHandler.php:341
 msgid "Collection ID is required to create a video object."
 msgstr ""
 
-#: includes/Bunny/BunnyVideoHandler.php:356
+#: includes/Bunny/BunnyVideoHandler.php:361
 msgid "Failed to create video object."
 msgstr ""
 
-#: includes/Bunny/BunnyVideoHandler.php:371
+#: includes/Bunny/BunnyVideoHandler.php:366
+msgid "Bunny returned an invalid video ID."
+msgstr ""
+
+#: includes/Bunny/BunnyVideoHandler.php:381
 msgid "A valid user is required to resolve a Bunny Stream collection."
 msgstr ""
 
-#: includes/Bunny/BunnyVideoHandler.php:401
+#: includes/Bunny/BunnyVideoHandler.php:411
 msgid "Library ID is required to set a thumbnail."
 msgstr ""
 
-#: includes/Bunny/BunnyVideoHandler.php:405
+#: includes/Bunny/BunnyVideoHandler.php:415
 msgid "Video ID is required to set a thumbnail."
 msgstr ""
 
-#: includes/Bunny/BunnyVideoHandler.php:411
+#: includes/Bunny/BunnyVideoHandler.php:421
 msgid "Pull Zone is required to set a thumbnail."
 msgstr ""
 
-#: includes/Bunny/BunnyVideoHandler.php:436
+#: includes/Bunny/BunnyVideoHandler.php:446
 msgid "Invalid file type."
 msgstr ""
 
-#: includes/Bunny/BunnyVideoHandler.php:513
+#: includes/Bunny/BunnyVideoHandler.php:523
 msgid "Library ID is required to check video status."
 msgstr ""
 
-#: includes/Bunny/BunnyVideoHandler.php:519
+#: includes/Bunny/BunnyVideoHandler.php:529
 msgid "A valid video ID is required to check video status."
 msgstr ""
 
-#: includes/Bunny/BunnyVideoHandler.php:528
+#: includes/Bunny/BunnyVideoHandler.php:538
 msgid "Unexpected response while checking Bunny video status."
 msgstr ""
 
