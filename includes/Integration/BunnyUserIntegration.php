@@ -32,17 +32,17 @@ class BunnyUserIntegration {
     public function validateUploadRequest($request) {
         // Verify user permissions.
         if (!current_user_can('upload_files')) {
-            return new \WP_Error('unauthorized_access', __('Unauthorized access.', 'media-offload-for-bunny'));
+            return new \WP_Error('unauthorized_access', __('Unauthorized access.', 'indigetal-media-offload-for-bunny-net'));
         }
 
         // Check nonce for security
         if (!isset($request['_wpnonce']) || !wp_verify_nonce($request['_wpnonce'], 'bunny_upload_nonce')) {
-            return new \WP_Error('invalid_nonce', __('Invalid nonce.', 'media-offload-for-bunny'));
+            return new \WP_Error('invalid_nonce', __('Invalid nonce.', 'indigetal-media-offload-for-bunny-net'));
         }
 
         // Check for uploaded file and post ID.
         if (empty($request['file']) || empty($request['post_id'])) {
-            return new \WP_Error('missing_parameters', __('Missing file or post ID.', 'media-offload-for-bunny'));
+            return new \WP_Error('missing_parameters', __('Missing file or post ID.', 'indigetal-media-offload-for-bunny-net'));
         }
 
         // Sanitize post ID.

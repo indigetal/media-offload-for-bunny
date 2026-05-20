@@ -18,7 +18,7 @@ if (!defined('ABSPATH')) {
 
 class BunnySettings {
 
-    const PAGE_SLUG = 'media-offload-for-bunny';
+    const PAGE_SLUG = 'indigetal-media-offload-for-bunny-net';
     const TAB_SETTINGS = 'settings';
     const TAB_ABOUT_PRIVACY = 'about-privacy';
 
@@ -134,7 +134,7 @@ class BunnySettings {
             return;
         }
 
-        $plugin_file = dirname(__DIR__, 2) . '/media-offload-for-bunny.php';
+        $plugin_file = dirname(__DIR__, 2) . '/indigetal-media-offload-for-bunny-net.php';
         $style_rel    = 'assets/css/bunny-offload-admin.css';
         $style_path   = dirname(__DIR__, 2) . '/' . $style_rel;
         $script_rel   = 'assets/js/bunny-settings.js';
@@ -164,7 +164,7 @@ class BunnySettings {
      */
     private static function pluginAssetUrl($relative_path) {
         $plugin_root = dirname(__DIR__, 2);
-        $plugin_file = $plugin_root . '/media-offload-for-bunny.php';
+        $plugin_file = $plugin_root . '/indigetal-media-offload-for-bunny-net.php';
         $relative_path = ltrim((string) $relative_path, '/');
         $filesystem_path = $plugin_root . '/' . $relative_path;
         $url = plugins_url($relative_path, $plugin_file);
@@ -187,19 +187,19 @@ class BunnySettings {
         echo '<div class="bmo-settings-promo">';
         echo '<div class="bmo-settings-promo__grid">';
         echo '<div class="bmo-settings-promo__copy">';
-        echo '<p class="bmo-settings-promo__eyebrow">' . esc_html__('About bunny.net', 'media-offload-for-bunny') . '</p>';
+        echo '<p class="bmo-settings-promo__eyebrow">' . esc_html__('About bunny.net', 'indigetal-media-offload-for-bunny-net') . '</p>';
         echo '<p class="bmo-card__title bmo-settings-promo__title bmo-settings-promo__title--about">';
-        echo esc_html__('Supercharge your delivery', 'media-offload-for-bunny');
+        echo esc_html__('Supercharge your delivery', 'indigetal-media-offload-for-bunny-net');
         echo '</p>';
         echo '<p class="bmo-card__description bmo-settings-promo__body">';
         echo esc_html__(
             'Bunny.net helps you accelerate your website and supercharge your web presence. Through a network of over 100 global datacenters, Bunny\'s CDN stores your files right next to your users and delivers them with lightning speed.',
-            'media-offload-for-bunny'
+            'indigetal-media-offload-for-bunny-net'
         );
         echo '</p>';
         echo '<p class="bmo-settings-promo__actions">';
         echo '<a class="button button-primary bmo-settings-promo__cta" href="' . esc_url(self::BUNNY_NET_DASHBOARD_URL) . '" target="_blank" rel="noopener noreferrer">';
-        echo esc_html__('Visit the Bunny.net Dashboard', 'media-offload-for-bunny');
+        echo esc_html__('Visit the Bunny.net Dashboard', 'indigetal-media-offload-for-bunny-net');
         echo '</a>';
         echo '</p>';
         echo '<p class="bmo-card__description">';
@@ -208,7 +208,7 @@ class BunnySettings {
                 /* translators: %s: affiliate signup URL (bunny.net with ref) */
                 __(
                     'New to Bunny.net? Start a <a href="%s" target="_blank" rel="noopener noreferrer sponsored">14-day free trial</a> on bunny.net (affiliate link).',
-                    'media-offload-for-bunny'
+                    'indigetal-media-offload-for-bunny-net'
                 ),
                 esc_url(self::BUNNY_NET_AFFILIATE_URL)
             ),
@@ -234,8 +234,8 @@ class BunnySettings {
      */
     public function addSettingsPage() {
         add_media_page(
-            __('Media Offload for Bunny.net', 'media-offload-for-bunny'),
-            __('Media Offload for Bunny.net', 'media-offload-for-bunny'),
+            __('Indigetal Media Offload', 'indigetal-media-offload-for-bunny-net'),
+            __('Indigetal Media Offload', 'indigetal-media-offload-for-bunny-net'),
             'manage_options',
             self::PAGE_SLUG,
             [$this, 'renderSettingsPage']
@@ -253,11 +253,11 @@ class BunnySettings {
     public static function getAdminTabs() {
         $tabs = [
             self::TAB_SETTINGS => [
-                'label' => __('Settings', 'media-offload-for-bunny'),
+                'label' => __('Settings', 'indigetal-media-offload-for-bunny-net'),
                 'url'   => admin_url('upload.php?page=' . self::PAGE_SLUG . '&tab=' . self::TAB_SETTINGS),
             ],
             self::TAB_ABOUT_PRIVACY => [
-                'label' => __('About & Privacy', 'media-offload-for-bunny'),
+                'label' => __('About & Privacy', 'indigetal-media-offload-for-bunny-net'),
                 'url'   => admin_url('upload.php?page=' . self::PAGE_SLUG . '&tab=' . self::TAB_ABOUT_PRIVACY),
             ],
         ];
@@ -282,7 +282,7 @@ class BunnySettings {
     public static function renderAdminTabs($active_tab) {
         $tabs = self::getAdminTabs();
 
-        echo '<nav class="nav-tab-wrapper" aria-label="' . esc_attr__('Media Offload for Bunny.net tabs', 'media-offload-for-bunny') . '">';
+        echo '<nav class="nav-tab-wrapper" aria-label="' . esc_attr__('Indigetal Media Offload tabs', 'indigetal-media-offload-for-bunny-net') . '">';
 
         foreach ($tabs as $tab_slug => $tab) {
             if (!is_array($tab) || empty($tab['label']) || empty($tab['url'])) {
@@ -480,7 +480,7 @@ class BunnySettings {
             add_settings_error(
                 'bunny_net_settings',
                 'bunny_stream_library_id_invalid',
-                __('The Video library ID was not saved because it did not match a supported format. Use the numeric library ID from your Bunny Stream library (or a standard UUID). Values that look like encrypted blobs are not accepted.', 'media-offload-for-bunny'),
+                __('The Video library ID was not saved because it did not match a supported format. Use the numeric library ID from your Bunny Stream library (or a standard UUID). Values that look like encrypted blobs are not accepted.', 'indigetal-media-offload-for-bunny-net'),
                 'error'
             );
         }
@@ -509,7 +509,7 @@ class BunnySettings {
             add_settings_error(
                 'bunny_net_settings',
                 'bunny_stream_enable_blocked',
-                __('Stream could not be enabled because the Stream API key, Video library ID, and CDN hostname must all be saved first. Fill those fields (or save again after they appear), then enable Stream.', 'media-offload-for-bunny'),
+                __('Stream could not be enabled because the Stream API key, Video library ID, and CDN hostname must all be saved first. Fill those fields (or save again after they appear), then enable Stream.', 'indigetal-media-offload-for-bunny-net'),
                 'error'
             );
         }
@@ -684,7 +684,7 @@ class BunnySettings {
         echo wp_kses(
             sprintf(
                 /* translators: 1: Bunny Stream documentation URL, 2: Bunny dashboard Stream URL */
-                __('Use <a href="%1$s" target="_blank" rel="noopener noreferrer">Bunny Stream</a> for adaptive video streaming and delivery. In the Bunny dashboard, navigate to the <a href="%2$s" target="_blank" rel="noopener noreferrer">Stream</a> section to create and manage your video libraries. A library stores, encodes, and streams your videos on bunny.net’s network. Once created, navigate to your library’s <strong>API tab</strong> to locate the settings needed below.', 'media-offload-for-bunny'),
+                __('Use <a href="%1$s" target="_blank" rel="noopener noreferrer">Bunny Stream</a> for adaptive video streaming and delivery. In the Bunny dashboard, navigate to the <a href="%2$s" target="_blank" rel="noopener noreferrer">Stream</a> section to create and manage your video libraries. A library stores, encodes, and streams your videos on bunny.net’s network. Once created, navigate to your library’s <strong>API tab</strong> to locate the settings needed below.', 'indigetal-media-offload-for-bunny-net'),
                 esc_url('https://docs.bunny.net/stream/index#bunny-stream'),
                 esc_url('https://dash.bunny.net/stream')
             ),
@@ -712,7 +712,7 @@ class BunnySettings {
         echo wp_kses(
             sprintf(
                 /* translators: 1: Bunny Storage documentation URL, 2: Bunny dashboard Storage URL */
-                __('<a href="%1$s" target="_blank" rel="noopener noreferrer">Bunny Storage</a> lets you store and manage your files on bunny.net’s global network. In the Bunny dashboard, navigate to the <a href="%2$s" target="_blank" rel="noopener noreferrer">Storage</a> section to create and manage your Storage Zone. If you did not create/connect a Pull Zone when you created your Storage Zone, click <strong>Connect Pull Zone</strong> while viewing your Storage Zone, or open the <strong>Connected pull zones</strong> tab.', 'media-offload-for-bunny'),
+                __('<a href="%1$s" target="_blank" rel="noopener noreferrer">Bunny Storage</a> lets you store and manage your files on bunny.net’s global network. In the Bunny dashboard, navigate to the <a href="%2$s" target="_blank" rel="noopener noreferrer">Storage</a> section to create and manage your Storage Zone. If you did not create/connect a Pull Zone when you created your Storage Zone, click <strong>Connect Pull Zone</strong> while viewing your Storage Zone, or open the <strong>Connected pull zones</strong> tab.', 'indigetal-media-offload-for-bunny-net'),
                 esc_url('https://docs.bunny.net/storage'),
                 esc_url('https://dash.bunny.net/storage')
             ),
@@ -742,7 +742,7 @@ class BunnySettings {
         echo wp_kses(
             sprintf(
                 /* translators: 1: Bunny dashboard Stream URL, 2: Bunny support article URL */
-                __('Copy from your library’s <strong>API</strong> tab in the Bunny dashboard (<a href="%1$s" target="_blank" rel="noopener noreferrer">Stream</a> → your library → API). See <a href="%2$s" target="_blank" rel="noopener noreferrer">How to find your Stream API key</a>.', 'media-offload-for-bunny'),
+                __('Copy from your library’s <strong>API</strong> tab in the Bunny dashboard (<a href="%1$s" target="_blank" rel="noopener noreferrer">Stream</a> → your library → API). See <a href="%2$s" target="_blank" rel="noopener noreferrer">How to find your Stream API key</a>.', 'indigetal-media-offload-for-bunny-net'),
                 esc_url('https://dash.bunny.net/stream'),
                 esc_url('https://support.bunny.net/hc/en-us/articles/13503339878684-How-to-find-your-stream-API-key')
             ),
@@ -760,7 +760,7 @@ class BunnySettings {
         echo "<input type='text' id='" . esc_attr(self::OPTION_LIBRARY_ID) . "' name='" . esc_attr(self::OPTION_LIBRARY_ID) . "' value='" . $library_id . "' class='regular-text'" . $this->getStreamDependentControlAttributes() . ' />';
 
         echo '<p class="description">';
-        echo esc_html__('Must belong to the same Stream library as your Stream API Key.', 'media-offload-for-bunny');
+        echo esc_html__('Must belong to the same Stream library as your Stream API Key.', 'indigetal-media-offload-for-bunny-net');
         echo '</p>';
     }   
     
@@ -774,7 +774,7 @@ class BunnySettings {
 
         echo '<p class="description">';
         echo wp_kses(
-            __('Example: <code>your-stream-zone.b-cdn.net</code>.', 'media-offload-for-bunny'),
+            __('Example: <code>your-stream-zone.b-cdn.net</code>.', 'indigetal-media-offload-for-bunny-net'),
             ['code' => []]
         );
         echo '</p>';
@@ -790,10 +790,10 @@ class BunnySettings {
         echo '<label class="bmo-toggle">';
         echo '<input class="bmo-toggle__input" type="checkbox" role="switch" id="' . esc_attr(self::OPTION_STREAM_ENABLED) . '" name="' . esc_attr(self::OPTION_STREAM_ENABLED) . '" value="1" autocomplete="off" aria-expanded="' . esc_attr($stream_enabled ? 'true' : 'false') . '" ' . checked($stream_enabled, true, false) . ' />';
         echo '<span class="bmo-toggle__track" aria-hidden="true"><span class="bmo-toggle__thumb"></span></span>';
-        echo '<span class="bmo-toggle__text"><span class="bmo-toggle__state bmo-toggle__state--on">' . esc_html__('Enabled', 'media-offload-for-bunny') . '</span><span class="bmo-toggle__state bmo-toggle__state--off">' . esc_html__('Disabled', 'media-offload-for-bunny') . '</span></span>';
+        echo '<span class="bmo-toggle__text"><span class="bmo-toggle__state bmo-toggle__state--on">' . esc_html__('Enabled', 'indigetal-media-offload-for-bunny-net') . '</span><span class="bmo-toggle__state bmo-toggle__state--off">' . esc_html__('Disabled', 'indigetal-media-offload-for-bunny-net') . '</span></span>';
         echo '</label>';
         echo '<p class="description">';
-        echo esc_html__('Enable to reveal Stream credentials and delivery settings for Bunny Stream. Disabling stops future offloads but keeps saved Stream settings and existing Stream-backed videos available.', 'media-offload-for-bunny');
+        echo esc_html__('Enable to reveal Stream credentials and delivery settings for Bunny Stream. Disabling stops future offloads but keeps saved Stream settings and existing Stream-backed videos available.', 'indigetal-media-offload-for-bunny-net');
         echo '</p>';
     }
 
@@ -824,10 +824,10 @@ class BunnySettings {
         // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- esc_attr / static attributes; see security-escape-audit.md.
         echo '<input class="bmo-toggle__input" type="checkbox" role="switch" id="' . esc_attr(self::OPTION_REMOVE_LOCAL_VIDEO_FILES) . '" name="' . esc_attr(self::OPTION_REMOVE_LOCAL_VIDEO_FILES) . '" value="1" autocomplete="off" ' . checked(BunnyConfigurationStore::shouldRemoveLocalVideoFiles(), true, false) . $dependent_attributes . ' />';
         echo '<span class="bmo-toggle__track" aria-hidden="true"><span class="bmo-toggle__thumb"></span></span>';
-        echo '<span class="bmo-toggle__text"><span class="bmo-toggle__state bmo-toggle__state--on">' . esc_html__('Enabled', 'media-offload-for-bunny') . '</span><span class="bmo-toggle__state bmo-toggle__state--off">' . esc_html__('Disabled', 'media-offload-for-bunny') . '</span></span>';
+        echo '<span class="bmo-toggle__text"><span class="bmo-toggle__state bmo-toggle__state--on">' . esc_html__('Enabled', 'indigetal-media-offload-for-bunny-net') . '</span><span class="bmo-toggle__state bmo-toggle__state--off">' . esc_html__('Disabled', 'indigetal-media-offload-for-bunny-net') . '</span></span>';
         echo '</label>';
         echo '<p class="description">';
-        echo esc_html__('When enabled, local video files are removed from this server after successful Bunny Stream upload, making Bunny Stream the remaining playback copy for those videos. Disable to keep local backup video files on the server while still serving offloaded video.', 'media-offload-for-bunny');
+        echo esc_html__('When enabled, local video files are removed from this server after successful Bunny Stream upload, making Bunny Stream the remaining playback copy for those videos. Disable to keep local backup video files on the server while still serving offloaded video.', 'indigetal-media-offload-for-bunny-net');
         echo '</p>';
     }
 
@@ -841,10 +841,10 @@ class BunnySettings {
         echo '<label class="bmo-toggle">';
         echo '<input class="bmo-toggle__input" type="checkbox" role="switch" id="' . esc_attr(self::OPTION_STORAGE_ENABLED) . '" name="' . esc_attr(self::OPTION_STORAGE_ENABLED) . '" value="1" autocomplete="off" aria-expanded="' . esc_attr($storage_enabled ? 'true' : 'false') . '" ' . checked($storage_enabled, true, false) . ' />';
         echo '<span class="bmo-toggle__track" aria-hidden="true"><span class="bmo-toggle__thumb"></span></span>';
-        echo '<span class="bmo-toggle__text"><span class="bmo-toggle__state bmo-toggle__state--on">' . esc_html__('Enabled', 'media-offload-for-bunny') . '</span><span class="bmo-toggle__state bmo-toggle__state--off">' . esc_html__('Disabled', 'media-offload-for-bunny') . '</span></span>';
+        echo '<span class="bmo-toggle__text"><span class="bmo-toggle__state bmo-toggle__state--on">' . esc_html__('Enabled', 'indigetal-media-offload-for-bunny-net') . '</span><span class="bmo-toggle__state bmo-toggle__state--off">' . esc_html__('Disabled', 'indigetal-media-offload-for-bunny-net') . '</span></span>';
         echo '</label>';
         echo '<p class="description">';
-        echo esc_html__('Enable to reveal Storage credentials and delivery settings for Bunny Storage offload. Disabling stops future offloads but keeps saved Storage settings and already-offloaded files.', 'media-offload-for-bunny');
+        echo esc_html__('Enable to reveal Storage credentials and delivery settings for Bunny Storage offload. Disabling stops future offloads but keeps saved Storage settings and already-offloaded files.', 'indigetal-media-offload-for-bunny-net');
         echo '</p>';
     }
 
@@ -875,10 +875,10 @@ class BunnySettings {
         // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- esc_attr / static attributes; see security-escape-audit.md.
         echo '<input class="bmo-toggle__input" type="checkbox" role="switch" id="' . esc_attr(self::OPTION_REMOVE_LOCAL_FILES) . '" name="' . esc_attr(self::OPTION_REMOVE_LOCAL_FILES) . '" value="1" autocomplete="off" ' . checked(BunnyConfigurationStore::shouldRemoveLocalFiles(), true, false) . $dependent_attributes . ' />';
         echo '<span class="bmo-toggle__track" aria-hidden="true"><span class="bmo-toggle__thumb"></span></span>';
-        echo '<span class="bmo-toggle__text"><span class="bmo-toggle__state bmo-toggle__state--on">' . esc_html__('Enabled', 'media-offload-for-bunny') . '</span><span class="bmo-toggle__state bmo-toggle__state--off">' . esc_html__('Disabled', 'media-offload-for-bunny') . '</span></span>';
+        echo '<span class="bmo-toggle__text"><span class="bmo-toggle__state bmo-toggle__state--on">' . esc_html__('Enabled', 'indigetal-media-offload-for-bunny-net') . '</span><span class="bmo-toggle__state bmo-toggle__state--off">' . esc_html__('Disabled', 'indigetal-media-offload-for-bunny-net') . '</span></span>';
         echo '</label>';
         echo '<p class="description">';
-        echo esc_html__('When enabled, local originals and generated files are removed from this server after successful Bunny Storage upload. Disable to keep local backup files while still serving complete offloaded media from Bunny.', 'media-offload-for-bunny');
+        echo esc_html__('When enabled, local originals and generated files are removed from this server after successful Bunny Storage upload. Disable to keep local backup files while still serving complete offloaded media from Bunny.', 'indigetal-media-offload-for-bunny-net');
         echo '</p>';
     }
 
@@ -890,7 +890,7 @@ class BunnySettings {
         // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- esc_attr / static attributes; see security-escape-audit.md.
         echo "<input type='text' id='" . esc_attr(self::OPTION_STORAGE_ZONE) . "' name='" . esc_attr(self::OPTION_STORAGE_ZONE) . "' value='" . $storage_zone . "' class='regular-text'" . $this->getStorageDependentControlAttributes() . ' />';
         echo '<p class="description">';
-        echo esc_html__('Enter the Bunny Storage Zone name exactly as it appears in the Bunny dashboard.', 'media-offload-for-bunny');
+        echo esc_html__('Enter the Bunny Storage Zone name exactly as it appears in the Bunny dashboard.', 'indigetal-media-offload-for-bunny-net');
         echo '</p>';
     }
 
@@ -902,7 +902,7 @@ class BunnySettings {
 
         // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- esc_attr / static attributes; see security-escape-audit.md.
         echo "<select id='" . esc_attr(self::OPTION_STORAGE_REGION) . "' name='" . esc_attr(self::OPTION_STORAGE_REGION) . "'" . $this->getStorageDependentControlAttributes() . '>';
-        echo "<option value=''>" . esc_html__('Select a storage region', 'media-offload-for-bunny') . '</option>';
+        echo "<option value=''>" . esc_html__('Select a storage region', 'indigetal-media-offload-for-bunny-net') . '</option>';
 
         foreach (self::STORAGE_REGIONS as $region_code => $region_label) {
             printf(
@@ -915,7 +915,7 @@ class BunnySettings {
 
         echo '</select>';
         echo '<p class="description">';
-        echo esc_html__('Select the Storage Zone\'s main storage region. This should match the zone\'s primary region and its Storage hostname family, such as ny.storage.bunnycdn.com for New York.', 'media-offload-for-bunny');
+        echo esc_html__('Select the Storage Zone\'s main storage region. This should match the zone\'s primary region and its Storage hostname family, such as ny.storage.bunnycdn.com for New York.', 'indigetal-media-offload-for-bunny-net');
         echo '</p>';
     }
 
@@ -930,7 +930,7 @@ class BunnySettings {
         echo wp_kses(
             sprintf(
                 /* translators: %s: Bunny Storage dashboard URL */
-                __('Use the Password from <a href="%s" target="_blank" rel="noopener noreferrer">Storage</a> → your storage zone → Access → API / HTTP. Do not use the read-only password.', 'media-offload-for-bunny'),
+                __('Use the Password from <a href="%s" target="_blank" rel="noopener noreferrer">Storage</a> → your storage zone → Access → API / HTTP. Do not use the read-only password.', 'indigetal-media-offload-for-bunny-net'),
                 esc_url('https://dash.bunny.net/storage')
             ),
             [
@@ -951,7 +951,7 @@ class BunnySettings {
         echo wp_kses(
             sprintf(
                 /* translators: %s: Bunny CDN dashboard URL */
-                __('Copy the hostname of the Pull Zone connected to your Storage Zone from <a href="%s" target="_blank" rel="noopener noreferrer">CDN</a> → the connected pull zone → Linked hostname, such as <code>your-storage-zone.b-cdn.net</code>. Do not enter the raw Storage hostname like <code>ny.storage.bunnycdn.com</code> here.', 'media-offload-for-bunny'),
+                __('Copy the hostname of the Pull Zone connected to your Storage Zone from <a href="%s" target="_blank" rel="noopener noreferrer">CDN</a> → the connected pull zone → Linked hostname, such as <code>your-storage-zone.b-cdn.net</code>. Do not enter the raw Storage hostname like <code>ny.storage.bunnycdn.com</code> here.', 'indigetal-media-offload-for-bunny-net'),
                 esc_url('https://dash.bunny.net/cdn')
             ),
             [
@@ -981,13 +981,13 @@ class BunnySettings {
 
         echo '<section class="' . esc_attr($stream_section_class) . '" data-bmo-stream-section="1">';
         echo '<header>';
-        echo '<h2>' . esc_html__('Stream', 'media-offload-for-bunny') . '</h2>';
+        echo '<h2>' . esc_html__('Stream', 'indigetal-media-offload-for-bunny-net') . '</h2>';
         $this->renderStreamSectionDescription();
         echo '</header>';
         echo '<ul class="bmo-section__rows">';
         $this->renderBmoFieldRow(
             self::OPTION_STREAM_ENABLED,
-            __('Enable Stream', 'media-offload-for-bunny'),
+            __('Enable Stream', 'indigetal-media-offload-for-bunny-net'),
             [$this, 'renderStreamEnabledField']
         );
 
@@ -1006,28 +1006,28 @@ class BunnySettings {
 
         $this->renderBmoFieldRow(
             self::OPTION_REMOVE_LOCAL_VIDEO_FILES,
-            __('Remove local video files', 'media-offload-for-bunny'),
+            __('Remove local video files', 'indigetal-media-offload-for-bunny-net'),
             [$this, 'renderRemoveLocalVideoFilesField'],
             $stream_dependent_row_class,
             $stream_dependent_row_attributes
         );
         $this->renderBmoFieldRow(
             self::OPTION_ACCESS_KEY,
-            __('Stream API Key', 'media-offload-for-bunny'),
+            __('Stream API Key', 'indigetal-media-offload-for-bunny-net'),
             [$this, 'renderAccessKeyField'],
             $stream_dependent_row_class,
             $stream_dependent_row_attributes
         );
         $this->renderBmoFieldRow(
             self::OPTION_LIBRARY_ID,
-            __('Video library ID', 'media-offload-for-bunny'),
+            __('Video library ID', 'indigetal-media-offload-for-bunny-net'),
             [$this, 'renderLibraryIdField'],
             $stream_dependent_row_class,
             $stream_dependent_row_attributes
         );
         $this->renderBmoFieldRow(
             self::OPTION_PULL_ZONE,
-            __('CDN hostname', 'media-offload-for-bunny'),
+            __('CDN hostname', 'indigetal-media-offload-for-bunny-net'),
             [$this, 'renderPullZoneField'],
             $stream_dependent_row_class,
             $stream_dependent_row_attributes
@@ -1041,13 +1041,13 @@ class BunnySettings {
 
         echo '<section class="' . esc_attr($storage_section_class) . '" data-bmo-storage-section="1">';
         echo '<header>';
-        echo '<h2>' . esc_html__('Storage', 'media-offload-for-bunny') . '</h2>';
+        echo '<h2>' . esc_html__('Storage', 'indigetal-media-offload-for-bunny-net') . '</h2>';
         $this->renderStorageSectionDescription();
         echo '</header>';
         echo '<ul class="bmo-section__rows">';
         $this->renderBmoFieldRow(
             self::OPTION_STORAGE_ENABLED,
-            __('Enable Storage Offload', 'media-offload-for-bunny'),
+            __('Enable Storage Offload', 'indigetal-media-offload-for-bunny-net'),
             [$this, 'renderStorageEnabledField']
         );
 
@@ -1066,35 +1066,35 @@ class BunnySettings {
 
         $this->renderBmoFieldRow(
             self::OPTION_REMOVE_LOCAL_FILES,
-            __('Remove Local files', 'media-offload-for-bunny'),
+            __('Remove Local files', 'indigetal-media-offload-for-bunny-net'),
             [$this, 'renderRemoveLocalFilesField'],
             $storage_dependent_row_class,
             $storage_dependent_row_attributes
         );
         $this->renderBmoFieldRow(
             self::OPTION_STORAGE_ZONE,
-            __('Storage zone name', 'media-offload-for-bunny'),
+            __('Storage zone name', 'indigetal-media-offload-for-bunny-net'),
             [$this, 'renderStorageZoneField'],
             $storage_dependent_row_class,
             $storage_dependent_row_attributes
         );
         $this->renderBmoFieldRow(
             self::OPTION_STORAGE_REGION,
-            __('Main storage region', 'media-offload-for-bunny'),
+            __('Main storage region', 'indigetal-media-offload-for-bunny-net'),
             [$this, 'renderStorageRegionField'],
             $storage_dependent_row_class,
             $storage_dependent_row_attributes
         );
         $this->renderBmoFieldRow(
             self::OPTION_STORAGE_PASSWORD,
-            __('Storage zone password', 'media-offload-for-bunny'),
+            __('Storage zone password', 'indigetal-media-offload-for-bunny-net'),
             [$this, 'renderStoragePasswordField'],
             $storage_dependent_row_class,
             $storage_dependent_row_attributes
         );
         $this->renderBmoFieldRow(
             self::OPTION_STORAGE_PULL_ZONE,
-            __('Storage delivery Pull Zone hostname', 'media-offload-for-bunny'),
+            __('Storage delivery Pull Zone hostname', 'indigetal-media-offload-for-bunny-net'),
             [$this, 'renderStoragePullZoneField'],
             $storage_dependent_row_class,
             $storage_dependent_row_attributes
@@ -1117,18 +1117,18 @@ class BunnySettings {
 
         echo '<section class="bmo-section">';
         echo '<header>';
-        echo '<h2>' . esc_html__('Advanced', 'media-offload-for-bunny') . '</h2>';
-        echo '<p>' . esc_html__('By default, uninstalling Media Offload for Bunny.net preserves offload-critical WordPress data: saved settings, encrypted credentials, Storage manifests, Stream attachment metadata, and URL rewriting state. You normally do not need to change anything here.', 'media-offload-for-bunny') . '</p>';
+        echo '<h2>' . esc_html__('Advanced', 'indigetal-media-offload-for-bunny-net') . '</h2>';
+        echo '<p>' . esc_html__('By default, uninstalling Indigetal Media Offload for Bunny.net preserves offload-critical WordPress data: saved settings, encrypted credentials, Storage manifests, Stream attachment metadata, and URL rewriting state. You normally do not need to change anything here.', 'indigetal-media-offload-for-bunny-net') . '</p>';
         echo '</header>';
         echo '<div class="bmo-alert bmo-alert--warning">';
-        echo '<p><strong>' . esc_html__('Warning:', 'media-offload-for-bunny') . '</strong> ';
-        echo esc_html__('Only enable the option below if you intend to remove plugin-owned WordPress data when the plugin is uninstalled. This does not delete local media files from your server and does not delete remote objects in Bunny Storage or Bunny Stream.', 'media-offload-for-bunny');
+        echo '<p><strong>' . esc_html__('Warning:', 'indigetal-media-offload-for-bunny-net') . '</strong> ';
+        echo esc_html__('Only enable the option below if you intend to remove plugin-owned WordPress data when the plugin is uninstalled. This does not delete local media files from your server and does not delete remote objects in Bunny Storage or Bunny Stream.', 'indigetal-media-offload-for-bunny-net');
         echo '</p>';
         echo '</div>';
         echo '<ul class="bmo-section__rows">';
         $this->renderBmoFieldRow(
             self::OPTION_DELETE_PLUGIN_DATA_ON_UNINSTALL,
-            __('Remove plugin-owned WordPress data on uninstall', 'media-offload-for-bunny'),
+            __('Remove plugin-owned WordPress data on uninstall', 'indigetal-media-offload-for-bunny-net'),
             [$this, 'renderDeletePluginDataOnUninstallField']
         );
         echo '</ul>';
@@ -1147,10 +1147,10 @@ class BunnySettings {
         echo '<label class="bmo-toggle">';
         echo '<input class="bmo-toggle__input" type="checkbox" role="switch" id="' . esc_attr(self::OPTION_DELETE_PLUGIN_DATA_ON_UNINSTALL) . '" name="' . esc_attr(self::OPTION_DELETE_PLUGIN_DATA_ON_UNINSTALL) . '" value="1" autocomplete="off" ' . checked($enabled, true, false) . ' />';
         echo '<span class="bmo-toggle__track" aria-hidden="true"><span class="bmo-toggle__thumb"></span></span>';
-        echo '<span class="bmo-toggle__text"><span class="bmo-toggle__state bmo-toggle__state--on">' . esc_html__('Enabled', 'media-offload-for-bunny') . '</span><span class="bmo-toggle__state bmo-toggle__state--off">' . esc_html__('Disabled', 'media-offload-for-bunny') . '</span></span>';
+        echo '<span class="bmo-toggle__text"><span class="bmo-toggle__state bmo-toggle__state--on">' . esc_html__('Enabled', 'indigetal-media-offload-for-bunny-net') . '</span><span class="bmo-toggle__state bmo-toggle__state--off">' . esc_html__('Disabled', 'indigetal-media-offload-for-bunny-net') . '</span></span>';
         echo '</label>';
         echo '<p class="description">';
-        echo esc_html__('When enabled, uninstall removes this plugin\'s saved settings and the WordPress-stored offload data it relies on (credentials, manifests, Stream-related attachment metadata, and similar), then clears this opt-in so it does not remain after removal. When disabled, that data is kept so you can reinstall. In both cases, uninstall performs a small amount of internal cleanup so WordPress does not keep scheduled work pointing at removed plugin code. Local media files on your server and content stored at Bunny.net are never deleted by this setting.', 'media-offload-for-bunny');
+        echo esc_html__('When enabled, uninstall removes this plugin\'s saved settings and the WordPress-stored offload data it relies on (credentials, manifests, Stream-related attachment metadata, and similar), then clears this opt-in so it does not remain after removal. When disabled, that data is kept so you can reinstall. In both cases, uninstall performs a small amount of internal cleanup so WordPress does not keep scheduled work pointing at removed plugin code. Local media files on your server and content stored at Bunny.net are never deleted by this setting.', 'indigetal-media-offload-for-bunny-net');
         echo '</p>';
     }
 
@@ -1173,12 +1173,12 @@ class BunnySettings {
 
         echo '<section class="bmo-section">';
         echo '<header>';
-        echo '<h2>' . esc_html__('Bunny.net external service', 'media-offload-for-bunny') . '</h2>';
+        echo '<h2>' . esc_html__('Bunny.net external service', 'indigetal-media-offload-for-bunny-net') . '</h2>';
         echo '<p>';
         echo wp_kses(
             sprintf(
                 /* translators: 1: Bunny terms URL, 2: Bunny privacy URL */
-                __('Media Offload for Bunny.net sends media and configuration-related data to <strong>Bunny.net</strong> only when you enable Stream and/or Storage features and use the workflows this plugin provides. Review Bunny.net’s <a href="%1$s" target="_blank" rel="noopener noreferrer">terms</a> and <a href="%2$s" target="_blank" rel="noopener noreferrer">privacy policy</a> before enabling offload.', 'media-offload-for-bunny'),
+                __('Indigetal Media Offload for Bunny.net sends media and configuration-related data to <strong>Bunny.net</strong> only when you enable Stream and/or Storage features and use the workflows this plugin provides. Review Bunny.net’s <a href="%1$s" target="_blank" rel="noopener noreferrer">terms</a> and <a href="%2$s" target="_blank" rel="noopener noreferrer">privacy policy</a> before enabling offload.', 'indigetal-media-offload-for-bunny-net'),
                 esc_url('https://bunny.net/terms/'),
                 esc_url('https://bunny.net/privacy/')
             ),
@@ -1190,87 +1190,87 @@ class BunnySettings {
 
         echo '<section class="bmo-section">';
         echo '<header>';
-        echo '<h2>' . esc_html__('Data sent to Bunny.net', 'media-offload-for-bunny') . '</h2>';
-        echo '<p>' . esc_html__('Depending on what you enable, the plugin may send the following kinds of data to Bunny.net:', 'media-offload-for-bunny') . '</p>';
+        echo '<h2>' . esc_html__('Data sent to Bunny.net', 'indigetal-media-offload-for-bunny-net') . '</h2>';
+        echo '<p>' . esc_html__('Depending on what you enable, the plugin may send the following kinds of data to Bunny.net:', 'indigetal-media-offload-for-bunny-net') . '</p>';
         echo '</header>';
         echo '<div class="bmo-section__content">';
-        echo '<p>' . esc_html__('Stream (when enabled): the server makes requests to Bunny Stream API hosts such as video.bunnycdn.com to create, update, inspect, and delete videos and collections. Playback-related URLs may use hostnames such as player.mediadelivery.net and the Stream Pull Zone hostname you configure in settings.', 'media-offload-for-bunny') . '</p>';
-        echo '<p>' . esc_html__('Storage (when enabled): the server makes requests to the regional Bunny Storage API host for the zone you select, and public file URLs use the Storage Pull Zone hostname you configure.', 'media-offload-for-bunny') . '</p>';
-        echo '<p>' . esc_html__('API keys, passwords, zone identifiers, and related options are stored in the WordPress database (encrypted where this plugin applies encryption) and are used only to contact Bunny services on your behalf.', 'media-offload-for-bunny') . '</p>';
+        echo '<p>' . esc_html__('Stream (when enabled): the server makes requests to Bunny Stream API hosts such as video.bunnycdn.com to create, update, inspect, and delete videos and collections. Playback-related URLs may use hostnames such as player.mediadelivery.net and the Stream Pull Zone hostname you configure in settings.', 'indigetal-media-offload-for-bunny-net') . '</p>';
+        echo '<p>' . esc_html__('Storage (when enabled): the server makes requests to the regional Bunny Storage API host for the zone you select, and public file URLs use the Storage Pull Zone hostname you configure.', 'indigetal-media-offload-for-bunny-net') . '</p>';
+        echo '<p>' . esc_html__('API keys, passwords, zone identifiers, and related options are stored in the WordPress database (encrypted where this plugin applies encryption) and are used only to contact Bunny services on your behalf.', 'indigetal-media-offload-for-bunny-net') . '</p>';
         echo '</div>';
         echo '</section>';
 
         echo '<section class="bmo-section">';
         echo '<header>';
-        echo '<h2>' . esc_html__('Admin help links', 'media-offload-for-bunny') . '</h2>';
-        echo '<p>' . esc_html__('On the Settings tab, help text may link to Bunny.net documentation on docs.bunny.net, the customer dashboard on dash.bunny.net, a support article on support.bunny.net, and CDN product pages used to explain pull-zone hostnames. Opening those links is optional; they remain under Bunny.net’s terms and privacy policy linked above.', 'media-offload-for-bunny') . '</p>';
+        echo '<h2>' . esc_html__('Admin help links', 'indigetal-media-offload-for-bunny-net') . '</h2>';
+        echo '<p>' . esc_html__('On the Settings tab, help text may link to Bunny.net documentation on docs.bunny.net, the customer dashboard on dash.bunny.net, a support article on support.bunny.net, and CDN product pages used to explain pull-zone hostnames. Opening those links is optional; they remain under Bunny.net’s terms and privacy policy linked above.', 'indigetal-media-offload-for-bunny-net') . '</p>';
         echo '</header>';
         echo '</section>';
 
         echo '<section class="bmo-section">';
         echo '<header>';
-        echo '<h2>' . esc_html__('Delivery scope in Free', 'media-offload-for-bunny') . '</h2>';
-        echo '<p>' . esc_html__('This Free release does not generate HMAC-signed or token-authenticated CDN URLs from PHP for Storage or Stream.', 'media-offload-for-bunny') . '</p>';
-        echo '<p>' . esc_html__('This Free release does not include operator Tools tabs, bulk batch or retry queues, a block-based Stream upload experience, or resumable chunked video uploads.', 'media-offload-for-bunny') . '</p>';
-        echo '<p>' . esc_html__('Whether URLs are publicly readable or restricted is determined by your Bunny Pull Zone, Storage, and Stream configuration outside WordPress.', 'media-offload-for-bunny') . '</p>';
+        echo '<h2>' . esc_html__('Delivery scope in Free', 'indigetal-media-offload-for-bunny-net') . '</h2>';
+        echo '<p>' . esc_html__('This Free release does not generate HMAC-signed or token-authenticated CDN URLs from PHP for Storage or Stream.', 'indigetal-media-offload-for-bunny-net') . '</p>';
+        echo '<p>' . esc_html__('This Free release does not include operator Tools tabs, bulk batch or retry queues, a block-based Stream upload experience, or resumable chunked video uploads.', 'indigetal-media-offload-for-bunny-net') . '</p>';
+        echo '<p>' . esc_html__('Whether URLs are publicly readable or restricted is determined by your Bunny Pull Zone, Storage, and Stream configuration outside WordPress.', 'indigetal-media-offload-for-bunny-net') . '</p>';
         echo '</header>';
         echo '</section>';
 
         echo '<section class="bmo-section">';
         echo '<header>';
-        echo '<h2>' . esc_html__('Local media files after offload', 'media-offload-for-bunny') . '</h2>';
-        echo '<p>' . esc_html__('On the Settings tab, separate toggles control whether local media files are removed from this server after successful Storage offload and after successful Stream video offload. When a toggle is enabled, WordPress may no longer have a local file behind the attachment URL even though delivery continues from Bunny.net.', 'media-offload-for-bunny') . '</p>';
+        echo '<h2>' . esc_html__('Local media files after offload', 'indigetal-media-offload-for-bunny-net') . '</h2>';
+        echo '<p>' . esc_html__('On the Settings tab, separate toggles control whether local media files are removed from this server after successful Storage offload and after successful Stream video offload. When a toggle is enabled, WordPress may no longer have a local file behind the attachment URL even though delivery continues from Bunny.net.', 'indigetal-media-offload-for-bunny-net') . '</p>';
         echo '</header>';
         echo '</section>';
 
         echo '<section class="bmo-section">';
         echo '<header>';
-        echo '<h2>' . esc_html__('Remote Bunny objects when you delete attachments', 'media-offload-for-bunny') . '</h2>';
-        echo '<p>' . esc_html__('Deleting a WordPress attachment for media that was offloaded to Bunny Storage or Bunny Stream may delete the corresponding remote Bunny object where that behavior is implemented, so visitors should not retain a working hotlink to the removed object.', 'media-offload-for-bunny') . '</p>';
+        echo '<h2>' . esc_html__('Remote Bunny objects when you delete attachments', 'indigetal-media-offload-for-bunny-net') . '</h2>';
+        echo '<p>' . esc_html__('Deleting a WordPress attachment for media that was offloaded to Bunny Storage or Bunny Stream may delete the corresponding remote Bunny object where that behavior is implemented, so visitors should not retain a working hotlink to the removed object.', 'indigetal-media-offload-for-bunny-net') . '</p>';
         echo '</header>';
         echo '</section>';
 
         echo '<section class="bmo-section">';
         echo '<header>';
-        echo '<h2>' . esc_html__('Uninstall and data retention', 'media-offload-for-bunny') . '</h2>';
-        echo '<p>' . esc_html__('By default, uninstall keeps this plugin’s settings, saved credentials, offload records, and media-related metadata in WordPress so you can reinstall and keep using media already stored at Bunny.net.', 'media-offload-for-bunny') . '</p>';
-        echo '<p>' . esc_html__('Unless you turn on Advanced → Remove plugin-owned WordPress data on uninstall on the Settings tab (and only if you intend to wipe that data), nothing in that list is removed on uninstall.', 'media-offload-for-bunny') . '</p>';
-        echo '<p>' . esc_html__('Uninstall never deletes your site’s media files on disk or removes objects in your Bunny Storage zones or Stream library.', 'media-offload-for-bunny') . '</p>';
-        echo '<p>' . esc_html__('When that Advanced option is enabled, uninstall removes this plugin’s saved settings and the WordPress-stored offload data it relies on, then clears the opt-in so it does not remain after removal; local media files and Bunny.net objects are still never deleted by the plugin.', 'media-offload-for-bunny') . '</p>';
-        echo '<p>' . esc_html__('A small amount of internal cleanup always runs on uninstall so WordPress does not keep scheduled work pointing at removed plugin code.', 'media-offload-for-bunny') . '</p>';
+        echo '<h2>' . esc_html__('Uninstall and data retention', 'indigetal-media-offload-for-bunny-net') . '</h2>';
+        echo '<p>' . esc_html__('By default, uninstall keeps this plugin’s settings, saved credentials, offload records, and media-related metadata in WordPress so you can reinstall and keep using media already stored at Bunny.net.', 'indigetal-media-offload-for-bunny-net') . '</p>';
+        echo '<p>' . esc_html__('Unless you turn on Advanced → Remove plugin-owned WordPress data on uninstall on the Settings tab (and only if you intend to wipe that data), nothing in that list is removed on uninstall.', 'indigetal-media-offload-for-bunny-net') . '</p>';
+        echo '<p>' . esc_html__('Uninstall never deletes your site’s media files on disk or removes objects in your Bunny Storage zones or Stream library.', 'indigetal-media-offload-for-bunny-net') . '</p>';
+        echo '<p>' . esc_html__('When that Advanced option is enabled, uninstall removes this plugin’s saved settings and the WordPress-stored offload data it relies on, then clears the opt-in so it does not remain after removal; local media files and Bunny.net objects are still never deleted by the plugin.', 'indigetal-media-offload-for-bunny-net') . '</p>';
+        echo '<p>' . esc_html__('A small amount of internal cleanup always runs on uninstall so WordPress does not keep scheduled work pointing at removed plugin code.', 'indigetal-media-offload-for-bunny-net') . '</p>';
         echo '</header>';
         echo '</section>';
 
         echo '<section class="bmo-section">';
         echo '<header>';
-        echo '<h2>' . esc_html__('Optional Pro companion', 'media-offload-for-bunny') . '</h2>';
+        echo '<h2>' . esc_html__('Optional Pro companion', 'indigetal-media-offload-for-bunny-net') . '</h2>';
         echo '<p>';
         echo wp_kses(
             sprintf(
                 /* translators: %s: URL to author / Pro addon commercial information. */
                 __(
                     'A Pro addon is available to extend this Free base plugin with additional operator workflows and delivery features—such as token-compatible URL delivery. For availability and feature details, visit <a href="%s" target="_blank" rel="noopener noreferrer">Indigetal WebCraft</a>.',
-                    'media-offload-for-bunny'
+                    'indigetal-media-offload-for-bunny-net'
                 ),
                 esc_url(self::PRO_COMPANION_INFO_URL)
             ),
             $allowed_links
         );
         echo '</p>';
-        echo '<p>' . esc_html__('This Free plugin does not bundle that companion, surface off–WordPress.org update prompts for it in wp-admin, or require it for core Media Library Storage and Stream offload.', 'media-offload-for-bunny') . '</p>';
+        echo '<p>' . esc_html__('This Free plugin does not bundle that companion, surface off–WordPress.org update prompts for it in wp-admin, or require it for core Media Library Storage and Stream offload.', 'indigetal-media-offload-for-bunny-net') . '</p>';
         echo '</header>';
         echo '</section>';
 
         echo '<section class="bmo-section">';
         echo '<header>';
-        echo '<h2>' . esc_html__('Create a Bunny.net account', 'media-offload-for-bunny') . '</h2>';
+        echo '<h2>' . esc_html__('Create a Bunny.net account', 'indigetal-media-offload-for-bunny-net') . '</h2>';
         echo '<p>';
         echo wp_kses(
             sprintf(
                 /* translators: 1: Affiliate signup URL (bunny.net with ref), 2: Bunny affiliate program documentation URL */
                 __(
                     'If you need a Bunny.net account, you can <a href="%1$s" target="_blank" rel="noopener noreferrer sponsored">open bunny.net with this affiliate link</a>. This is an affiliate link; if you become a paying customer, we may earn a commission at no extra cost to you. Bunny publishes its affiliate rules in the <a href="%2$s" target="_blank" rel="noopener noreferrer">affiliate program documentation</a>.',
-                    'media-offload-for-bunny'
+                    'indigetal-media-offload-for-bunny-net'
                 ),
                 esc_url(self::BUNNY_NET_AFFILIATE_URL),
                 esc_url('https://docs.bunny.net/billing/affiliate-program')
@@ -1341,7 +1341,7 @@ class BunnySettings {
         echo '<div class="wrap"><div id="bunny-offload-admin-wrapper">';
         echo '<header class="bmo-admin-header">';
         echo '<h1 class="bmo-admin-header__brand">';
-        echo '<img src="' . esc_url(self::pluginAssetUrl('assets/bunny-offload-logo-type.svg')) . '" alt="' . esc_attr__('Media Offload for Bunny.net', 'media-offload-for-bunny') . '" width="308" height="58" decoding="async">';
+        echo '<img src="' . esc_url(self::pluginAssetUrl('assets/bunny-offload-logo-type.svg')) . '" alt="' . esc_attr__('Indigetal Media Offload', 'indigetal-media-offload-for-bunny-net') . '" width="308" height="58" decoding="async">';
         echo '</h1>';
         echo '</header>';
         self::renderAdminTabs($active_tab);
@@ -1377,7 +1377,7 @@ class BunnySettings {
         echo "<form action='options.php' method='post'>";
         settings_fields('bunny_net_settings');
         $this->renderSettingsForm();
-        submit_button(__('Save Settings', 'media-offload-for-bunny'));
+        submit_button(__('Save Settings', 'indigetal-media-offload-for-bunny-net'));
         echo '</form>';
         echo '</div>';
 

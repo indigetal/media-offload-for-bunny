@@ -50,7 +50,7 @@ class BunnyStorageAttachmentRunner {
                 $attachment_id,
                 new \WP_Error(
                     'bunny_storage_invalid_original',
-                    __('A valid attachment ID and file path are required for Bunny Storage offload.', 'media-offload-for-bunny')
+                    __('A valid attachment ID and file path are required for Bunny Storage offload.', 'indigetal-media-offload-for-bunny-net')
                 )
             );
         }
@@ -92,7 +92,7 @@ class BunnyStorageAttachmentRunner {
 
             return new \WP_Error(
                 'bunny_storage_manifest_persist_failed',
-                __('The Bunny Storage manifest could not be updated after the original upload completed.', 'media-offload-for-bunny')
+                __('The Bunny Storage manifest could not be updated after the original upload completed.', 'indigetal-media-offload-for-bunny-net')
             );
         }
 
@@ -314,7 +314,7 @@ class BunnyStorageAttachmentRunner {
                 $attachment_id,
                 $file_entry,
                 BunnyAttachmentManifest::FILE_STATE_ERROR,
-                __('The local file was missing before Bunny Storage reconciliation.', 'media-offload-for-bunny'),
+                __('The local file was missing before Bunny Storage reconciliation.', 'indigetal-media-offload-for-bunny-net'),
                 $manifest
             );
 
@@ -455,7 +455,7 @@ class BunnyStorageAttachmentRunner {
         if (!empty($upload_dir['error']) || empty($upload_dir['basedir']) || empty($upload_dir['baseurl'])) {
             return new \WP_Error(
                 'bunny_storage_upload_dir_unavailable',
-                __('The WordPress uploads directory is not available for Bunny Storage offload.', 'media-offload-for-bunny')
+                __('The WordPress uploads directory is not available for Bunny Storage offload.', 'indigetal-media-offload-for-bunny-net')
             );
         }
 
@@ -465,7 +465,7 @@ class BunnyStorageAttachmentRunner {
         if ('' === $local_path || '' === $relative_path || !file_exists($local_path)) {
             return new \WP_Error(
                 'bunny_storage_invalid_original_path',
-                __('The attachment original could not be normalized for Bunny Storage offload.', 'media-offload-for-bunny'),
+                __('The attachment original could not be normalized for Bunny Storage offload.', 'indigetal-media-offload-for-bunny-net'),
                 [
                     'file'          => $file,
                     'local_path'    => $local_path,

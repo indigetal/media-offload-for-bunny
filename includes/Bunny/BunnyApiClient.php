@@ -51,7 +51,7 @@ class BunnyApiClient {
         // Validate HTTP method
         $method = strtoupper($method);
         if (!in_array($method, ['GET', 'POST', 'PUT', 'DELETE'], true)) {
-            return new \WP_Error('invalid_http_method', __('Invalid HTTP method provided.', 'media-offload-for-bunny'));
+            return new \WP_Error('invalid_http_method', __('Invalid HTTP method provided.', 'indigetal-media-offload-for-bunny-net'));
         }
 
         $json_body = '';
@@ -73,7 +73,7 @@ class BunnyApiClient {
             $json_body = wp_json_encode($data);
 
             if (false === $json_body) {
-                return new \WP_Error('bunny_api_json_encode_failed', __('Failed to encode the Bunny.net API request body.', 'media-offload-for-bunny'));
+                return new \WP_Error('bunny_api_json_encode_failed', __('Failed to encode the Bunny.net API request body.', 'indigetal-media-offload-for-bunny-net'));
             }
 
             $args['body'] = $json_body;
@@ -172,7 +172,7 @@ class BunnyApiClient {
             return $last_error;
         }
 
-        return $last_error ?: new \WP_Error('api_failure', __('Bunny.net API failed after multiple attempts.', 'media-offload-for-bunny'));
+        return $last_error ?: new \WP_Error('api_failure', __('Bunny.net API failed after multiple attempts.', 'indigetal-media-offload-for-bunny-net'));
     }
 
     public function executeWithRetry($callback, $maxAttempts = 3) {
@@ -306,7 +306,7 @@ class BunnyApiClient {
                 $error_code,
                 sprintf(
                     /* translators: 1: API label, 2: endpoint path, 3: JSON error message */
-                    __('%1$s returned an invalid JSON response for %2$s: %3$s', 'media-offload-for-bunny'),
+                    __('%1$s returned an invalid JSON response for %2$s: %3$s', 'indigetal-media-offload-for-bunny-net'),
                     $api_label,
                     $endpoint,
                     json_last_error_msg()
@@ -404,7 +404,7 @@ class BunnyApiClient {
             $error_code,
             sprintf(
                 /* translators: 1: API label, 2: endpoint path, 3: HTTP status code, 4: response body */
-                __('%1$s error for %2$s (HTTP %3$d): %4$s', 'media-offload-for-bunny'),
+                __('%1$s error for %2$s (HTTP %3$d): %4$s', 'indigetal-media-offload-for-bunny-net'),
                 $api_label,
                 $endpoint,
                 $response_code,
@@ -431,11 +431,11 @@ class BunnyApiClient {
         $videoId   = trim((string) $videoId);
 
         if ('' === $libraryId) {
-            return new \WP_Error('missing_library_id', __('Library ID is required for Bunny video metadata requests.', 'media-offload-for-bunny'));
+            return new \WP_Error('missing_library_id', __('Library ID is required for Bunny video metadata requests.', 'indigetal-media-offload-for-bunny-net'));
         }
 
         if ('' === $videoId) {
-            return new \WP_Error('missing_video_id', __('Video ID is required for Bunny video metadata requests.', 'media-offload-for-bunny'));
+            return new \WP_Error('missing_video_id', __('Video ID is required for Bunny video metadata requests.', 'indigetal-media-offload-for-bunny-net'));
         }
 
         return sprintf(

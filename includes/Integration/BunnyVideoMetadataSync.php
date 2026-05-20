@@ -133,7 +133,7 @@ class BunnyVideoMetadataSync {
                 self::setFieldSyncError(
                     $post_id,
                     $field_key,
-                    __('Bunny title sync requires a non-empty WordPress title.', 'media-offload-for-bunny')
+                    __('Bunny title sync requires a non-empty WordPress title.', 'indigetal-media-offload-for-bunny-net')
                 );
 
                 continue;
@@ -523,7 +523,7 @@ class BunnyVideoMetadataSync {
         if (!is_array($response)) {
             return new \WP_Error(
                 'invalid_remote_video_metadata',
-                __('Unexpected Bunny video metadata response.', 'media-offload-for-bunny')
+                __('Unexpected Bunny video metadata response.', 'indigetal-media-offload-for-bunny-net')
             );
         }
 
@@ -568,7 +568,7 @@ class BunnyVideoMetadataSync {
             if ('' === trim($title)) {
                 return new \WP_Error(
                     'invalid_video_title',
-                    __('A non-empty Bunny video title is required for metadata updates.', 'media-offload-for-bunny')
+                    __('A non-empty Bunny video title is required for metadata updates.', 'indigetal-media-offload-for-bunny-net')
                 );
             }
 
@@ -585,7 +585,7 @@ class BunnyVideoMetadataSync {
         if ([] === $payload) {
             return new \WP_Error(
                 'no_video_metadata_updates',
-                __('No Bunny video metadata updates were requested.', 'media-offload-for-bunny')
+                __('No Bunny video metadata updates were requested.', 'indigetal-media-offload-for-bunny-net')
             );
         }
 

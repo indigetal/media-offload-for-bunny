@@ -254,7 +254,7 @@ class BunnyMediaLibrary {
         // Validate file existence.
         if (!isset($upload['file']) || !file_exists($upload['file'])) {
             BunnyLogger::log('Invalid file path provided for video offloading.', 'error');
-            return new \WP_Error('invalid_file_path', __('The provided file path is invalid.', 'media-offload-for-bunny'));
+            return new \WP_Error('invalid_file_path', __('The provided file path is invalid.', 'indigetal-media-offload-for-bunny-net'));
         }
         $filePath = $upload['file'];
     
@@ -269,7 +269,7 @@ class BunnyMediaLibrary {
         $user = get_userdata($user_id);
         if (!$user) {
             BunnyLogger::log("Could not retrieve user data for user ID {$user_id}", 'error');
-            return new \WP_Error('invalid_user', __('Invalid user specified.', 'media-offload-for-bunny'));
+            return new \WP_Error('invalid_user', __('Invalid user specified.', 'indigetal-media-offload-for-bunny-net'));
         }
     
         // Step 1: Retrieve or create the user's collection.
@@ -298,7 +298,7 @@ class BunnyMediaLibrary {
         // Step 3: Validate API response.
         if (!is_array($uploadResponse) || !isset($uploadResponse['videoId']) || empty($uploadResponse['videoUrl'])) {
             BunnyLogger::log("Invalid API response received: " . json_encode($uploadResponse), 'error');
-            return new \WP_Error('invalid_api_response', __('Bunny.net did not return a valid videoId or videoUrl.', 'media-offload-for-bunny'));
+            return new \WP_Error('invalid_api_response', __('Bunny.net did not return a valid videoId or videoUrl.', 'indigetal-media-offload-for-bunny-net'));
         }
     
         // Step 4: Optionally delete the local file.

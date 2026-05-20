@@ -34,11 +34,11 @@ class BunnyCollectionHandler {
     public function createCollection($userId, $additionalData = []) {
         $library_id = $this->apiClient->getLibraryId();
         if (empty($library_id)) {
-            return new \WP_Error('missing_library_id', __('Library ID is required to create a collection.', 'media-offload-for-bunny'));
+            return new \WP_Error('missing_library_id', __('Library ID is required to create a collection.', 'indigetal-media-offload-for-bunny-net'));
         }
 
         if (empty($userId)) {
-            return new \WP_Error('missing_user_id', __('User ID is required to create a collection.', 'media-offload-for-bunny'));
+            return new \WP_Error('missing_user_id', __('User ID is required to create a collection.', 'indigetal-media-offload-for-bunny-net'));
         }
 
         // Ensure the collection name follows our naming convention
@@ -47,7 +47,7 @@ class BunnyCollectionHandler {
         // Step 1: Prevent duplicate collection creation using a transient lock
         $lock_key = "wpbs_collection_lock_{$userId}";
         if (get_transient($lock_key)) {
-            return new \WP_Error('collection_creation_locked', __('Collection creation is already in progress. Try again later.', 'media-offload-for-bunny'));
+            return new \WP_Error('collection_creation_locked', __('Collection creation is already in progress. Try again later.', 'indigetal-media-offload-for-bunny-net'));
         }
 
         // Set transient lock to prevent simultaneous requests
@@ -74,7 +74,7 @@ class BunnyCollectionHandler {
         delete_transient($lock_key);
 
         if (is_wp_error($response) || empty($response['guid'])) {
-            return new \WP_Error('collection_creation_failed', __('Failed to create collection on Bunny.net.', 'media-offload-for-bunny'));
+            return new \WP_Error('collection_creation_failed', __('Failed to create collection on Bunny.net.', 'indigetal-media-offload-for-bunny-net'));
         }
         return $response['guid'];
     }
@@ -133,11 +133,11 @@ class BunnyCollectionHandler {
         $library_id = $this->apiClient->getLibraryId();
         if (empty($library_id)) {
             BunnyLogger::log('Library ID is missing or not set.', 'warning');
-            return new \WP_Error('missing_library_id', __('Library ID is required to delete a collection.', 'media-offload-for-bunny'));
+            return new \WP_Error('missing_library_id', __('Library ID is required to delete a collection.', 'indigetal-media-offload-for-bunny-net'));
         }
 
         if (empty($collectionId)) {
-            return new \WP_Error('missing_collection_id', __('Collection ID is required.', 'media-offload-for-bunny'));
+            return new \WP_Error('missing_collection_id', __('Collection ID is required.', 'indigetal-media-offload-for-bunny-net'));
         }
 
         $endpoint = "library/{$library_id}/collections/{$collectionId}";
@@ -162,7 +162,7 @@ class BunnyCollectionHandler {
     public function listCollections() {
         $library_id = $this->apiClient->getLibraryId();
         if (empty($library_id)) {
-            return new \WP_Error('missing_library_id', __('Library ID is required to fetch collections.', 'media-offload-for-bunny'));
+            return new \WP_Error('missing_library_id', __('Library ID is required to fetch collections.', 'indigetal-media-offload-for-bunny-net'));
         }
 
         $endpoint = "library/{$library_id}/collections?page=1&itemsPerPage=100";
@@ -173,7 +173,7 @@ class BunnyCollectionHandler {
         }
 
         if (!isset($response['items']) || !is_array($response['items'])) {
-            return new \WP_Error('invalid_collection_list', __('Invalid response from Bunny.net when listing collections.', 'media-offload-for-bunny'));
+            return new \WP_Error('invalid_collection_list', __('Invalid response from Bunny.net when listing collections.', 'indigetal-media-offload-for-bunny-net'));
         }
 
         return $response['items'];
@@ -190,15 +190,15 @@ class BunnyCollectionHandler {
         $library_id = $this->apiClient->getLibraryId();
         if (empty($library_id)) {
             BunnyLogger::log('Library ID is missing or not set.', 'warning');
-            return new \WP_Error('missing_library_id', __('Library ID is required to update a collection.', 'media-offload-for-bunny'));
+            return new \WP_Error('missing_library_id', __('Library ID is required to update a collection.', 'indigetal-media-offload-for-bunny-net'));
         }
 
         if (empty($collectionId)) {
-            return new \WP_Error('missing_collection_id', __('Collection ID is required.', 'media-offload-for-bunny'));
+            return new \WP_Error('missing_collection_id', __('Collection ID is required.', 'indigetal-media-offload-for-bunny-net'));
         }
 
         if (empty($data) || !is_array($data)) {
-            return new \WP_Error('missing_update_data', __('Update data is required and must be an array.', 'media-offload-for-bunny'));
+            return new \WP_Error('missing_update_data', __('Update data is required and must be an array.', 'indigetal-media-offload-for-bunny-net'));
         }
 
         $endpoint = "library/{$library_id}/collections/{$collectionId}";
@@ -209,7 +209,7 @@ class BunnyCollectionHandler {
         });
 
         if (empty($filteredData)) {
-            return new \WP_Error('no_update_data', __('No changes detected for the collection update.', 'media-offload-for-bunny'));
+            return new \WP_Error('no_update_data', __('No changes detected for the collection update.', 'indigetal-media-offload-for-bunny-net'));
         }
 
         return $this->apiClient->sendJsonToBunny($endpoint, 'PUT', $filteredData);
