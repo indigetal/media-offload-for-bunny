@@ -107,7 +107,7 @@ Fully qualified class names in source: Bunny_Offload\Integration\BunnyStorageOff
 
 == Privacy ==
 
-This plugin sends media and configuration-related data to **Bunny.net** only when you enable Stream and/or Storage features and use the workflows described in this readme. Bunny.net terms of use and privacy policy: https://bunny.net/terms/ — https://bunny.net/privacy/
+This plugin sends media and configuration-related data to **Bunny.net** only when you enable Stream and/or Storage features and use the workflows described in this readme. Bunny.net Terms of Service and privacy policy: https://bunny.net/tos/ — https://bunny.net/privacy/
 
 **Stream (when enabled):** The site’s server makes requests to Bunny Stream API hosts such as `video.bunnycdn.com` to create, update, inspect, and delete videos and collections. Playback-related URLs may use hostnames such as `player.mediadelivery.net` and the **Stream Pull Zone hostname** you configure in settings.
 

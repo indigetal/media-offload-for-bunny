@@ -1178,8 +1178,8 @@ class BunnySettings {
         echo wp_kses(
             sprintf(
                 /* translators: 1: Bunny terms URL, 2: Bunny privacy URL */
-                __('Indigetal Media Offload for Bunny.net sends media and configuration-related data to <strong>Bunny.net</strong> only when you enable Stream and/or Storage features and use the workflows this plugin provides. Review Bunny.net’s <a href="%1$s" target="_blank" rel="noopener noreferrer">terms</a> and <a href="%2$s" target="_blank" rel="noopener noreferrer">privacy policy</a> before enabling offload.', 'indigetal-media-offload-for-bunny-net'),
-                esc_url('https://bunny.net/terms/'),
+                __('Indigetal Media Offload for Bunny.net sends media and configuration-related data to <strong>Bunny.net</strong> only when you enable Stream and/or Storage features and use the workflows this plugin provides. Review Bunny.net’s <a href="%1$s" target="_blank" rel="noopener noreferrer">Terms of Service</a> and <a href="%2$s" target="_blank" rel="noopener noreferrer">privacy policy</a> before enabling offload.', 'indigetal-media-offload-for-bunny-net'),
+                esc_url('https://bunny.net/tos/'),
                 esc_url('https://bunny.net/privacy/')
             ),
             array_merge($allowed_links, ['strong' => []])

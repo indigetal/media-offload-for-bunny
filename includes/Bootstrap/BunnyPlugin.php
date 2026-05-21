@@ -114,8 +114,8 @@ class BunnyPlugin {
         $html .= '<p>' . wp_kses(
             sprintf(
                 /* translators: 1: Bunny.net terms URL, 2: Bunny.net privacy URL */
-                __('This plugin sends media and configuration-related data to <strong>Bunny.net</strong> only when you enable Stream and/or Storage features and use the workflows this plugin provides. See Bunny.net’s <a href="%1$s" target="_blank" rel="noopener noreferrer">terms of use</a> and <a href="%2$s" target="_blank" rel="noopener noreferrer">privacy policy</a>.', 'indigetal-media-offload-for-bunny-net'),
-                esc_url('https://bunny.net/terms/'),
+                __('This plugin sends media and configuration-related data to <strong>Bunny.net</strong> only when you enable Stream and/or Storage features and use the workflows this plugin provides. See Bunny.net’s <a href="%1$s" target="_blank" rel="noopener noreferrer">Terms of Service</a> and <a href="%2$s" target="_blank" rel="noopener noreferrer">privacy policy</a>.', 'indigetal-media-offload-for-bunny-net'),
+                esc_url('https://bunny.net/tos/'),
                 esc_url('https://bunny.net/privacy/')
             ),
             $link_allowed

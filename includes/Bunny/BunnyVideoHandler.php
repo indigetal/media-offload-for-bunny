@@ -548,10 +548,14 @@ class BunnyVideoHandler {
         }
 
         if ($attachmentId > 0 && in_array($status, [3, 4], true)) {
-            $attachment = get_post($attachmentId);
+            $stored_video_id = (string) get_post_meta($attachmentId, '_bunny_video_id', true);
 
-            if ($attachment && 'attachment' === $attachment->post_type) {
-                $this->updatePlayableAttachmentMeta($attachmentId, $videoId, $response);
+            if ('' !== $stored_video_id && $videoId === $stored_video_id) {
+                $attachment = get_post($attachmentId);
+
+                if ($attachment && 'attachment' === $attachment->post_type) {
+                    $this->updatePlayableAttachmentMeta($attachmentId, $videoId, $response);
+                }
             }
         }
 

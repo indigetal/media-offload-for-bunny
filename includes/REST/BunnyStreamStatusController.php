@@ -71,12 +71,63 @@ class BunnyStreamStatusController {
     }
 
     /**
-     * Restrict status polling to users who can upload media.
+     * Restrict status polling; attachment-scoped polls require edit_post and matching video ID.
      *
+     * @param \WP_REST_Request $request REST request object.
      * @return bool
      */
-    public function permissionsCheck() {
-        return current_user_can('upload_files');
+    public function permissionsCheck($request) {
+        return true === $this->authorizeAttachmentPoll($request);
+    }
+
+    /**
+     * Authorize Stream status polling for the current user and request parameters.
+     *
+     * @param \WP_REST_Request $request REST request object.
+     * @return true|\WP_Error True when allowed; WP_Error when denied.
+     */
+    private function authorizeAttachmentPoll($request) {
+        if (!current_user_can('upload_files')) {
+            return new \WP_Error(
+                'rest_authorization_required',
+                __('Sorry, you are not allowed to poll Stream status.', 'indigetal-media-offload-for-bunny-net'),
+                ['status' => 401]
+            );
+        }
+
+        $attachment_id = (int) $request->get_param('attachment_id');
+        if ($attachment_id < 1) {
+            return true;
+        }
+
+        $attachment = get_post($attachment_id);
+        if (!$attachment || 'attachment' !== $attachment->post_type) {
+            return new \WP_Error(
+                'rest_forbidden',
+                __('Invalid attachment for Stream status polling.', 'indigetal-media-offload-for-bunny-net'),
+                ['status' => 403]
+            );
+        }
+
+        if (!current_user_can('edit_post', $attachment_id)) {
+            return new \WP_Error(
+                'rest_forbidden',
+                __('Sorry, you are not allowed to poll Stream status for this attachment.', 'indigetal-media-offload-for-bunny-net'),
+                ['status' => 403]
+            );
+        }
+
+        $video_id = $this->sanitizeVideoId($request->get_param('video_id'));
+        $stored_video_id = (string) get_post_meta($attachment_id, '_bunny_video_id', true);
+        if ('' === $stored_video_id || $video_id !== $stored_video_id) {
+            return new \WP_Error(
+                'rest_forbidden',
+                __('Video ID does not match this attachment.', 'indigetal-media-offload-for-bunny-net'),
+                ['status' => 403]
+            );
+        }
+
+        return true;
     }
 
     /**
@@ -106,6 +157,11 @@ class BunnyStreamStatusController {
      * @return \WP_REST_Response|\WP_Error
      */
     public function getVideoStatus($request) {
+        $authorized = $this->authorizeAttachmentPoll($request);
+        if (is_wp_error($authorized)) {
+            return $authorized;
+        }
+
         $video_id = (string) $request->get_param('video_id');
         $attachment_id = (int) $request->get_param('attachment_id');
         $should_refresh_attachment = false;
