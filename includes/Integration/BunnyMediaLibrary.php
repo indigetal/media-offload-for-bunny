@@ -374,7 +374,7 @@ class BunnyMediaLibrary {
         }
     
         // Prevent duplicate uploads using a transient lock
-        $lock_key = "wpbs_video_upload_lock_{$post_id}";
+        $lock_key = "indigetal_offload_video_upload_lock_{$post_id}";
         if (get_transient($lock_key)) {
             BunnyLogger::log("handleAttachmentMetadata: Upload for post ID {$post_id} is already in progress.", 'warning');
             return;

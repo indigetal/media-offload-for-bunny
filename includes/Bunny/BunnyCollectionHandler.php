@@ -45,7 +45,7 @@ class BunnyCollectionHandler {
         $collectionName = "wpbs_{$userId}";
 
         // Step 1: Prevent duplicate collection creation using a transient lock
-        $lock_key = "wpbs_collection_lock_{$userId}";
+        $lock_key = "indigetal_offload_collection_lock_{$userId}";
         if (get_transient($lock_key)) {
             return new \WP_Error('collection_creation_locked', __('Collection creation is already in progress. Try again later.', 'indigetal-media-offload-for-bunny-net'));
         }

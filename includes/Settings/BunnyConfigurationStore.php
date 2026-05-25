@@ -10,7 +10,7 @@ if (!defined('ABSPATH')) {
 }
 
 class BunnyConfigurationStore {
-    private const OPTION_STORAGE_PULL_ZONE_IDENTITY = 'bunny_net_storage_pull_zone_identity';
+    private const OPTION_STORAGE_PULL_ZONE_IDENTITY = 'indigetal_offload_storage_pull_zone_identity';
 
     private const STORAGE_PULL_ZONE_IDENTITY_DEFAULT = [
         'id'       => '',

@@ -23,24 +23,29 @@ class BunnySettings {
     const TAB_ABOUT_PRIVACY = 'about-privacy';
 
     /**
+     * Settings API option group for this plugin's wp_options rows.
+     */
+    const SETTINGS_GROUP = 'indigetal_offload_settings';
+
+    /**
      * Option keys for storing credentials.
      */
-    const OPTION_ACCESS_KEY = 'bunny_net_access_key';
-    const OPTION_LIBRARY_ID = 'bunny_net_library_id';
-    const OPTION_PULL_ZONE = 'bunny_net_pull_zone';
-    const OPTION_STREAM_ENABLED = 'bunny_offload_stream_enabled';
-    const OPTION_REMOVE_LOCAL_VIDEO_FILES = 'bunny_offload_remove_local_video_files';
-    const OPTION_STORAGE_ZONE = 'bunny_net_storage_zone';
-    const OPTION_STORAGE_REGION = 'bunny_net_storage_region';
-    const OPTION_STORAGE_PASSWORD = 'bunny_net_storage_password';
-    const OPTION_STORAGE_PULL_ZONE = 'bunny_net_storage_pull_zone';
-    const OPTION_STORAGE_ENABLED = 'bunny_offload_storage_enabled';
-    const OPTION_REMOVE_LOCAL_FILES = 'bunny_offload_remove_local_files';
+    const OPTION_ACCESS_KEY = 'indigetal_offload_stream_access_key';
+    const OPTION_LIBRARY_ID = 'indigetal_offload_stream_library_id';
+    const OPTION_PULL_ZONE = 'indigetal_offload_stream_pull_zone';
+    const OPTION_STREAM_ENABLED = 'indigetal_offload_stream_enabled';
+    const OPTION_REMOVE_LOCAL_VIDEO_FILES = 'indigetal_offload_remove_local_video_files';
+    const OPTION_STORAGE_ZONE = 'indigetal_offload_storage_zone';
+    const OPTION_STORAGE_REGION = 'indigetal_offload_storage_region';
+    const OPTION_STORAGE_PASSWORD = 'indigetal_offload_storage_password';
+    const OPTION_STORAGE_PULL_ZONE = 'indigetal_offload_storage_pull_zone';
+    const OPTION_STORAGE_ENABLED = 'indigetal_offload_storage_enabled';
+    const OPTION_REMOVE_LOCAL_FILES = 'indigetal_offload_remove_local_files';
     /**
      * When set to "1", uninstall deletes plugin-owned WordPress options/meta/transients
      * (see uninstall.php). Never deletes local media files or remote Bunny objects.
      */
-    const OPTION_DELETE_PLUGIN_DATA_ON_UNINSTALL = 'bunny_offload_delete_plugin_data_on_uninstall';
+    const OPTION_DELETE_PLUGIN_DATA_ON_UNINSTALL = 'indigetal_offload_delete_plugin_data_on_uninstall';
 
     /**
      * Direct Bunny.net affiliate landing URL (must not be cloaked or redirected for WordPress.org compliance).
@@ -307,57 +312,57 @@ class BunnySettings {
      * Register settings for Bunny.net credentials.
      */
     public function registerSettings() {
-        register_setting('bunny_net_settings', self::OPTION_DELETE_PLUGIN_DATA_ON_UNINSTALL, [
+        register_setting(self::SETTINGS_GROUP, self::OPTION_DELETE_PLUGIN_DATA_ON_UNINSTALL, [
             'default'           => '0',
             'sanitize_callback' => [$this, 'sanitizeDeletePluginDataOnUninstallSetting'],
         ]);
-        register_setting('bunny_net_settings', self::OPTION_ACCESS_KEY, [
+        register_setting(self::SETTINGS_GROUP, self::OPTION_ACCESS_KEY, [
             'sanitize_callback' => function($value) {
                 return $this->sanitizeEncryptedSetting(self::OPTION_ACCESS_KEY, $value);
             }
         ]);
-        register_setting('bunny_net_settings', self::OPTION_LIBRARY_ID, [
+        register_setting(self::SETTINGS_GROUP, self::OPTION_LIBRARY_ID, [
             'sanitize_callback' => [$this, 'sanitizeStreamLibraryIdSetting']
         ]);
-        register_setting('bunny_net_settings', self::OPTION_PULL_ZONE, [
+        register_setting(self::SETTINGS_GROUP, self::OPTION_PULL_ZONE, [
             'sanitize_callback' => function($value) {
                 return $this->sanitizeStreamPlaintextSetting(self::OPTION_PULL_ZONE, $value);
             }
         ]);
-        register_setting('bunny_net_settings', self::OPTION_STREAM_ENABLED, [
+        register_setting(self::SETTINGS_GROUP, self::OPTION_STREAM_ENABLED, [
             'default'           => '0',
             'sanitize_callback' => [$this, 'sanitizeStreamEnabledSetting']
         ]);
-        register_setting('bunny_net_settings', self::OPTION_REMOVE_LOCAL_VIDEO_FILES, [
+        register_setting(self::SETTINGS_GROUP, self::OPTION_REMOVE_LOCAL_VIDEO_FILES, [
             'default'           => '0',
             'sanitize_callback' => function($value) {
                 return $this->sanitizeStreamDependentBooleanSetting(self::OPTION_REMOVE_LOCAL_VIDEO_FILES, $value);
             }
         ]);
-        register_setting('bunny_net_settings', self::OPTION_STORAGE_ENABLED, [
+        register_setting(self::SETTINGS_GROUP, self::OPTION_STORAGE_ENABLED, [
             'default'           => '0',
             'sanitize_callback' => [$this, 'sanitizeBooleanSetting']
         ]);
-        register_setting('bunny_net_settings', self::OPTION_REMOVE_LOCAL_FILES, [
+        register_setting(self::SETTINGS_GROUP, self::OPTION_REMOVE_LOCAL_FILES, [
             'default'           => '0',
             'sanitize_callback' => function($value) {
                 return $this->sanitizeStorageDependentBooleanSetting(self::OPTION_REMOVE_LOCAL_FILES, $value);
             }
         ]);
-        register_setting('bunny_net_settings', self::OPTION_STORAGE_ZONE, [
+        register_setting(self::SETTINGS_GROUP, self::OPTION_STORAGE_ZONE, [
             'sanitize_callback' => function($value) {
                 return $this->sanitizeStoragePlaintextSetting(self::OPTION_STORAGE_ZONE, $value);
             }
         ]);
-        register_setting('bunny_net_settings', self::OPTION_STORAGE_REGION, [
+        register_setting(self::SETTINGS_GROUP, self::OPTION_STORAGE_REGION, [
             'sanitize_callback' => [$this, 'sanitizeStorageRegionSetting']
         ]);
-        register_setting('bunny_net_settings', self::OPTION_STORAGE_PASSWORD, [
+        register_setting(self::SETTINGS_GROUP, self::OPTION_STORAGE_PASSWORD, [
             'sanitize_callback' => function($value) {
                 return $this->sanitizeEncryptedSetting(self::OPTION_STORAGE_PASSWORD, $value);
             }
         ]);
-        register_setting('bunny_net_settings', self::OPTION_STORAGE_PULL_ZONE, [
+        register_setting(self::SETTINGS_GROUP, self::OPTION_STORAGE_PULL_ZONE, [
             'sanitize_callback' => function($value) {
                 return $this->sanitizeStoragePlaintextSetting(self::OPTION_STORAGE_PULL_ZONE, $value);
             }
@@ -478,7 +483,7 @@ class BunnySettings {
 
         if (function_exists('add_settings_error')) {
             add_settings_error(
-                'bunny_net_settings',
+                self::SETTINGS_GROUP,
                 'bunny_stream_library_id_invalid',
                 __('The Video library ID was not saved because it did not match a supported format. Use the numeric library ID from your Bunny Stream library (or a standard UUID). Values that look like encrypted blobs are not accepted.', 'indigetal-media-offload-for-bunny-net'),
                 'error'
@@ -507,7 +512,7 @@ class BunnySettings {
 
         if (function_exists('add_settings_error')) {
             add_settings_error(
-                'bunny_net_settings',
+                self::SETTINGS_GROUP,
                 'bunny_stream_enable_blocked',
                 __('Stream could not be enabled because the Stream API key, Video library ID, and CDN hostname must all be saved first. Fill those fields (or save again after they appear), then enable Stream.', 'indigetal-media-offload-for-bunny-net'),
                 'error'
@@ -578,7 +583,7 @@ class BunnySettings {
         // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified by options.php + settings_fields (security-nonce-audit.md).
         $option_page = sanitize_key(wp_unslash((string) $_POST['option_page']));
 
-        if ('bunny_net_settings' !== $option_page) {
+        if (self::SETTINGS_GROUP !== $option_page) {
             return false;
         }
 
@@ -611,7 +616,7 @@ class BunnySettings {
         // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified by options.php + settings_fields (security-nonce-audit.md).
         $option_page = sanitize_key(wp_unslash((string) $_POST['option_page']));
 
-        if ('bunny_net_settings' !== $option_page) {
+        if (self::SETTINGS_GROUP !== $option_page) {
             return false;
         }
 
@@ -1375,7 +1380,7 @@ class BunnySettings {
         echo '<div class="bmo-settings-panel">';
         $this->renderSettingsPromoBanner();
         echo "<form action='options.php' method='post'>";
-        settings_fields('bunny_net_settings');
+        settings_fields(self::SETTINGS_GROUP);
         $this->renderSettingsForm();
         submit_button(__('Save Settings', 'indigetal-media-offload-for-bunny-net'));
         echo '</form>';

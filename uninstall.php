@@ -8,7 +8,7 @@
  * media files or remote Bunny Storage/Stream objects.
  *
  * When the operator has enabled advanced cleanup in plugin settings
- * (`bunny_offload_delete_plugin_data_on_uninstall` stored as exactly `1`),
+ * (`indigetal_offload_delete_plugin_data_on_uninstall` stored as exactly `1`),
  * plugin-owned options, transients, user meta, and attachment meta listed below
  * are removed, then the cleanup opt-in option itself is deleted.
  *
@@ -25,7 +25,7 @@ if (!defined('WP_UNINSTALL_PLUGIN')) {
 /**
  * Option key for the advanced uninstall cleanup checkbox (must match BunnySettings).
  */
-const BUNNY_OFFLOAD_DELETE_PLUGIN_DATA_OPTION = 'bunny_offload_delete_plugin_data_on_uninstall';
+const BUNNY_OFFLOAD_DELETE_PLUGIN_DATA_OPTION = 'indigetal_offload_delete_plugin_data_on_uninstall';
 
 /**
  * Whether aggressive plugin-data cleanup is enabled (readable without autoloading plugin classes).
@@ -58,20 +58,18 @@ delete_option(BUNNY_OFFLOAD_DELETE_PLUGIN_DATA_OPTION);
  */
 function bunny_offload_uninstall_delete_options() {
     $options = [
-        'bunny_net_access_key',
-        'bunny_net_library_id',
-        'bunny_net_pull_zone',
-        'bunny_net_account_api_key',
-        'bunny_offload_stream_enabled',
-        'bunny_offload_remove_local_video_files',
-        'bunny_net_storage_zone',
-        'bunny_net_storage_region',
-        'bunny_net_storage_password',
-        'bunny_net_storage_pull_zone',
-        'bunny_net_url_token_key',
-        'bunny_offload_storage_enabled',
-        'bunny_offload_remove_local_files',
-        'bunny_net_storage_pull_zone_identity',
+        'indigetal_offload_stream_access_key',
+        'indigetal_offload_stream_library_id',
+        'indigetal_offload_stream_pull_zone',
+        'indigetal_offload_stream_enabled',
+        'indigetal_offload_remove_local_video_files',
+        'indigetal_offload_storage_zone',
+        'indigetal_offload_storage_region',
+        'indigetal_offload_storage_password',
+        'indigetal_offload_storage_pull_zone',
+        'indigetal_offload_storage_enabled',
+        'indigetal_offload_remove_local_files',
+        'indigetal_offload_storage_pull_zone_identity',
     ];
 
     foreach ($options as $option) {
@@ -87,7 +85,6 @@ function bunny_offload_uninstall_delete_options() {
 function bunny_offload_uninstall_delete_transients() {
     $transients = [
         'bunny_stream_token_config',
-        'bunny_storage_token_state',
         'bunny_api_retry_after',
         'bunny_storage_retry_after',
     ];
@@ -106,8 +103,8 @@ function bunny_offload_uninstall_delete_dynamic_transients() {
     global $wpdb;
 
     $prefixes = [
-        'wpbs_collection_lock_',
-        'wpbs_video_upload_lock_',
+        'indigetal_offload_collection_lock_',
+        'indigetal_offload_video_upload_lock_',
     ];
 
     foreach ($prefixes as $prefix) {

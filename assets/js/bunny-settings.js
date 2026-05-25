@@ -34,7 +34,7 @@
   };
 
   initConditionalFields({
-    toggleSelector: "#bunny_offload_storage_enabled",
+    toggleSelector: "#indigetal_offload_storage_enabled",
     sectionSelector: '[data-bmo-storage-section="1"]',
     rowSelector: '[data-bmo-storage-dependent-field="1"]',
     controlSelector: '[data-bmo-storage-dependent-control="1"]',
@@ -43,7 +43,7 @@
   });
 
   initConditionalFields({
-    toggleSelector: "#bunny_offload_stream_enabled",
+    toggleSelector: "#indigetal_offload_stream_enabled",
     sectionSelector: '[data-bmo-stream-section="1"]',
     rowSelector: '[data-bmo-stream-dependent-field="1"]',
     controlSelector: '[data-bmo-stream-dependent-control="1"]',
@@ -61,7 +61,7 @@
   );
   if (settingsForm) {
     settingsForm.addEventListener("submit", () => {
-      const streamToggle = document.getElementById("bunny_offload_stream_enabled");
+      const streamToggle = document.getElementById("indigetal_offload_stream_enabled");
       if (streamToggle && streamToggle.checked) {
         document
           .querySelectorAll('[data-bmo-stream-dependent-control="1"]')
@@ -69,7 +69,7 @@
             el.disabled = false;
           });
       }
-      const storageToggle = document.getElementById("bunny_offload_storage_enabled");
+      const storageToggle = document.getElementById("indigetal_offload_storage_enabled");
       if (storageToggle && storageToggle.checked) {
         document
           .querySelectorAll('[data-bmo-storage-dependent-control="1"]')
