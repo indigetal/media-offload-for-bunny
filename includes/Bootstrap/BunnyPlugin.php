@@ -142,7 +142,7 @@ class BunnyPlugin {
      * @return void
      */
     public static function deactivate() {
-        self::clearScheduledHookEvents('bunny_offload_sync_video_thumbnail');
+        self::clearScheduledHookEvents('indigetal_offload_sync_video_thumbnail');
     }
 
     /**

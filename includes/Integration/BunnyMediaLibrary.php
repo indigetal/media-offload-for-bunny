@@ -12,7 +12,7 @@ if (!defined('ABSPATH')) {
 }
 
 class BunnyMediaLibrary {
-    private const THUMBNAIL_SYNC_HOOK = 'bunny_offload_sync_video_thumbnail';
+    private const THUMBNAIL_SYNC_HOOK = 'indigetal_offload_sync_video_thumbnail';
 
     private const THUMBNAIL_SYNC_RETRY_DELAYS = [
         1 => 60,

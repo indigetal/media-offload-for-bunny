@@ -19,9 +19,9 @@ if (!defined('ABSPATH')) {
 /**
  * Semantic version of the Free plugin runtime (keep in sync with the Version header).
  */
-define('BUNNY_OFFLOAD_VERSION', '1.0.0');
+define('INDIGETAL_OFFLOAD_VERSION', '1.0.0');
 
-if (!function_exists('bunny_offload_free_version')) {
+if (!function_exists('indigetal_offload_free_version')) {
     /**
      * Return the active Free plugin version string for Pro add-on compatibility checks.
      *
@@ -29,12 +29,12 @@ if (!function_exists('bunny_offload_free_version')) {
      *
      * @return string
      */
-    function bunny_offload_free_version() {
-        return BUNNY_OFFLOAD_VERSION;
+    function indigetal_offload_free_version() {
+        return INDIGETAL_OFFLOAD_VERSION;
     }
 }
 
-if (!function_exists('bunny_offload_clear_removed_tool_cron_jobs')) {
+if (!function_exists('indigetal_offload_clear_removed_tool_cron_jobs')) {
     /**
      * Clears Storage/Stream tool batch crons from older installs after the Tools stack was removed from Free.
      *
@@ -42,11 +42,11 @@ if (!function_exists('bunny_offload_clear_removed_tool_cron_jobs')) {
      *
      * @return void
      */
-    function bunny_offload_clear_removed_tool_cron_jobs() {
+    function indigetal_offload_clear_removed_tool_cron_jobs() {
         $legacy_hooks = [
-            'bunny_offload_process_tool_batch',
-            'bunny_offload_process_stream_tool_batch',
-            'bunny_offload_cleanup_stream_upload_placeholder',
+            'indigetal_offload_process_tool_batch',
+            'indigetal_offload_process_stream_tool_batch',
+            'indigetal_offload_cleanup_stream_upload_placeholder',
         ];
 
         foreach ($legacy_hooks as $hook) {
@@ -95,5 +95,5 @@ spl_autoload_register(
 );
 
 add_action('plugins_loaded', [\Bunny_Offload\Bootstrap\BunnyPlugin::class, 'boot']);
-register_deactivation_hook(__FILE__, 'bunny_offload_clear_removed_tool_cron_jobs');
+register_deactivation_hook(__FILE__, 'indigetal_offload_clear_removed_tool_cron_jobs');
 register_deactivation_hook(__FILE__, [\Bunny_Offload\Bootstrap\BunnyPlugin::class, 'deactivate']);

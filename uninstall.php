@@ -25,38 +25,38 @@ if (!defined('WP_UNINSTALL_PLUGIN')) {
 /**
  * Option key for the advanced uninstall cleanup checkbox (must match BunnySettings).
  */
-const BUNNY_OFFLOAD_DELETE_PLUGIN_DATA_OPTION = 'indigetal_offload_delete_plugin_data_on_uninstall';
+const INDIGETAL_OFFLOAD_DELETE_PLUGIN_DATA_OPTION = 'indigetal_offload_delete_plugin_data_on_uninstall';
 
 /**
  * Whether aggressive plugin-data cleanup is enabled (readable without autoloading plugin classes).
  *
  * @return bool
  */
-function bunny_offload_uninstall_should_delete_plugin_data() {
-    return '1' === (string) get_option(BUNNY_OFFLOAD_DELETE_PLUGIN_DATA_OPTION, '0');
+function indigetal_offload_uninstall_should_delete_plugin_data() {
+    return '1' === (string) get_option(INDIGETAL_OFFLOAD_DELETE_PLUGIN_DATA_OPTION, '0');
 }
 
 // Always: runtime locks and scheduled plugin hooks (not offload-critical delivery records).
-bunny_offload_uninstall_delete_dynamic_transients();
-bunny_offload_uninstall_clear_scheduled_events();
+indigetal_offload_uninstall_delete_dynamic_transients();
+indigetal_offload_uninstall_clear_scheduled_events();
 
-if (!bunny_offload_uninstall_should_delete_plugin_data()) {
+if (!indigetal_offload_uninstall_should_delete_plugin_data()) {
     return;
 }
 
-bunny_offload_uninstall_delete_options();
-bunny_offload_uninstall_delete_transients();
-bunny_offload_uninstall_delete_user_meta();
-bunny_offload_uninstall_delete_post_meta();
+indigetal_offload_uninstall_delete_options();
+indigetal_offload_uninstall_delete_transients();
+indigetal_offload_uninstall_delete_user_meta();
+indigetal_offload_uninstall_delete_post_meta();
 
-delete_option(BUNNY_OFFLOAD_DELETE_PLUGIN_DATA_OPTION);
+delete_option(INDIGETAL_OFFLOAD_DELETE_PLUGIN_DATA_OPTION);
 
 /**
  * Delete plugin-owned options (advanced cleanup only).
  *
  * @return void
  */
-function bunny_offload_uninstall_delete_options() {
+function indigetal_offload_uninstall_delete_options() {
     $options = [
         'indigetal_offload_stream_access_key',
         'indigetal_offload_stream_library_id',
@@ -82,7 +82,7 @@ function bunny_offload_uninstall_delete_options() {
  *
  * @return void
  */
-function bunny_offload_uninstall_delete_transients() {
+function indigetal_offload_uninstall_delete_transients() {
     $transients = [
         'indigetal_offload_stream_token_config',
         'indigetal_offload_api_retry_after',
@@ -99,7 +99,7 @@ function bunny_offload_uninstall_delete_transients() {
  *
  * @return void
  */
-function bunny_offload_uninstall_delete_dynamic_transients() {
+function indigetal_offload_uninstall_delete_dynamic_transients() {
     global $wpdb;
 
     $prefixes = [
@@ -127,7 +127,7 @@ function bunny_offload_uninstall_delete_dynamic_transients() {
  *
  * @return void
  */
-function bunny_offload_uninstall_delete_user_meta() {
+function indigetal_offload_uninstall_delete_user_meta() {
     delete_metadata('user', 0, '_bunny_collection_id', '', true);
 }
 
@@ -136,7 +136,7 @@ function bunny_offload_uninstall_delete_user_meta() {
  *
  * @return void
  */
-function bunny_offload_uninstall_delete_post_meta() {
+function indigetal_offload_uninstall_delete_post_meta() {
     $meta_keys = [
         '_bunny_video_id',
         '_bunny_iframe_url',
@@ -166,13 +166,13 @@ function bunny_offload_uninstall_delete_post_meta() {
  *
  * @return void
  */
-function bunny_offload_uninstall_clear_scheduled_events() {
+function indigetal_offload_uninstall_clear_scheduled_events() {
     $hooks = [
-        'bunny_offload_sync_video_thumbnail',
+        'indigetal_offload_sync_video_thumbnail',
     ];
 
     foreach ($hooks as $hook) {
-        bunny_offload_uninstall_clear_scheduled_hook($hook);
+        indigetal_offload_uninstall_clear_scheduled_hook($hook);
     }
 }
 
@@ -182,7 +182,7 @@ function bunny_offload_uninstall_clear_scheduled_events() {
  * @param string $hook Scheduled event hook.
  * @return void
  */
-function bunny_offload_uninstall_clear_scheduled_hook($hook) {
+function indigetal_offload_uninstall_clear_scheduled_hook($hook) {
     wp_clear_scheduled_hook($hook);
 
     $cron = _get_cron_array();
