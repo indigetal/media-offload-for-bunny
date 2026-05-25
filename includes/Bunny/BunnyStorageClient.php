@@ -15,7 +15,7 @@ if (!defined('ABSPATH')) {
 class BunnyStorageClient {
     private static $instance = null;
 
-    const RETRY_AFTER_TRANSIENT_KEY = 'bunny_storage_retry_after';
+    const RETRY_AFTER_TRANSIENT_KEY = 'indigetal_offload_storage_retry_after';
     const DEFAULT_TIMEOUT = 20;
     const UPLOAD_TIMEOUT = 120;
     const DOWNLOAD_TIMEOUT = 120;

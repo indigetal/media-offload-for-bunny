@@ -84,9 +84,9 @@ function bunny_offload_uninstall_delete_options() {
  */
 function bunny_offload_uninstall_delete_transients() {
     $transients = [
-        'bunny_stream_token_config',
-        'bunny_api_retry_after',
-        'bunny_storage_retry_after',
+        'indigetal_offload_stream_token_config',
+        'indigetal_offload_api_retry_after',
+        'indigetal_offload_storage_retry_after',
     ];
 
     foreach ($transients as $transient) {

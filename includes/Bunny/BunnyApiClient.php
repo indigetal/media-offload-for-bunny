@@ -14,7 +14,7 @@ if (!defined('ABSPATH')) {
 class BunnyApiClient {
     private static $instance = null;
     public $video_base_url = 'https://video.bunnycdn.com/';
-    private const RETRY_AFTER_TRANSIENT_KEY = 'bunny_api_retry_after';
+    private const RETRY_AFTER_TRANSIENT_KEY = 'indigetal_offload_api_retry_after';
     private $access_key;
     private $library_id;
 
