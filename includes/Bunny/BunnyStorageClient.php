@@ -497,6 +497,12 @@ class BunnyStorageClient {
             );
         }
 
+        $allowed_path = $this->assertDownloadDestinationPathAllowed($destination_path);
+
+        if (is_wp_error($allowed_path)) {
+            return $allowed_path;
+        }
+
         if (file_exists($destination_path) && is_dir($destination_path)) {
             return new \WP_Error(
                 'bunny_storage_download_destination_is_directory',
@@ -554,6 +560,137 @@ class BunnyStorageClient {
         }
 
         return $destination_path;
+    }
+
+    /**
+     * Ensure a download destination stays within uploads and outside plugin directories.
+     *
+     * @param string $destination_path Normalized absolute destination path.
+     * @return true|\WP_Error
+     */
+    private function assertDownloadDestinationPathAllowed($destination_path) {
+        if (wp_is_stream($destination_path)) {
+            return new \WP_Error(
+                'indigetal_offload_storage_download_path_not_allowed',
+                __('Bunny Storage downloads must be saved under the WordPress uploads directory.', 'indigetal-media-offload-for-bunny-net'),
+                [
+                    'destination_path' => $destination_path,
+                ]
+            );
+        }
+
+        $path_segments = explode('/', trim($destination_path, '/'));
+
+        if (in_array('..', $path_segments, true)) {
+            return new \WP_Error(
+                'indigetal_offload_storage_download_path_not_allowed',
+                __('Bunny Storage downloads must be saved under the WordPress uploads directory.', 'indigetal-media-offload-for-bunny-net'),
+                [
+                    'destination_path' => $destination_path,
+                ]
+            );
+        }
+
+        $destination_dir = dirname($destination_path);
+        $plugins_dir = trailingslashit(wp_normalize_path(WP_PLUGIN_DIR));
+
+        if (
+            str_starts_with($destination_path, $plugins_dir)
+            || ('' !== $destination_dir && '.' !== $destination_dir && str_starts_with($destination_dir, $plugins_dir))
+        ) {
+            return new \WP_Error(
+                'indigetal_offload_storage_download_path_not_allowed',
+                __('Bunny Storage downloads cannot be saved inside the plugins directory.', 'indigetal-media-offload-for-bunny-net'),
+                [
+                    'destination_path' => $destination_path,
+                ]
+            );
+        }
+
+        $upload_dir = wp_upload_dir();
+
+        if (!empty($upload_dir['error'])) {
+            return new \WP_Error(
+                'indigetal_offload_storage_download_path_not_allowed',
+                __('Bunny Storage downloads require a valid WordPress uploads directory.', 'indigetal-media-offload-for-bunny-net'),
+                [
+                    'destination_path' => $destination_path,
+                    'upload_dir_error' => $upload_dir['error'],
+                ]
+            );
+        }
+
+        $uploads_basedir = trailingslashit(wp_normalize_path((string) $upload_dir['basedir']));
+
+        if (!str_starts_with($destination_path, $uploads_basedir)) {
+            return new \WP_Error(
+                'indigetal_offload_storage_download_path_not_allowed',
+                __('Bunny Storage downloads must be saved under the WordPress uploads directory.', 'indigetal-media-offload-for-bunny-net'),
+                [
+                    'destination_path' => $destination_path,
+                    'uploads_basedir'  => $uploads_basedir,
+                ]
+            );
+        }
+
+        $resolved_uploads = realpath($uploads_basedir);
+
+        if (false === $resolved_uploads) {
+            return true;
+        }
+
+        $resolved_uploads = trailingslashit(wp_normalize_path($resolved_uploads));
+        $resolved_boundary = $this->resolveDownloadDestinationBoundary($destination_path, $uploads_basedir);
+
+        if (
+            false === $resolved_boundary
+            || !str_starts_with(trailingslashit(wp_normalize_path($resolved_boundary)), $resolved_uploads)
+        ) {
+            return new \WP_Error(
+                'indigetal_offload_storage_download_path_not_allowed',
+                __('Bunny Storage downloads must be saved under the WordPress uploads directory.', 'indigetal-media-offload-for-bunny-net'),
+                [
+                    'destination_path' => $destination_path,
+                    'uploads_basedir'  => $uploads_basedir,
+                ]
+            );
+        }
+
+        return true;
+    }
+
+    /**
+     * Resolve the nearest existing filesystem path for download boundary checks.
+     *
+     * @param string $destination_path Normalized destination file path.
+     * @param string $uploads_basedir  Normalized uploads basedir with trailing slash.
+     * @return string|false
+     */
+    private function resolveDownloadDestinationBoundary($destination_path, $uploads_basedir) {
+        $candidate = $destination_path;
+
+        if (file_exists($candidate)) {
+            return realpath($candidate);
+        }
+
+        $candidate = dirname($destination_path);
+        $uploads_basedir = trailingslashit(wp_normalize_path($uploads_basedir));
+
+        while ('' !== $candidate && '.' !== $candidate && str_starts_with($candidate, $uploads_basedir)) {
+            if (file_exists($candidate)) {
+                return realpath($candidate);
+            }
+
+            $parent = dirname($candidate);
+
+            if ($parent === $candidate) {
+                break;
+            }
+
+            $candidate = $parent;
+        }
+
+        return realpath(untrailingslashit($uploads_basedir));
     }
 
     /**
