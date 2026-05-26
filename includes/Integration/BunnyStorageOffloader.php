@@ -263,7 +263,7 @@ class BunnyStorageOffloader {
      * for add-on compatibility unless a release explicitly documents a breaking change. Does
      * not call Bunny APIs. Returns normalized manifest rows from post meta via
      * BunnyAttachmentManifest::getRawManifest() (not the manifest passed through
-     * bunny_offload_attachment_manifest).
+     * indigetal_offload_attachment_manifest).
      *
      * @param int $attachment_id Attachment ID.
      * @return array<string, array<string, string>> Manifest path key => row fields.

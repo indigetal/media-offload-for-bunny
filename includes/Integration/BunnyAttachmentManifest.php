@@ -191,7 +191,7 @@ class BunnyAttachmentManifest {
          * @param array $manifest      Manifest keyed by relative upload path.
          * @param int   $attachment_id Attachment ID.
          */
-        return apply_filters('bunny_offload_attachment_manifest', $manifest, absint($attachment_id));
+        return apply_filters('indigetal_offload_attachment_manifest', $manifest, absint($attachment_id));
     }
 
     /**

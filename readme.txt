@@ -89,9 +89,24 @@ Indigetal Media Offload for Bunny.net documents an intentional extension surface
 
 **Lifecycle and admin UI**
 
-* **bunny_offload_loaded** (action) — Fires after Free registers settings, configuration storage, attachment metadata, Stream metadata sync, REST status routes, Storage URL rewriting, Storage offload, user integration, and Stream Media Library hooks. Use it to bootstrap add-on code that depends on Free services.
-* **bunny_offload_free_version()** (function) — Returns the active Free version string (same value as the BUNNY_OFFLOAD_VERSION constant). Pro companions call this for compatibility checks after Free is active. Pro must not ship code loaded from Free.
-* **bunny_offload_admin_tabs** (filter) — Receives the default tab map for **Media → Indigetal Media Offload for Bunny.net** (each entry: label and admin URL). Add-ons append tabs here and render tab bodies with the **bunny_offload_render_admin_tab** action using the same slug keys.
+* **indigetal_offload_loaded** (action) — Fires after Free registers settings, configuration storage, attachment metadata, Stream metadata sync, REST status routes, Storage URL rewriting, Storage offload, user integration, and Stream Media Library hooks. Use it to bootstrap add-on code that depends on Free services.
+* **indigetal_offload_free_version()** (function) — Returns the active Free version string (same value as the `INDIGETAL_OFFLOAD_VERSION` constant). Pro companions call this for compatibility checks after Free is active. Pro must not ship code loaded from Free.
+* **indigetal_offload_admin_tabs** (filter) — Receives the default tab map for **Media → Indigetal Media Offload for Bunny.net** (each entry: label and admin URL). Add-ons append tabs here and render tab bodies with the **indigetal_offload_render_admin_tab** action using the same slug keys.
+* **indigetal_offload_render_admin_tab** (action) — Renders a custom admin tab body for a slug registered via **indigetal_offload_admin_tabs**.
+* **indigetal_offload_admin_panels** (action) — Fires before tab content; receives the active tab slug.
+* **indigetal_offload_render_settings_before_stream_section** (action) — Inject markup before the Stream settings section.
+* **indigetal_offload_render_settings_storage_dependent_fields** (action) — Inject Storage-dependent settings rows.
+* **indigetal_offload_render_settings_after_settings_panel** (action) — Inject markup after the main Settings panel.
+
+**URL filters**
+
+* **indigetal_offload_storage_url** (filter) — Adjust Storage CDN URLs at rewrite time.
+* **indigetal_offload_stream_url** (filter) — Adjust Stream MP4 URLs at rewrite time.
+* **indigetal_offload_attachment_manifest** (filter) — Adjust the normalized attachment manifest array before use.
+
+**REST (breaking change for direct clients)**
+
+* Namespace **`indigetal-offload/v1`** (formerly `bunny-offload/v1`). Example: `GET /wp-json/indigetal-offload/v1/stream/video-status` — Stream encode status polling (`upload_files` capability).
 
 **Read-only attachment helpers (no remote Bunny API calls)**
 
@@ -131,7 +146,7 @@ This plugin sends media and configuration-related data to **Bunny.net** only whe
 * No intentional breaking change to core Media Library Storage/Stream offload behavior for sites upgrading from `0.8.11`; review **About & Privacy** if you rely on uninstall cleanup options.
 
 = 0.8.11 =
-* Default removal path: preserves offload-critical options, credentials, manifests, and attachment/user meta; full deletion runs only when `bunny_offload_delete_plugin_data_on_uninstall` is exactly `1`, then that opt-in option is removed. Runtime upload/collection lock transients and the Stream thumbnail sync cron are always cleared when the plugin package is removed.
+* Default removal path: preserves offload-critical options, credentials, manifests, and attachment/user meta; full deletion runs only when `indigetal_offload_delete_plugin_data_on_uninstall` is exactly `1`, then that opt-in option is removed. Runtime upload/collection lock transients and the Stream thumbnail sync cron are always cleared when the plugin package is removed.
 * Aggressive cleanup list: dropped targets for legacy tool session/lock options and attachment lease meta that only applied to the separate commercial tier (not shipped in this Free tree).
 
 = 0.8.9 =

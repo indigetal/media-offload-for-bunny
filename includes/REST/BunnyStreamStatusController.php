@@ -16,7 +16,7 @@ if (!defined('ABSPATH')) {
 
 class BunnyStreamStatusController {
 
-    const REST_NAMESPACE = 'bunny-offload/v1';
+    const REST_NAMESPACE = 'indigetal-offload/v1';
     const REST_ROUTE = '/stream/video-status';
 
     /**

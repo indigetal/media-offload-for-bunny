@@ -248,7 +248,7 @@ class BunnySettings {
     }
 
     /**
-     * Default admin tabs before the `bunny_offload_admin_tabs` filter.
+     * Default admin tabs before the `indigetal_offload_admin_tabs` filter.
      *
      * Each tab is an array with keys: `label` (string), `url` (string). Optional: `capability`
      * (string) for future consumers; Free rendering still requires `manage_options` on the page.
@@ -269,11 +269,11 @@ class BunnySettings {
 
         /**
          * Filter admin nav tabs for this plugin's Media screen. Pro add-ons append tabs here
-         * and render bodies via `bunny_offload_render_admin_tab` using the same slug keys.
+         * and render bodies via `indigetal_offload_render_admin_tab` using the same slug keys.
          *
          * @param array<string, array{label: string, url: string}> $tabs Tab slug => tab data.
          */
-        $filtered = apply_filters('bunny_offload_admin_tabs', $tabs);
+        $filtered = apply_filters('indigetal_offload_admin_tabs', $tabs);
 
         return is_array($filtered) ? $filtered : $tabs;
     }
@@ -978,7 +978,7 @@ class BunnySettings {
          *
          * Pro add-ons use this to render the Bunny.net Account (Account API key) block.
          */
-        do_action('bunny_offload_render_settings_before_stream_section');
+        do_action('indigetal_offload_render_settings_before_stream_section');
 
         $stream_section_class = BunnyConfigurationStore::isStreamEnabled()
             ? 'bmo-section bmo-section--stream bmo-section--stream-enabled'
@@ -1112,7 +1112,7 @@ class BunnySettings {
          * @param array<string, mixed> $storage_dependent_row_attributes Row attributes (e.g. data-bmo-storage-dependent-field, hidden).
          */
         do_action(
-            'bunny_offload_render_settings_storage_dependent_fields',
+            'indigetal_offload_render_settings_storage_dependent_fields',
             $storage_enabled,
             $storage_dependent_row_class,
             $storage_dependent_row_attributes
@@ -1356,7 +1356,7 @@ class BunnySettings {
          *
          * @param string $active_tab Active tab slug.
          */
-        do_action('bunny_offload_admin_panels', $active_tab);
+        do_action('indigetal_offload_admin_panels', $active_tab);
 
         if (self::TAB_ABOUT_PRIVACY === $active_tab) {
             $this->renderAboutPrivacyTabPanel();
@@ -1367,11 +1367,11 @@ class BunnySettings {
 
         if (self::TAB_SETTINGS !== $active_tab) {
             /**
-             * Render a custom admin tab body registered via `bunny_offload_admin_tabs`.
+             * Render a custom admin tab body registered via `indigetal_offload_admin_tabs`.
              *
              * @param string $active_tab Active tab slug.
              */
-            do_action('bunny_offload_render_admin_tab', $active_tab);
+            do_action('indigetal_offload_render_admin_tab', $active_tab);
             echo '</div></div>';
 
             return;
@@ -1391,7 +1391,7 @@ class BunnySettings {
          *
          * @param string $active_tab Active tab slug (here always `self::TAB_SETTINGS`).
          */
-        do_action('bunny_offload_render_settings_after_settings_panel', $active_tab);
+        do_action('indigetal_offload_render_settings_after_settings_panel', $active_tab);
 
         echo '</div></div>';
     }

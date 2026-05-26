@@ -69,7 +69,7 @@ class BunnyPlugin {
          *
          * @since 0.8.2
          */
-        do_action('bunny_offload_loaded');
+        do_action('indigetal_offload_loaded');
 
         add_action('admin_init', [self::class, 'registerPrivacySuggestedContent']);
     }

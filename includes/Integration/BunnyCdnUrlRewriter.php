@@ -389,7 +389,7 @@ class BunnyCdnUrlRewriter {
          * @param int                  $attachment_id Attachment ID.
          * @param array<string, mixed> $context       Caller context.
          */
-        $filtered = \apply_filters('bunny_offload_storage_url', $url, $attachment_id, $context);
+        $filtered = \apply_filters('indigetal_offload_storage_url', $url, $attachment_id, $context);
 
         return \is_string($filtered) && '' !== $filtered ? $filtered : $url;
     }
