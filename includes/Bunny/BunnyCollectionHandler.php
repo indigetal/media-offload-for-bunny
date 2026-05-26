@@ -23,6 +23,16 @@ class BunnyCollectionHandler {
         return self::$instance;
     }
 
+    /**
+     * Remote Bunny Stream collection name for a WordPress user.
+     *
+     * @param int $userId WordPress user ID.
+     * @return string Collection name sent to Bunny.net API.
+     */
+    public function collectionNameForUser(int $userId): string {
+        return 'user_' . (string) $userId;
+    }
+
         /**
      * Create a new collection within a library.
      *
@@ -41,8 +51,7 @@ class BunnyCollectionHandler {
             return new \WP_Error('missing_user_id', __('User ID is required to create a collection.', 'indigetal-media-offload-for-bunny-net'));
         }
 
-        // Ensure the collection name follows our naming convention
-        $collectionName = "wpbs_{$userId}";
+        $collectionName = $this->collectionNameForUser((int) $userId);
 
         // Step 1: Prevent duplicate collection creation using a transient lock
         $lock_key = "indigetal_offload_collection_lock_{$userId}";

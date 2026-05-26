@@ -63,7 +63,9 @@ class BunnyUserIntegration {
         $collectionId = get_user_meta($userId, BunnyMetadataManager::COLLECTION_ID_META_KEY, true);
 
         if (empty($collectionId)) {
-            $collectionId = $this->collectionHandler->getCollectionByName("wpbs_{$userId}");
+            $collectionId = $this->collectionHandler->getCollectionByName(
+                $this->collectionHandler->collectionNameForUser((int) $userId)
+            );
         }
 
         if (empty($collectionId)) {
