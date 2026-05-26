@@ -128,7 +128,7 @@ function indigetal_offload_uninstall_delete_dynamic_transients() {
  * @return void
  */
 function indigetal_offload_uninstall_delete_user_meta() {
-    delete_metadata('user', 0, '_bunny_collection_id', '', true);
+    delete_metadata('user', 0, '_indigetal_offload_collection_id', '', true);
 }
 
 /**
@@ -138,22 +138,22 @@ function indigetal_offload_uninstall_delete_user_meta() {
  */
 function indigetal_offload_uninstall_delete_post_meta() {
     $meta_keys = [
-        '_bunny_video_id',
-        '_bunny_iframe_url',
-        '_bunny_thumbnail_url',
-        '_bunny_video_width',
-        '_bunny_video_height',
-        '_bunny_video_last_remote_refresh_attempt_at',
-        '_bunny_video_last_successful_remote_refresh_at',
-        '_bunny_video_title_dirty',
-        '_bunny_video_description_dirty',
-        '_bunny_video_last_synced_title',
-        '_bunny_video_last_synced_description',
-        '_bunny_video_title_sync_error',
-        '_bunny_video_description_sync_error',
-        '_bunny_offloaded',
-        '_bunny_offload_manifest',
-        '_bunny_offload_last_error',
+        '_indigetal_offload_video_id',
+        '_indigetal_offload_iframe_url',
+        '_indigetal_offload_thumbnail_url',
+        '_indigetal_offload_video_width',
+        '_indigetal_offload_video_height',
+        '_indigetal_offload_video_last_remote_refresh_attempt_at',
+        '_indigetal_offload_video_last_successful_remote_refresh_at',
+        '_indigetal_offload_video_title_dirty',
+        '_indigetal_offload_video_description_dirty',
+        '_indigetal_offload_video_last_synced_title',
+        '_indigetal_offload_video_last_synced_description',
+        '_indigetal_offload_video_title_sync_error',
+        '_indigetal_offload_video_description_sync_error',
+        '_indigetal_offloaded',
+        '_indigetal_offload_manifest',
+        '_indigetal_offload_last_error',
     ];
 
     foreach ($meta_keys as $meta_key) {

@@ -17,14 +17,14 @@ if (!defined('ABSPATH')) {
 class BunnyVideoMetadataSync {
     const DESCRIPTION_META_TAG_PROPERTY = 'description';
     const REMOTE_REFRESH_THROTTLE_SECONDS = 30;
-    const LAST_REMOTE_REFRESH_ATTEMPT_AT_META_KEY = '_bunny_video_last_remote_refresh_attempt_at';
-    const LAST_SUCCESSFUL_REMOTE_REFRESH_AT_META_KEY = '_bunny_video_last_successful_remote_refresh_at';
-    const TITLE_DIRTY_META_KEY = '_bunny_video_title_dirty';
-    const DESCRIPTION_DIRTY_META_KEY = '_bunny_video_description_dirty';
-    const LAST_SYNCED_TITLE_META_KEY = '_bunny_video_last_synced_title';
-    const LAST_SYNCED_DESCRIPTION_META_KEY = '_bunny_video_last_synced_description';
-    const TITLE_SYNC_ERROR_META_KEY = '_bunny_video_title_sync_error';
-    const DESCRIPTION_SYNC_ERROR_META_KEY = '_bunny_video_description_sync_error';
+    const LAST_REMOTE_REFRESH_ATTEMPT_AT_META_KEY = '_indigetal_offload_video_last_remote_refresh_attempt_at';
+    const LAST_SUCCESSFUL_REMOTE_REFRESH_AT_META_KEY = '_indigetal_offload_video_last_successful_remote_refresh_at';
+    const TITLE_DIRTY_META_KEY = '_indigetal_offload_video_title_dirty';
+    const DESCRIPTION_DIRTY_META_KEY = '_indigetal_offload_video_description_dirty';
+    const LAST_SYNCED_TITLE_META_KEY = '_indigetal_offload_video_last_synced_title';
+    const LAST_SYNCED_DESCRIPTION_META_KEY = '_indigetal_offload_video_last_synced_description';
+    const TITLE_SYNC_ERROR_META_KEY = '_indigetal_offload_video_title_sync_error';
+    const DESCRIPTION_SYNC_ERROR_META_KEY = '_indigetal_offload_video_description_sync_error';
 
     const TITLE_FIELD = 'title';
     const DESCRIPTION_FIELD = 'description';
@@ -119,7 +119,7 @@ class BunnyVideoMetadataSync {
 
         self::$processed_attachment_updates[$post_id] = true;
 
-        $video_id = (string) get_post_meta($post_id, '_bunny_video_id', true);
+        $video_id = (string) get_post_meta($post_id, BunnyMetadataManager::VIDEO_ID_META_KEY, true);
         if ('' === $video_id) {
             return;
         }
@@ -631,7 +631,7 @@ class BunnyVideoMetadataSync {
             return false;
         }
 
-        if ('' === (string) get_post_meta($post_id, '_bunny_video_id', true)) {
+        if ('' === (string) get_post_meta($post_id, BunnyMetadataManager::VIDEO_ID_META_KEY, true)) {
             return false;
         }
 
@@ -977,7 +977,7 @@ class BunnyVideoMetadataSync {
      * @return string
      */
     private static function getAttachmentVideoId($attachment_id) {
-        return preg_replace('/[^a-f0-9\-]/i', '', (string) get_post_meta(absint($attachment_id), '_bunny_video_id', true));
+        return preg_replace('/[^a-f0-9\-]/i', '', (string) get_post_meta(absint($attachment_id), BunnyMetadataManager::VIDEO_ID_META_KEY, true));
     }
 
     /**

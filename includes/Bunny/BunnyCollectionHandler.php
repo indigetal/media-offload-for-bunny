@@ -148,7 +148,7 @@ class BunnyCollectionHandler {
         }
 
         if ($userId) {
-            delete_user_meta($userId, '_bunny_collection_id');
+            delete_user_meta($userId, \Bunny_Offload\Integration\BunnyMetadataManager::COLLECTION_ID_META_KEY);
         }
 
         return true;

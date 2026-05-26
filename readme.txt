@@ -116,7 +116,7 @@ These five static methods are reserved for add-on tooling; Free does not call th
 * **BunnyStorageOffloader::getAttachmentStorageOffloadStatus( $attachment_id )** — Storage offload summary state, last error, and whether manifest rows report errors.
 * **BunnyMediaLibrary::getAttachmentStreamMetadata( $attachment_id )** — Stream-related meta snapshot (video id, embed URL, thumbnail URL, dimensions, author collection id).
 * **BunnyMediaLibrary::getAttachmentStreamStatus( $attachment_id )** — Whether Stream upload runtime is configured and whether the attachment stores a Stream video id.
-* **BunnyAttachmentManifest::hasAnyOffloadedAttachments()** — Whether any attachment has a non-local offload summary (`_bunny_offloaded` in partial, complete, or error). Bounded site-wide existence check; Pro uses this for storage URL token-key warnings and Site Health.
+* **BunnyAttachmentManifest::hasAnyOffloadedAttachments()** — Whether any attachment has a non-local offload summary (`_indigetal_offloaded` in partial, complete, or error). Bounded site-wide existence check; Pro uses this for storage URL token-key warnings and Site Health.
 
 Fully qualified class names in source: Bunny_Offload\Integration\BunnyStorageOffloader, Bunny_Offload\Integration\BunnyMediaLibrary, and Bunny_Offload\Integration\BunnyAttachmentManifest. See PHPDoc on each method for return field details.
 

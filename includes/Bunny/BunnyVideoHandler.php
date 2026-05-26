@@ -2,6 +2,7 @@
 
 namespace Bunny_Offload\Bunny;
 
+use Bunny_Offload\Integration\BunnyMetadataManager;
 use Bunny_Offload\Integration\BunnyVideoMetadataSync;
 use Bunny_Offload\Settings\BunnyConfigurationStore;
 use Bunny_Offload\Utils\BunnyLogger;
@@ -33,13 +34,13 @@ class BunnyVideoHandler {
     }
 
     public function getPlaybackUrls($postId) {
-        $videoId = get_post_meta($postId, '_bunny_video_id', true);
+        $videoId = get_post_meta($postId, BunnyMetadataManager::VIDEO_ID_META_KEY, true);
         if (empty($videoId)) {
             return null;
         }
 
         $pullZone = BunnyConfigurationStore::getStreamPullZoneHostname();
-        $iframeUrl = get_post_meta($postId, '_bunny_iframe_url', true);
+        $iframeUrl = get_post_meta($postId, BunnyMetadataManager::IFRAME_URL_META_KEY, true);
 
         return [
             'mp4'    => "https://{$pullZone}/{$videoId}/play_720p.mp4",
@@ -157,10 +158,10 @@ class BunnyVideoHandler {
         if ($postId) {
             $library_id = $this->apiClient->getLibraryId();
             if (!empty($library_id)) {
-                update_post_meta($postId, '_bunny_iframe_url', "https://player.mediadelivery.net/embed/{$library_id}/{$videoId}");
+                update_post_meta($postId, BunnyMetadataManager::IFRAME_URL_META_KEY, "https://player.mediadelivery.net/embed/{$library_id}/{$videoId}");
             }
 
-            update_post_meta($postId, '_bunny_video_id', $videoId);
+            update_post_meta($postId, BunnyMetadataManager::VIDEO_ID_META_KEY, $videoId);
         }
 
         $pullZone = BunnyConfigurationStore::getStreamPullZoneHostname();
@@ -169,7 +170,7 @@ class BunnyVideoHandler {
         return [
             'videoId'   => $videoId,
             'videoUrl'  => $playbackUrl, // Dynamically constructed MP4 URL
-            'iframeUrl' => get_post_meta($postId, '_bunny_iframe_url', true), // Retrieve stored iframe URL
+            'iframeUrl' => get_post_meta($postId, BunnyMetadataManager::IFRAME_URL_META_KEY, true), // Retrieve stored iframe URL
         ];
 
     }
@@ -381,7 +382,7 @@ class BunnyVideoHandler {
             return new \WP_Error('invalid_user', __('A valid user is required to resolve a Bunny Stream collection.', 'indigetal-media-offload-for-bunny-net'));
         }
 
-        $collectionId = (string) get_user_meta($userId, '_bunny_collection_id', true);
+        $collectionId = (string) get_user_meta($userId, BunnyMetadataManager::COLLECTION_ID_META_KEY, true);
         if ('' !== $collectionId) {
             return $collectionId;
         }
@@ -391,7 +392,7 @@ class BunnyVideoHandler {
             return $collectionId;
         }
 
-        update_user_meta($userId, '_bunny_collection_id', $collectionId);
+        update_user_meta($userId, BunnyMetadataManager::COLLECTION_ID_META_KEY, $collectionId);
 
         return (string) $collectionId;
     }
@@ -548,7 +549,7 @@ class BunnyVideoHandler {
         }
 
         if ($attachmentId > 0 && in_array($status, [3, 4], true)) {
-            $stored_video_id = (string) get_post_meta($attachmentId, '_bunny_video_id', true);
+            $stored_video_id = (string) get_post_meta($attachmentId, BunnyMetadataManager::VIDEO_ID_META_KEY, true);
 
             if ('' !== $stored_video_id && $videoId === $stored_video_id) {
                 $attachment = get_post($attachmentId);
@@ -575,21 +576,21 @@ class BunnyVideoHandler {
      * @return void
      */
     private function updatePlayableAttachmentMeta($attachmentId, $videoId, array $response) {
-        if (empty(get_post_meta($attachmentId, '_bunny_thumbnail_url', true))) {
+        if (empty(get_post_meta($attachmentId, BunnyMetadataManager::THUMBNAIL_URL_META_KEY, true))) {
             $pullZone = BunnyConfigurationStore::getStreamPullZoneHostname();
 
             if (!empty($pullZone)) {
                 $thumbnailFileName = sanitize_file_name($response['thumbnailFileName'] ?? 'thumbnail.jpg');
                 $thumbnailUrl = sprintf('https://%s/%s/%s', $pullZone, $videoId, $thumbnailFileName);
 
-                update_post_meta($attachmentId, '_bunny_thumbnail_url', esc_url_raw($thumbnailUrl));
+                update_post_meta($attachmentId, BunnyMetadataManager::THUMBNAIL_URL_META_KEY, esc_url_raw($thumbnailUrl));
 
                 $width = (int) ($response['width'] ?? 0);
                 $height = (int) ($response['height'] ?? 0);
 
                 if ($width > 0 && $height > 0) {
-                    update_post_meta($attachmentId, '_bunny_video_width', $width);
-                    update_post_meta($attachmentId, '_bunny_video_height', $height);
+                    update_post_meta($attachmentId, BunnyMetadataManager::VIDEO_WIDTH_META_KEY, $width);
+                    update_post_meta($attachmentId, BunnyMetadataManager::VIDEO_HEIGHT_META_KEY, $height);
                 }
             }
         }

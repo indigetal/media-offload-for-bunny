@@ -8,6 +8,7 @@
 namespace Bunny_Offload\REST;
 
 use Bunny_Offload\Bunny\BunnyVideoHandler;
+use Bunny_Offload\Integration\BunnyMetadataManager;
 use Bunny_Offload\Integration\BunnyVideoMetadataSync;
 
 if (!defined('ABSPATH')) {
@@ -118,7 +119,7 @@ class BunnyStreamStatusController {
         }
 
         $video_id = $this->sanitizeVideoId($request->get_param('video_id'));
-        $stored_video_id = (string) get_post_meta($attachment_id, '_bunny_video_id', true);
+        $stored_video_id = (string) get_post_meta($attachment_id, BunnyMetadataManager::VIDEO_ID_META_KEY, true);
         if ('' === $stored_video_id || $video_id !== $stored_video_id) {
             return new \WP_Error(
                 'rest_forbidden',

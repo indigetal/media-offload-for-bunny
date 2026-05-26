@@ -10,9 +10,9 @@ if (!defined('ABSPATH')) {
  * Attachment manifest helper for Phase 2 Bunny Storage offload state.
  */
 class BunnyAttachmentManifest {
-    const SUMMARY_META_KEY = '_bunny_offloaded';
-    const MANIFEST_META_KEY = '_bunny_offload_manifest';
-    const LAST_ERROR_META_KEY = '_bunny_offload_last_error';
+    const SUMMARY_META_KEY = '_indigetal_offloaded';
+    const MANIFEST_META_KEY = '_indigetal_offload_manifest';
+    const LAST_ERROR_META_KEY = '_indigetal_offload_last_error';
 
     const SUMMARY_STATE_LOCAL = 'local';
     const SUMMARY_STATE_PARTIAL = 'partial';
@@ -49,7 +49,7 @@ class BunnyAttachmentManifest {
      * auth is enabled but no key is saved.
      *
      * Answers: "Does any attachment have a non-local offload summary?" Uses post meta key
-     * SUMMARY_META_KEY (`_bunny_offloaded`) with summary states partial, complete, or error
+     * SUMMARY_META_KEY (`_indigetal_offloaded`) with summary states partial, complete, or error
      * (excludes local). Bounded existence query: at most one attachment ID returned.
      *
      * Does not call Bunny APIs.

@@ -60,7 +60,7 @@ class BunnyUserIntegration {
      * @param int $userId The ID of the user being deleted.
      */
     public function handleUserDeletion($userId) {
-        $collectionId = get_user_meta($userId, '_bunny_collection_id', true);
+        $collectionId = get_user_meta($userId, BunnyMetadataManager::COLLECTION_ID_META_KEY, true);
 
         if (empty($collectionId)) {
             $collectionId = $this->collectionHandler->getCollectionByName("wpbs_{$userId}");

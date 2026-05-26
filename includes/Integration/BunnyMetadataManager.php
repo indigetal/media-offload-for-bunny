@@ -8,6 +8,13 @@ if (!defined('ABSPATH')) {
 }
 
 class BunnyMetadataManager {
+    public const VIDEO_ID_META_KEY = '_indigetal_offload_video_id';
+    public const IFRAME_URL_META_KEY = '_indigetal_offload_iframe_url';
+    public const THUMBNAIL_URL_META_KEY = '_indigetal_offload_thumbnail_url';
+    public const VIDEO_WIDTH_META_KEY = '_indigetal_offload_video_width';
+    public const VIDEO_HEIGHT_META_KEY = '_indigetal_offload_video_height';
+    public const COLLECTION_ID_META_KEY = '_indigetal_offload_collection_id';
+
     private static function buildAttachmentMetaArgs($description, $type = 'string', $show_in_rest = true, $extra_args = []) {
         if (is_array($show_in_rest)) {
             $extra_args   = $show_in_rest;
@@ -51,13 +58,13 @@ class BunnyMetadataManager {
     public static function registerAttachmentMeta() {
         $iframe_meta_args = self::buildAttachmentMetaArgs( 'Bunny Stream Embed URL' );
 
-        register_post_meta( 'attachment', '_bunny_video_id', self::buildAttachmentMetaArgs( 'Bunny Stream video GUID' ) );
-        register_post_meta( 'attachment', '_bunny_iframe_url', $iframe_meta_args );
-        register_post_meta( 'post', '_bunny_iframe_url', $iframe_meta_args );
-        register_post_meta( 'page', '_bunny_iframe_url', $iframe_meta_args );
-        register_post_meta( 'attachment', '_bunny_thumbnail_url', self::buildAttachmentMetaArgs( 'Bunny Stream thumbnail URL' ) );
-        register_post_meta( 'attachment', '_bunny_video_width', self::buildAttachmentMetaArgs( 'Bunny Stream video width in pixels', 'integer' ) );
-        register_post_meta( 'attachment', '_bunny_video_height', self::buildAttachmentMetaArgs( 'Bunny Stream video height in pixels', 'integer' ) );
+        register_post_meta( 'attachment', self::VIDEO_ID_META_KEY, self::buildAttachmentMetaArgs( 'Bunny Stream video GUID' ) );
+        register_post_meta( 'attachment', self::IFRAME_URL_META_KEY, $iframe_meta_args );
+        register_post_meta( 'post', self::IFRAME_URL_META_KEY, $iframe_meta_args );
+        register_post_meta( 'page', self::IFRAME_URL_META_KEY, $iframe_meta_args );
+        register_post_meta( 'attachment', self::THUMBNAIL_URL_META_KEY, self::buildAttachmentMetaArgs( 'Bunny Stream thumbnail URL' ) );
+        register_post_meta( 'attachment', self::VIDEO_WIDTH_META_KEY, self::buildAttachmentMetaArgs( 'Bunny Stream video width in pixels', 'integer' ) );
+        register_post_meta( 'attachment', self::VIDEO_HEIGHT_META_KEY, self::buildAttachmentMetaArgs( 'Bunny Stream video height in pixels', 'integer' ) );
         register_post_meta(
             'attachment',
             BunnyVideoMetadataSync::LAST_REMOTE_REFRESH_ATTEMPT_AT_META_KEY,
