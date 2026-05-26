@@ -484,7 +484,7 @@ class BunnySettings {
         if (function_exists('add_settings_error')) {
             add_settings_error(
                 self::SETTINGS_GROUP,
-                'bunny_stream_library_id_invalid',
+                'indigetal_offload_stream_library_id_invalid',
                 __('The Video library ID was not saved because it did not match a supported format. Use the numeric library ID from your Bunny Stream library (or a standard UUID). Values that look like encrypted blobs are not accepted.', 'indigetal-media-offload-for-bunny-net'),
                 'error'
             );
@@ -513,7 +513,7 @@ class BunnySettings {
         if (function_exists('add_settings_error')) {
             add_settings_error(
                 self::SETTINGS_GROUP,
-                'bunny_stream_enable_blocked',
+                'indigetal_offload_stream_enable_blocked',
                 __('Stream could not be enabled because the Stream API key, Video library ID, and CDN hostname must all be saved first. Fill those fields (or save again after they appear), then enable Stream.', 'indigetal-media-offload-for-bunny-net'),
                 'error'
             );

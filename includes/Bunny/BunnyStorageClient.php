@@ -136,7 +136,7 @@ class BunnyStorageClient {
     public function buildUploadRequestArgs($local_path) {
         if (!is_string($local_path) || '' === $local_path || !file_exists($local_path) || !is_readable($local_path)) {
             return new \WP_Error(
-                'bunny_storage_missing_file',
+                'indigetal_offload_storage_missing_file',
                 __('The local file could not be read for Bunny Storage upload.', 'indigetal-media-offload-for-bunny-net'),
                 [
                     'local_path' => $local_path,
@@ -148,7 +148,7 @@ class BunnyStorageClient {
 
         if (false === $body) {
             return new \WP_Error(
-                'bunny_storage_read_failed',
+                'indigetal_offload_storage_read_failed',
                 __('Failed to read the local file for Bunny Storage upload.', 'indigetal-media-offload-for-bunny-net'),
                 [
                     'local_path' => $local_path,
@@ -348,7 +348,7 @@ class BunnyStorageClient {
 
         if ('' === $base_url) {
             return new \WP_Error(
-                'bunny_storage_invalid_region',
+                'indigetal_offload_storage_invalid_region',
                 __('The configured Bunny Storage region is invalid.', 'indigetal-media-offload-for-bunny-net'),
                 [
                     'region' => $this->storage_region,
@@ -358,7 +358,7 @@ class BunnyStorageClient {
 
         if ('' === $normalized_path) {
             return new \WP_Error(
-                'bunny_storage_invalid_path',
+                'indigetal_offload_storage_invalid_path',
                 __('The requested Bunny Storage path is invalid.', 'indigetal-media-offload-for-bunny-net'),
                 [
                     'remote_path' => $remote_path,
@@ -439,7 +439,7 @@ class BunnyStorageClient {
         }
 
         return $last_error ?: new \WP_Error(
-            'bunny_storage_request_failed',
+            'indigetal_offload_storage_request_failed',
             __('Bunny Storage request failed after multiple attempts.', 'indigetal-media-offload-for-bunny-net'),
             [
                 'remote_path' => $remote_path,
@@ -456,7 +456,7 @@ class BunnyStorageClient {
     private function validateConfiguration() {
         if ('' === $this->storage_zone_name || '' === $this->storage_password || '' === $this->storage_region) {
             return new \WP_Error(
-                'bunny_storage_not_configured',
+                'indigetal_offload_storage_not_configured',
                 __('Bunny Storage is not fully configured.', 'indigetal-media-offload-for-bunny-net'),
                 [
                     'storage_zone_name' => $this->storage_zone_name,
@@ -467,7 +467,7 @@ class BunnyStorageClient {
 
         if ('' === $this->getBaseUrl()) {
             return new \WP_Error(
-                'bunny_storage_invalid_region',
+                'indigetal_offload_storage_invalid_region',
                 __('The configured Bunny Storage region is invalid.', 'indigetal-media-offload-for-bunny-net'),
                 [
                     'storage_region' => $this->storage_region,
@@ -489,7 +489,7 @@ class BunnyStorageClient {
 
         if ('' === $destination_path) {
             return new \WP_Error(
-                'bunny_storage_download_invalid_destination',
+                'indigetal_offload_storage_download_invalid_destination',
                 __('A valid local destination path is required for Bunny Storage download.', 'indigetal-media-offload-for-bunny-net'),
                 [
                     'destination_path' => $destination_path,
@@ -505,7 +505,7 @@ class BunnyStorageClient {
 
         if (file_exists($destination_path) && is_dir($destination_path)) {
             return new \WP_Error(
-                'bunny_storage_download_destination_is_directory',
+                'indigetal_offload_storage_download_destination_is_directory',
                 __('The Bunny Storage download destination is a directory, not a file path.', 'indigetal-media-offload-for-bunny-net'),
                 [
                     'destination_path' => $destination_path,
@@ -516,7 +516,7 @@ class BunnyStorageClient {
         // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_is_writable -- Local download path check; not admin FTP filesystem.
         if (file_exists($destination_path) && !is_writable($destination_path)) {
             return new \WP_Error(
-                'bunny_storage_download_destination_not_writable',
+                'indigetal_offload_storage_download_destination_not_writable',
                 __('The existing local destination file is not writable for Bunny Storage download.', 'indigetal-media-offload-for-bunny-net'),
                 [
                     'destination_path' => $destination_path,
@@ -528,7 +528,7 @@ class BunnyStorageClient {
 
         if ('' === $destination_dir || '.' === $destination_dir) {
             return new \WP_Error(
-                'bunny_storage_download_invalid_destination_directory',
+                'indigetal_offload_storage_download_invalid_destination_directory',
                 __('A valid local destination directory is required for Bunny Storage download.', 'indigetal-media-offload-for-bunny-net'),
                 [
                     'destination_path' => $destination_path,
@@ -538,7 +538,7 @@ class BunnyStorageClient {
 
         if (!wp_mkdir_p($destination_dir)) {
             return new \WP_Error(
-                'bunny_storage_download_directory_create_failed',
+                'indigetal_offload_storage_download_directory_create_failed',
                 __('The local destination directory could not be created for Bunny Storage download.', 'indigetal-media-offload-for-bunny-net'),
                 [
                     'destination_path' => $destination_path,
@@ -550,7 +550,7 @@ class BunnyStorageClient {
         // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_is_writable -- Local download path check; not admin FTP filesystem.
         if (!is_writable($destination_dir)) {
             return new \WP_Error(
-                'bunny_storage_download_directory_not_writable',
+                'indigetal_offload_storage_download_directory_not_writable',
                 __('The local destination directory is not writable for Bunny Storage download.', 'indigetal-media-offload-for-bunny-net'),
                 [
                     'destination_path' => $destination_path,
@@ -705,7 +705,7 @@ class BunnyStorageClient {
 
         if (!is_string($temporary_path) || '' === $temporary_path) {
             return new \WP_Error(
-                'bunny_storage_download_temporary_create_failed',
+                'indigetal_offload_storage_download_temporary_create_failed',
                 __('A temporary file could not be created for Bunny Storage download.', 'indigetal-media-offload-for-bunny-net'),
                 [
                     'destination_path' => $destination_path,
@@ -731,7 +731,7 @@ class BunnyStorageClient {
 
         if ('' === $temporary_path || !file_exists($temporary_path) || !is_readable($temporary_path)) {
             return new \WP_Error(
-                'bunny_storage_download_temporary_missing',
+                'indigetal_offload_storage_download_temporary_missing',
                 __('The streamed Bunny Storage download file was not available to finalize.', 'indigetal-media-offload-for-bunny-net'),
                 [
                     'remote_path'      => $remote_path,
@@ -746,7 +746,7 @@ class BunnyStorageClient {
             $this->deleteTemporaryDownloadFile($temporary_path);
 
             return new \WP_Error(
-                'bunny_storage_download_finalize_failed',
+                'indigetal_offload_storage_download_finalize_failed',
                 __('The Bunny Storage download could not be moved into its final local path.', 'indigetal-media-offload-for-bunny-net'),
                 [
                     'remote_path'      => $remote_path,
@@ -870,17 +870,17 @@ class BunnyStorageClient {
     private function buildHttpError($operation, $responseCode, $responseBody, $remotePath) {
         $parsed_message = $this->extractResponseMessage($responseBody);
         $message = '' !== $parsed_message ? $parsed_message : 'No response body';
-        $error_code = 'bunny_storage_http_error';
+        $error_code = 'indigetal_offload_storage_http_error';
 
         if ('upload' === $operation && 400 === $responseCode) {
             $message = __('Checksum and file contents mismatched.', 'indigetal-media-offload-for-bunny-net');
         }
 
         if ('download' === $operation && 404 === $responseCode) {
-            $error_code = 'bunny_storage_download_not_found';
+            $error_code = 'indigetal_offload_storage_download_not_found';
             $message = __('The Bunny Storage object was not found. Confirm the manifest remote path still exists in Bunny Storage.', 'indigetal-media-offload-for-bunny-net');
         } elseif ('download' === $operation && in_array($responseCode, [401, 403], true)) {
-            $error_code = 'bunny_storage_download_unauthorized';
+            $error_code = 'indigetal_offload_storage_download_unauthorized';
             $message = __('Bunny Storage rejected the download request. Confirm the Storage zone password still has access to this object.', 'indigetal-media-offload-for-bunny-net');
         }
 

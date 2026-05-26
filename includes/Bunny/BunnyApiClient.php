@@ -73,7 +73,7 @@ class BunnyApiClient {
             $json_body = wp_json_encode($data);
 
             if (false === $json_body) {
-                return new \WP_Error('bunny_api_json_encode_failed', __('Failed to encode the Bunny.net API request body.', 'indigetal-media-offload-for-bunny-net'));
+                return new \WP_Error('indigetal_offload_api_json_encode_failed', __('Failed to encode the Bunny.net API request body.', 'indigetal-media-offload-for-bunny-net'));
             }
 
             $args['body'] = $json_body;
@@ -105,13 +105,13 @@ class BunnyApiClient {
         $response_body = wp_remote_retrieve_body($response);
         BunnyLogger::log("sendJsonToBunny received a response for {$endpoint}.", 'debug');
 
-        return $this->decodeJsonResponse($response_body, $endpoint, 'bunny_api_invalid_json', 'Bunny.net API');
+        return $this->decodeJsonResponse($response_body, $endpoint, 'indigetal_offload_api_invalid_json', 'Bunny.net API');
     }
 
     /**
      * Retry failed API calls using raw wp_remote_request() responses.
      */
-    protected function retryApiCall($callback, $maxAttempts = 3, $endpoint = '', $apiLabel = 'Bunny.net API', $httpErrorCode = 'bunny_api_http_error') {
+    protected function retryApiCall($callback, $maxAttempts = 3, $endpoint = '', $apiLabel = 'Bunny.net API', $httpErrorCode = 'indigetal_offload_api_http_error') {
         $attempt = 0;
         $last_error = null;
 
@@ -176,7 +176,7 @@ class BunnyApiClient {
     }
 
     public function executeWithRetry($callback, $maxAttempts = 3) {
-        return $this->retryApiCall($callback, $maxAttempts, 'raw-request', 'Bunny.net API', 'bunny_api_http_error');
+        return $this->retryApiCall($callback, $maxAttempts, 'raw-request', 'Bunny.net API', 'indigetal_offload_api_http_error');
     }
 
     /**

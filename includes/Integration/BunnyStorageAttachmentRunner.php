@@ -49,7 +49,7 @@ class BunnyStorageAttachmentRunner {
             return $this->recordPreflightFailure(
                 $attachment_id,
                 new \WP_Error(
-                    'bunny_storage_invalid_original',
+                    'indigetal_offload_storage_invalid_original',
                     __('A valid attachment ID and file path are required for Bunny Storage offload.', 'indigetal-media-offload-for-bunny-net')
                 )
             );
@@ -91,7 +91,7 @@ class BunnyStorageAttachmentRunner {
             );
 
             return new \WP_Error(
-                'bunny_storage_manifest_persist_failed',
+                'indigetal_offload_storage_manifest_persist_failed',
                 __('The Bunny Storage manifest could not be updated after the original upload completed.', 'indigetal-media-offload-for-bunny-net')
             );
         }
@@ -454,7 +454,7 @@ class BunnyStorageAttachmentRunner {
 
         if (!empty($upload_dir['error']) || empty($upload_dir['basedir']) || empty($upload_dir['baseurl'])) {
             return new \WP_Error(
-                'bunny_storage_upload_dir_unavailable',
+                'indigetal_offload_storage_upload_dir_unavailable',
                 __('The WordPress uploads directory is not available for Bunny Storage offload.', 'indigetal-media-offload-for-bunny-net')
             );
         }
@@ -464,7 +464,7 @@ class BunnyStorageAttachmentRunner {
 
         if ('' === $local_path || '' === $relative_path || !file_exists($local_path)) {
             return new \WP_Error(
-                'bunny_storage_invalid_original_path',
+                'indigetal_offload_storage_invalid_original_path',
                 __('The attachment original could not be normalized for Bunny Storage offload.', 'indigetal-media-offload-for-bunny-net'),
                 [
                     'file'          => $file,
@@ -656,7 +656,7 @@ class BunnyStorageAttachmentRunner {
         $status = 0;
 
         if ($error instanceof \WP_Error) {
-            $error_data = $error->get_error_data('bunny_storage_http_error');
+            $error_data = $error->get_error_data('indigetal_offload_storage_http_error');
 
             if (is_array($error_data) && isset($error_data['status'])) {
                 $status = (int) $error_data['status'];

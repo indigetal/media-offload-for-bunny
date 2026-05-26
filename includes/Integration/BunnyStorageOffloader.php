@@ -358,7 +358,7 @@ class BunnyStorageOffloader {
         $status = 0;
 
         if ($error instanceof \WP_Error) {
-            $error_data = $error->get_error_data('bunny_storage_http_error');
+            $error_data = $error->get_error_data('indigetal_offload_storage_http_error');
 
             if (is_array($error_data) && isset($error_data['status'])) {
                 $status = (int) $error_data['status'];
