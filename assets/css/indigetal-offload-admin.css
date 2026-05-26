@@ -3,7 +3,7 @@
 /**
  * Indigetal Media Offload for Bunny.net — admin settings visual system.
  *
- * Scoping: All rules are nested under #bunny-offload-admin-wrapper so WordPress
+ * Scoping: All rules are nested under #indigetal-offload-admin-wrapper so WordPress
  * admin chrome outside the plugin page is unaffected. Specificity from the ID
  * lets us cleanly override WP core admin styles without !important.
  *
@@ -85,7 +85,7 @@
   --bmo-orange-tint-22: color-mix(in srgb, var(--bmo-color-accent-orange) 22%, transparent);
 }
 
-#bunny-offload-admin-wrapper {
+#indigetal-offload-admin-wrapper {
   box-sizing: border-box;
   min-width: 295px;
   max-width: 880px;
@@ -697,7 +697,7 @@
     line-height: 1.5;
   }
 
-  .bunny-offload-tools-list--stream {
+  .indigetal-offload-tools-list--stream {
     .bmo-tools-card--stream:first-child {
       margin-top: 0;
     }
@@ -954,7 +954,7 @@
 }
 
 @media (max-width: 1024px) {
-  #bunny-offload-admin-wrapper {
+  #indigetal-offload-admin-wrapper {
     max-width: 100%;
     padding-inline: var(--bmo-space-4);
 
@@ -975,7 +975,7 @@
 }
 
 @media (max-width: 640px) {
-  #bunny-offload-admin-wrapper {
+  #indigetal-offload-admin-wrapper {
     padding-inline: var(--bmo-space-3);
     padding-block: var(--bmo-space-4);
 

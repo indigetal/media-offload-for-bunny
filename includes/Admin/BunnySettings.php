@@ -140,20 +140,20 @@ class BunnySettings {
         }
 
         $plugin_file = dirname(__DIR__, 2) . '/indigetal-media-offload-for-bunny-net.php';
-        $style_rel    = 'assets/css/bunny-offload-admin.css';
+        $style_rel    = 'assets/css/indigetal-offload-admin.css';
         $style_path   = dirname(__DIR__, 2) . '/' . $style_rel;
         $script_rel   = 'assets/js/bunny-settings.js';
         $script_path  = dirname(__DIR__, 2) . '/' . $script_rel;
 
         wp_enqueue_style(
-            'bunny-offload-admin',
+            'indigetal-offload-admin',
             plugins_url($style_rel, $plugin_file),
             [],
             is_readable($style_path) ? (string) filemtime($style_path) : false
         );
 
         wp_enqueue_script(
-            'bunny-offload-settings',
+            'indigetal-offload-settings',
             plugins_url($script_rel, $plugin_file),
             [],
             is_readable($script_path) ? (string) filemtime($script_path) : false,
@@ -1343,10 +1343,10 @@ class BunnySettings {
             ? $requested
             : self::TAB_SETTINGS;
 
-        echo '<div class="wrap"><div id="bunny-offload-admin-wrapper">';
+        echo '<div class="wrap"><div id="indigetal-offload-admin-wrapper">';
         echo '<header class="bmo-admin-header">';
         echo '<h1 class="bmo-admin-header__brand">';
-        echo '<img src="' . esc_url(self::pluginAssetUrl('assets/bunny-offload-logo-type.svg')) . '" alt="' . esc_attr__('Indigetal Media Offload', 'indigetal-media-offload-for-bunny-net') . '" width="308" height="58" decoding="async">';
+        echo '<img src="' . esc_url(self::pluginAssetUrl('assets/indigetal-offload-logo-type.svg')) . '" alt="' . esc_attr__('Indigetal Media Offload', 'indigetal-media-offload-for-bunny-net') . '" width="308" height="58" decoding="async">';
         echo '</h1>';
         echo '</header>';
         self::renderAdminTabs($active_tab);
@@ -1387,7 +1387,7 @@ class BunnySettings {
         echo '</div>';
 
         /**
-         * After the main Settings tab form panel; still inside `#bunny-offload-admin-wrapper`.
+         * After the main Settings tab form panel; still inside `#indigetal-offload-admin-wrapper`.
          *
          * @param string $active_tab Active tab slug (here always `self::TAB_SETTINGS`).
          */
