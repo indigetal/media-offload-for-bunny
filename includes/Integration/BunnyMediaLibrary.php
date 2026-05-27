@@ -272,19 +272,12 @@ class BunnyMediaLibrary {
             return new \WP_Error('invalid_user', __('Invalid user specified.', 'indigetal-media-offload-for-bunny-net'));
         }
     
-        // Step 1: Retrieve or create the user's collection.
-        $collectionId = get_user_meta($user_id, BunnyMetadataManager::COLLECTION_ID_META_KEY, true) 
-   ?: BunnyCollectionHandler::getInstance()->createCollection($user_id);
+        // Step 1: Resolve the user's collection.
+        $collectionId = BunnyCollectionHandler::getInstance()->resolveCollectionIdForUser($user_id);
 
         if (is_wp_error($collectionId)) {
-            BunnyLogger::log("Failed to create collection for user ID {$user_id}: " . $collectionId->get_error_message(), 'error');
-        return $collectionId;
-        }
-
-        // Store the collection ID in user meta if it was newly created.
-        if (!get_user_meta($user_id, BunnyMetadataManager::COLLECTION_ID_META_KEY, true)) {
-            update_user_meta($user_id, BunnyMetadataManager::COLLECTION_ID_META_KEY, $collectionId);
-            BunnyLogger::log("Collection ID {$collectionId} assigned to user ID {$user_id}.", 'info');
+            BunnyLogger::log("Failed to resolve collection for user ID {$user_id}: " . $collectionId->get_error_message(), 'error');
+            return $collectionId;
         }
     
         // Step 2: Offload the video file using BunnyApi.

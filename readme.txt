@@ -4,7 +4,7 @@ Tags: bunny, media, offload, video, cdn
 Requires at least: 6.5
 Tested up to: 7.0
 Requires PHP: 8.0
-Stable tag: 1.0.0
+Stable tag: 1.0.2
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -106,7 +106,17 @@ Indigetal Media Offload for Bunny.net documents an intentional extension surface
 
 **REST (breaking change for direct clients)**
 
-* Namespace **`indigetal-offload/v1`** (formerly `bunny-offload/v1`). Example: `GET /wp-json/indigetal-offload/v1/stream/video-status` — Stream encode status polling (`upload_files` capability).
+* Namespace **`indigetal-offload/v1`** (breaking change from the pre-1.0.1 REST namespace). Example: `GET /wp-json/indigetal-offload/v1/stream/video-status` — Stream encode status polling (`upload_files` capability).
+
+**Post and user meta (attachment / user records)**
+
+* `_indigetal_offload_video_id`, `_indigetal_offload_iframe_url`, `_indigetal_offload_thumbnail_url`, `_indigetal_offload_video_width`, `_indigetal_offload_video_height` — Stream attachment meta (REST-exposed where registered).
+* `_indigetal_offload_offloaded`, `_indigetal_offload_manifest`, `_indigetal_offload_last_error` — Storage offload state.
+* `_indigetal_offload_collection_id` (user meta) — Bunny Stream collection GUID; remote collection **name** is `user_{userId}` via `BunnyCollectionHandler::collectionNameForUser()`.
+
+**WP_Error codes**
+
+Plugin-issued API, Storage, Stream, and settings validation errors use the `indigetal_offload_*` prefix (for example `indigetal_offload_storage_http_error`, `indigetal_offload_api_http_error`). Integrators should not rely on legacy `bunny_*` error slugs.
 
 **Read-only attachment helpers (no remote Bunny API calls)**
 
@@ -138,6 +148,14 @@ This plugin sends media and configuration-related data to **Bunny.net** only whe
 
 == Changelog ==
 
+= 1.0.2 =
+* Stream collection hardening: validate stored `_indigetal_offload_collection_id` against Bunny before upload; clear stale user meta and reuse or create the canonical `user_{userId}` collection when the remote GUID is missing.
+* Paginate Bunny Stream collection listing so libraries with more than 100 collections are fully visible to collection validation and name-based reuse.
+
+= 1.0.1 =
+* WordPress.org Plugins Team review response: restrict Bunny Storage downloads to paths under the WordPress uploads directory; standardize plugin-owned options, transients, hooks, REST namespace, post/user meta, admin asset handles, lock transients, `WP_Error` codes, and Stream collection remote names under `indigetal_offload_` / `indigetal-offload` / `INDIGETAL_OFFLOAD_`.
+* Breaking for integrators and upgraded databases without migration: re-save settings; update hook, filter, REST, and meta integrations; Stream collections use remote name `user_{userId}` (stored collection GUID meta unchanged). Pre-1.0.1 plugin-owned option, transient, hook, REST, and meta identifiers are not read.
+
 = 1.0.0 =
 * First stable release. Security hardening for WordPress.org review. No intentional breaking change to core Media Library Storage/Stream offload behavior for sites upgrading from `1.0.0-beta.2` or `0.8.11`.
 
@@ -163,6 +181,12 @@ This plugin sends media and configuration-related data to **Bunny.net** only whe
 * Initial Stream + Media Library integration direction (pre–Free extraction readme described a broader feature set; current Free scope is described in this file from 0.8.9 onward).
 
 == Upgrade Notice ==
+
+= 1.0.2 =
+Bugfix release: Stream uploads recover when per-user collection meta points at a deleted or invalid Bunny collection. No settings migration required.
+
+= 1.0.1 =
+Review-response release: standardized `indigetal_offload_*` identifiers. Re-save plugin settings after upgrade; update custom integrations that used pre-1.0.1 hooks, REST paths, or attachment meta keys.
 
 = 1.0.0 =
 First stable release. Sites on `1.0.0-beta.2` or `0.8.x` can upgrade; review **About & Privacy** for uninstall retention.

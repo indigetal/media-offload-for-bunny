@@ -371,33 +371,6 @@ class BunnyVideoHandler {
     }
 
     /**
-     * Resolve the Bunny Stream collection GUID for a WordPress user.
-     *
-     * @param int $userId Current WordPress user ID.
-     * @return string|\WP_Error
-     */
-    private function resolveCollectionIdForUser($userId) {
-        $userId = absint($userId);
-        if ($userId < 1) {
-            return new \WP_Error('invalid_user', __('A valid user is required to resolve a Bunny Stream collection.', 'indigetal-media-offload-for-bunny-net'));
-        }
-
-        $collectionId = (string) get_user_meta($userId, BunnyMetadataManager::COLLECTION_ID_META_KEY, true);
-        if ('' !== $collectionId) {
-            return $collectionId;
-        }
-
-        $collectionId = $this->collectionHandler->createCollection($userId);
-        if (is_wp_error($collectionId)) {
-            return $collectionId;
-        }
-
-        update_user_meta($userId, BunnyMetadataManager::COLLECTION_ID_META_KEY, $collectionId);
-
-        return (string) $collectionId;
-    }
-
-    /**
      * Update a video's thumbnail on Bunny.net.
      *
      * @param string   $videoId    The ID of the video.

@@ -2,6 +2,7 @@
 
 namespace Bunny_Offload\Bunny;
 
+use Bunny_Offload\Integration\BunnyMetadataManager;
 use Bunny_Offload\Utils\BunnyLogger;
 
 if (!defined('ABSPATH')) {
@@ -133,6 +134,43 @@ class BunnyCollectionHandler {
     }
 
     /**
+     * Resolve the Bunny Stream collection GUID for a WordPress user.
+     *
+     * @param int $userId WordPress user ID.
+     * @return string|\WP_Error Collection GUID or WP_Error on failure.
+     */
+    public function resolveCollectionIdForUser(int $userId) {
+        $userId = absint($userId);
+        if ($userId < 1) {
+            return new \WP_Error('invalid_user', __('A valid user is required to resolve a Bunny Stream collection.', 'indigetal-media-offload-for-bunny-net'));
+        }
+
+        $collectionId = trim((string) get_user_meta($userId, BunnyMetadataManager::COLLECTION_ID_META_KEY, true));
+        if ('' !== $collectionId) {
+            $collection = $this->getCollection($collectionId);
+
+            if (is_wp_error($collection)) {
+                return $collection;
+            }
+
+            if (null !== $collection) {
+                return (string) $collection['guid'];
+            }
+
+            delete_user_meta($userId, BunnyMetadataManager::COLLECTION_ID_META_KEY);
+        }
+
+        $collectionId = $this->createCollection($userId);
+        if (is_wp_error($collectionId)) {
+            return $collectionId;
+        }
+
+        update_user_meta($userId, BunnyMetadataManager::COLLECTION_ID_META_KEY, $collectionId);
+
+        return (string) $collectionId;
+    }
+
+    /**
      * Delete a collection by its ID.
      *
      * @param string $collectionId The ID of the collection to delete.
@@ -174,18 +212,27 @@ class BunnyCollectionHandler {
             return new \WP_Error('missing_library_id', __('Library ID is required to fetch collections.', 'indigetal-media-offload-for-bunny-net'));
         }
 
-        $endpoint = "library/{$library_id}/collections?page=1&itemsPerPage=100";
-        $response = $this->apiClient->sendJsonToBunny($endpoint, 'GET');
+        $collections = [];
+        $page = 1;
+        $itemsPerPage = 100;
 
-        if (is_wp_error($response)) {
-            return $response;
-        }
+        do {
+            $endpoint = "library/{$library_id}/collections?page={$page}&itemsPerPage={$itemsPerPage}";
+            $response = $this->apiClient->sendJsonToBunny($endpoint, 'GET');
 
-        if (!isset($response['items']) || !is_array($response['items'])) {
-            return new \WP_Error('invalid_collection_list', __('Invalid response from Bunny.net when listing collections.', 'indigetal-media-offload-for-bunny-net'));
-        }
+            if (is_wp_error($response)) {
+                return $response;
+            }
 
-        return $response['items'];
+            if (!isset($response['items']) || !is_array($response['items'])) {
+                return new \WP_Error('invalid_collection_list', __('Invalid response from Bunny.net when listing collections.', 'indigetal-media-offload-for-bunny-net'));
+            }
+
+            $collections = array_merge($collections, $response['items']);
+            $page++;
+        } while (count($response['items']) === $itemsPerPage);
+
+        return $collections;
     }
 
     /**

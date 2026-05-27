@@ -1,6 +1,6 @@
 {
   "name": "indigetal-media-offload-for-bunny-net",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "private": true,
   "description": "Offload media files to Bunny Storage and stream videos from Bunny Stream via the WordPress Media Library.",
   "license": "GPL-2.0-or-later",
