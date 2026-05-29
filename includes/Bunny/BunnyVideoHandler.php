@@ -15,13 +15,11 @@ class BunnyVideoHandler {
     private static $instance = null;
     private const DIRECT_UPLOAD_MEMORY_SAFETY_BUFFER = 16777216; // 16 MiB.
     private $apiClient;
-    private $collectionHandler;
     public $video_base_url;
     private $access_key;
 
     private function __construct() {
         $this->apiClient = BunnyApiClient::getInstance();
-        $this->collectionHandler = BunnyCollectionHandler::getInstance();
         $this->video_base_url = $this->apiClient->video_base_url;
         $this->access_key = $this->apiClient->getAccessKey();
     }

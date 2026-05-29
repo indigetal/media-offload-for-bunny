@@ -68,6 +68,14 @@ class BunnyUserIntegration {
             );
         }
 
+        if (is_wp_error($collectionId)) {
+            BunnyLogger::log(
+                "Skipping Bunny Stream collection deletion for user {$userId}: " . $collectionId->get_error_message(),
+                'error'
+            );
+            return;
+        }
+
         if (empty($collectionId)) {
             return;
         }

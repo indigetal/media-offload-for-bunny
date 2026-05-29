@@ -27,6 +27,9 @@ class BunnyCollectionHandler {
     /**
      * Remote Bunny Stream collection name for a WordPress user.
      *
+     * Stable Free extension surface: remote name `user_{userId}` for Bunny.net; pairs with
+     * {@see resolveCollectionIdForUser()}.
+     *
      * @param int $userId WordPress user ID.
      * @return string Collection name sent to Bunny.net API.
      */
@@ -65,12 +68,15 @@ class BunnyCollectionHandler {
 
         // Step 2: Check if the collection already exists on Bunny.net
         $collections = $this->listCollections();
-        if (!is_wp_error($collections)) {
-            foreach ($collections as $collection) {
-                if ($collection['name'] === $collectionName) {
-                    delete_transient($lock_key); // Remove lock since no new collection is needed
-                    return $collection['guid']; // Return existing collection ID
-                }
+        if (is_wp_error($collections)) {
+            delete_transient($lock_key);
+            return $collections;
+        }
+
+        foreach ($collections as $collection) {
+            if ($collection['name'] === $collectionName) {
+                delete_transient($lock_key); // Remove lock since no new collection is needed
+                return $collection['guid']; // Return existing collection ID
             }
         }
 
@@ -115,13 +121,13 @@ class BunnyCollectionHandler {
      * Find a collection by its name.
      *
      * @param string $name The collection name to search for.
-     * @return string|null The collection GUID if found, or null.
+     * @return string|\WP_Error|null The collection GUID if found, null if not found after a successful list, or WP_Error when listing fails.
      */
     public function getCollectionByName($name) {
         $collections = $this->listCollections();
 
         if (is_wp_error($collections)) {
-            return null;
+            return $collections;
         }
 
         foreach ($collections as $collection) {
@@ -136,8 +142,23 @@ class BunnyCollectionHandler {
     /**
      * Resolve the Bunny Stream collection GUID for a WordPress user.
      *
+     * Stable Free extension surface: method name, parameters, and return semantics are
+     * maintained for add-on compatibility unless a release explicitly documents a breaking
+     * change. Calls Bunny.net Stream APIs (paginated collection list and optional create).
+     *
+     * Canonical user meta: {@see BunnyMetadataManager::COLLECTION_ID_META_KEY}
+     * (`_indigetal_offload_collection_id`). Remote collection name: `user_{userId}` via
+     * {@see collectionNameForUser()}.
+     *
+     * When meta stores a GUID, validates it against a full paginated
+     * {@see listCollections()} result via {@see getCollection()}. Listing `WP_Error` is
+     * returned as-is and user meta is not modified. Stale meta is deleted only after a
+     * successful list proves the GUID is absent, then {@see createCollection()} reuses an
+     * existing remote `user_{userId}` collection or POSTs a new one. `createCollection()`
+     * requires a successful list and does not POST when listing fails.
+     *
      * @param int $userId WordPress user ID.
-     * @return string|\WP_Error Collection GUID or WP_Error on failure.
+     * @return string|\WP_Error Collection GUID on success, or `WP_Error` on failure.
      */
     public function resolveCollectionIdForUser(int $userId) {
         $userId = absint($userId);

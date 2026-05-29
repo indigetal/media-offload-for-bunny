@@ -4,7 +4,7 @@ Tags: bunny, media, offload, video, cdn
 Requires at least: 6.5
 Tested up to: 7.0
 Requires PHP: 8.0
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -112,7 +112,16 @@ Indigetal Media Offload for Bunny.net documents an intentional extension surface
 
 * `_indigetal_offload_video_id`, `_indigetal_offload_iframe_url`, `_indigetal_offload_thumbnail_url`, `_indigetal_offload_video_width`, `_indigetal_offload_video_height` — Stream attachment meta (REST-exposed where registered).
 * `_indigetal_offload_offloaded`, `_indigetal_offload_manifest`, `_indigetal_offload_last_error` — Storage offload state.
-* `_indigetal_offload_collection_id` (user meta) — Bunny Stream collection GUID; remote collection **name** is `user_{userId}` via `BunnyCollectionHandler::collectionNameForUser()`.
+* `_indigetal_offload_collection_id` (user meta) — Bunny Stream collection GUID; remote collection **name** is `user_{userId}` (see **Stream collection resolution** below).
+
+**Stream collection resolution (Bunny API)**
+
+These instance methods call Bunny.net Stream APIs (paginated collection list and optional create). Obtain the handler via `BunnyCollectionHandler::getInstance()`. Fully qualified class: Bunny_Offload\Bunny\BunnyCollectionHandler.
+
+* **resolveCollectionIdForUser( $user_id )** — Supported way for add-ons (including Pro TUS) to resolve the per-user Stream collection GUID. Uses user meta `_indigetal_offload_collection_id`, validates stored GUIDs against a full paginated list, preserves meta when listing fails, clears stale meta only after a successful list proves the GUID is absent, then reuses or creates the remote `user_{userId}` collection. Does not create a collection when collection listing fails.
+* **collectionNameForUser( $user_id )** — Returns the remote collection name `user_{userId}` used with Bunny.net and `resolveCollectionIdForUser()`.
+
+See PHPDoc on each method for stable add-on contract notes.
 
 **WP_Error codes**
 
@@ -148,6 +157,12 @@ This plugin sends media and configuration-related data to **Bunny.net** only whe
 
 == Changelog ==
 
+= 1.0.3 =
+* Stream collection follow-up: do not create Stream collections when Bunny collection listing fails; fail closed instead of POSTing on an unknown remote collection set.
+* User deletion: do not treat a failed collection name lookup as “collection not found”; log the listing error and skip remote delete when the collection list cannot be trusted.
+* Developer docs: document `BunnyCollectionHandler::resolveCollectionIdForUser()` and `collectionNameForUser()` as the stable Free add-on surface for per-user Stream collection resolution (see readme FAQ).
+* Internal cleanup: remove unused collection-handler wiring from `BunnyVideoHandler` (collection resolution remains in `BunnyMediaLibrary` / `BunnyCollectionHandler`).
+
 = 1.0.2 =
 * Stream collection hardening: validate stored `_indigetal_offload_collection_id` against Bunny before upload; clear stale user meta and reuse or create the canonical `user_{userId}` collection when the remote GUID is missing.
 * Paginate Bunny Stream collection listing so libraries with more than 100 collections are fully visible to collection validation and name-based reuse.
@@ -181,6 +196,9 @@ This plugin sends media and configuration-related data to **Bunny.net** only whe
 * Initial Stream + Media Library integration direction (pre–Free extraction readme described a broader feature set; current Free scope is described in this file from 0.8.9 onward).
 
 == Upgrade Notice ==
+
+= 1.0.3 =
+Collection follow-up release: stricter list-before-mutate behavior for Stream collections and documented add-on resolver API. No settings migration required.
 
 = 1.0.2 =
 Bugfix release: Stream uploads recover when per-user collection meta points at a deleted or invalid Bunny collection. No settings migration required.
