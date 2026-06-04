@@ -772,9 +772,9 @@ class BunnyMediaLibrary {
          *
          * @param string $mp4           MP4 URL.
          * @param int    $attachment_id Attachment ID.
-         * @param array<string, mixed> $context Context (e.g. `source` => `attachment_mp4`).
+         * @param array<string, mixed> $context Context (e.g. `source` => `attachment_mp4`, `context` => `primary`).
          */
-        $filtered = apply_filters('indigetal_offload_stream_url', $mp4, $postId, ['source' => 'attachment_mp4']);
+        $filtered = apply_filters('indigetal_offload_stream_url', $mp4, $postId, ['source' => 'attachment_mp4', 'context' => 'primary']);
 
         return is_string($filtered) && '' !== $filtered ? esc_url($filtered) : esc_url($mp4);
     }
