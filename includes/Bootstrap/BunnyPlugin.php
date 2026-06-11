@@ -7,6 +7,7 @@
 
 namespace Bunny_Offload\Bootstrap;
 
+use Bunny_Offload\Admin\BunnyMediaPreviewAssets;
 use Bunny_Offload\Admin\BunnySettings;
 use Bunny_Offload\Integration\BunnyCdnUrlRewriter;
 use Bunny_Offload\Integration\BunnyMediaLibrary;
@@ -53,6 +54,7 @@ class BunnyPlugin {
         self::$booted = true;
 
         new BunnySettings();
+        new BunnyMediaPreviewAssets();
         new BunnyConfigurationStore();
         new BunnyMetadataManager();
         new BunnyVideoMetadataSync();
@@ -64,8 +66,8 @@ class BunnyPlugin {
 
         /**
          * Fires after Free has registered settings, configuration storage, attachment metadata,
-         * Stream metadata sync, REST status routes, public Storage URL rewriting, Storage offload,
-         * user integration, and Stream Media Library hooks.
+         * admin media preview assets, Stream metadata sync, REST status routes, public Storage URL
+         * rewriting, Storage offload, user integration, and Stream Media Library hooks.
          *
          * @since 0.8.2
          */

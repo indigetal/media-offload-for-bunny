@@ -4,6 +4,7 @@ namespace Bunny_Offload\Integration;
 use Bunny_Offload\Bunny\BunnyApiClient;
 use Bunny_Offload\Bunny\BunnyCollectionHandler;
 use Bunny_Offload\Bunny\BunnyVideoHandler;
+use Bunny_Offload\REST\BunnyStreamStatusController;
 use Bunny_Offload\Settings\BunnyConfigurationStore;
 use Bunny_Offload\Utils\BunnyLogger;
 
@@ -13,6 +14,8 @@ if (!defined('ABSPATH')) {
 
 class BunnyMediaLibrary {
     private const THUMBNAIL_SYNC_HOOK = 'indigetal_offload_sync_video_thumbnail';
+
+    private const FRESH_VIDEO_OFFLOAD_WINDOW_SECONDS = 600;
 
     private const THUMBNAIL_SYNC_RETRY_DELAYS = [
         1 => 60,
@@ -559,6 +562,96 @@ class BunnyMediaLibrary {
     }
 
     /**
+     * Build the wp-admin Stream preview notice state for an attachment.
+     *
+     * @param int $attachment_id Attachment ID.
+     * @return array<string, mixed>|null
+     */
+    private function getStreamPreviewNoticeState($attachment_id) {
+        $attachment_id = absint($attachment_id);
+        if ($attachment_id < 1) {
+            return null;
+        }
+
+        $attachment = get_post($attachment_id);
+        if (!$attachment || 'attachment' !== $attachment->post_type) {
+            return null;
+        }
+
+        if (0 !== strpos((string) $attachment->post_mime_type, 'video/')) {
+            return null;
+        }
+
+        $video_id = sanitize_text_field((string) get_post_meta($attachment_id, BunnyMetadataManager::VIDEO_ID_META_KEY, true));
+        if ('' === $video_id) {
+            if (!$this->isFreshStreamVideoOffloadCandidate($attachment)) {
+                return null;
+            }
+
+            return [
+                'processing'       => true,
+                'offloading'       => true,
+                'previewPreparing' => true,
+                'hasThumbnail'     => false,
+                'attachmentId'     => $attachment_id,
+                'videoId'          => '',
+                'restNamespace'    => BunnyStreamStatusController::REST_NAMESPACE,
+                'statusRoute'      => '/' . BunnyStreamStatusController::REST_NAMESPACE . BunnyStreamStatusController::REST_ROUTE,
+                'className'        => 'indigetal-offload-stream-preview-processing',
+                'dataAttribute'    => 'data-indigetal-offload-stream-processing',
+                'message'          => __('This video is being offloaded to Bunny Stream. Keep this page open or refresh it later to preview the offloaded video.', 'indigetal-media-offload-for-bunny-net'),
+            ];
+        }
+
+        $bunny_thumbnail_url = (string) get_post_meta($attachment_id, BunnyMetadataManager::THUMBNAIL_URL_META_KEY, true);
+        if ('' !== $bunny_thumbnail_url) {
+            return null;
+        }
+
+        return [
+            'processing'         => true,
+            'previewPreparing'   => true,
+            'hasThumbnail'       => false,
+            'previewReadyStatus' => 3,
+            'attachmentId'       => $attachment_id,
+            'videoId'            => $video_id,
+            'restNamespace'      => BunnyStreamStatusController::REST_NAMESPACE,
+            'statusRoute'        => '/' . BunnyStreamStatusController::REST_NAMESPACE . BunnyStreamStatusController::REST_ROUTE,
+            'className'          => 'indigetal-offload-stream-preview-processing',
+            'dataAttribute'      => 'data-indigetal-offload-stream-processing',
+            'message'            => __('Bunny Stream is still preparing this video preview. The preview will update when it is ready.', 'indigetal-media-offload-for-bunny-net'),
+        ];
+    }
+
+    /**
+     * Determine whether a local video attachment is likely in the initial Stream offload window.
+     *
+     * @param \WP_Post $attachment Attachment post object.
+     * @return bool
+     */
+    private function isFreshStreamVideoOffloadCandidate($attachment) {
+        if (!$attachment instanceof \WP_Post || 'attachment' !== $attachment->post_type) {
+            return false;
+        }
+
+        if (!BunnyConfigurationStore::isStreamEnabled() || !BunnyConfigurationStore::isStreamUploadRuntimeReady()) {
+            return false;
+        }
+
+        $lock_key = 'indigetal_offload_video_upload_lock_' . (int) $attachment->ID;
+        if (get_transient($lock_key)) {
+            return true;
+        }
+
+        $created_at = get_post_time('U', true, $attachment);
+        if (!is_numeric($created_at) || (int) $created_at < 1) {
+            return false;
+        }
+
+        return (time() - (int) $created_at) <= self::FRESH_VIDEO_OFFLOAD_WINDOW_SECONDS;
+    }
+
+    /**
      * Trigger the bounded Bunny -> WordPress metadata refresh on admin/editor attachment reads.
      *
      * @param \WP_Post $attachment Attachment post object.
@@ -589,6 +682,11 @@ class BunnyMediaLibrary {
         $response['description'] = $attachment->post_content;
 
         $thumbnailContext = $this->getBunnyThumbnailContext($attachment->ID);
+        $processing_state = $this->getStreamPreviewNoticeState($attachment->ID);
+        if ($processing_state) {
+            $response['indigetalOffloadStreamProcessing'] = $processing_state;
+        }
+
         if (!$thumbnailContext) {
             return $response;
         }
@@ -681,6 +779,11 @@ class BunnyMediaLibrary {
         $thumbnailContext = $this->getBunnyThumbnailContext($post->ID);
 
         $data = $response->get_data();
+        $processing_state = $this->getStreamPreviewNoticeState($post->ID);
+        if ($processing_state) {
+            $data['indigetal_offload_stream_processing'] = $processing_state;
+        }
+
         if (isset($data['title'])) {
             if (is_array($data['title'])) {
                 if (array_key_exists('raw', $data['title'])) {
@@ -776,7 +879,7 @@ class BunnyMediaLibrary {
          */
         $filtered = apply_filters('indigetal_offload_stream_url', $mp4, $postId, ['source' => 'attachment_mp4', 'context' => 'primary']);
 
-        return is_string($filtered) && '' !== $filtered ? esc_url($filtered) : esc_url($mp4);
+        return is_string($filtered) && '' !== $filtered ? esc_url_raw($filtered) : esc_url_raw($mp4);
     }
 
     /**
