@@ -4,7 +4,7 @@ Tags: bunny, media, offload, video, cdn
 Requires at least: 6.5
 Tested up to: 7.0
 Requires PHP: 8.0
-Stable tag: 1.0.4
+Stable tag: 1.0.5
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -17,7 +17,7 @@ Offload WordPress media to Bunny.net Storage and Stream; rewrite attachment URLs
 **What Free includes**
 
 - **Bunny Storage (non-video)** — Offload supported non-video attachments to your Storage zone and serve them from your **Storage Pull Zone** hostname using stored manifest paths.
-- **Bunny Stream (video)** — Offload supported videos to your Stream library; playback URLs use your **Stream Pull Zone** hostname, with optional removal of local files after a successful upload.
+- **Bunny Stream (video)** — Offload Bunny-compatible video formats that WordPress allows by default through the Media Library, including MP4/M4V, MKV, WebM, MOV/QT, AVI, FLV, WMV, and MPEG/MPG/MPE; playback URLs use your **Stream Pull Zone** hostname, with optional removal of local files after a successful upload.
 - **Thumbnails and metadata** — Stream-backed videos can receive Bunny thumbnail and dimension metadata once encoding is playable; the plugin may schedule bounded retries until that metadata is available.
 - **Remote delete** — Deleting a WordPress attachment can delete linked Storage objects (per manifest) and the remote Stream video when Stream metadata is present.
 - **User collections** — Stream uploads can be grouped using per-user Bunny collections where that workflow applies.
@@ -28,6 +28,10 @@ Offload WordPress media to Bunny.net Storage and Stream; rewrite attachment URLs
 This Free plugin does **not** implement member-only or token-authenticated media delivery from PHP: no HMAC-signed CDN URLs, no Stream embed token signing, no privacy filters, and no Pull Zone token query parameters added by this codebase. It does **not** ship operator **Tools** tabs, bulk batch or retry queues, a block-based Stream upload experience, or resumable chunked video uploads—those patterns are out of scope here. Expect **public/basic** delivery from WordPress unless you add another layer—for example, a **Pro** companion obtained separately from this plugin, or a custom integration using the documented extension hooks.
 
 Configure advanced Bunny.net edge rules (including token auth at the CDN) in the Bunny.net dashboard. If your Pull Zone requires signed or tokenized requests on every request, URLs produced by this Free plugin alone may not satisfy that edge policy until a compatible integration supplies those parameters.
+
+Bunny Stream may support additional containers outside WordPress's default upload path. This plugin does not add WordPress MIME support for `.vod`, `.ts`, `.amv`, or literal `.4mv` uploads.
+
+For Stream-backed WordPress attachment URLs, Free continues to return Bunny's MP4 fallback URL shape, `https://{stream_pull_zone}/{video_id}/play_720p.mp4`. Enable Bunny Stream MP4 fallback on the library before uploading videos that should use those direct attachment URLs; this plugin does not verify MP4 fallback enablement or fallback file existence in this pass.
 
 For privacy-aware integrations, Free owns the base Storage/Stream offload and unsigned URL rewriting surfaces. Private delivery, signed URL generation, and external privacy-controller hooks are Pro responsibilities; see the developer FAQ below for the Pro-only contract names.
 
@@ -103,7 +107,7 @@ Indigetal Media Offload for Bunny.net documents an intentional extension surface
 **URL filters**
 
 * **indigetal_offload_storage_url** (filter) — Adjust Storage CDN URLs at rewrite time. The context array includes `context` values such as `primary` and `candidate`.
-* **indigetal_offload_stream_url** (filter) — Adjust Stream MP4 URLs at rewrite time. Stream MP4 attachment URLs include `source => attachment_mp4` and `context => primary`.
+* **indigetal_offload_stream_url** (filter) — Adjust Stream MP4 fallback URLs at rewrite time. Stream MP4 attachment URLs include `source => attachment_mp4` and `context => primary`.
 * **indigetal_offload_attachment_manifest** (filter) — Adjust the normalized attachment manifest array before use.
 
 **Private delivery contract (Pro-only)**
@@ -171,6 +175,11 @@ This plugin sends media and configuration-related data to **Bunny.net** only whe
 
 == Changelog ==
 
+= 1.0.5 =
+* Stream upload formats: broaden Media Library Stream validation to Bunny-compatible formats WordPress allows by default, including MP4/M4V, MKV, WebM, MOV/QT, AVI, FLV, WMV, and MPEG/MPG/MPE.
+* Documentation: clarify supported default-path upload formats, excluded Bunny containers outside WordPress defaults (`.vod`, `.ts`, `.amv`, literal `.4mv`), and the preserved `play_720p.mp4` MP4 fallback attachment URL contract.
+* Version alignment: bump Free metadata and Stable tag to `1.0.5`.
+
 = 1.0.4 =
 * Developer alignment: document the Pro-only external privacy-controller contract for private signed delivery while preserving Free's public/basic delivery boundary.
 * Stream URL filter context: include `context => primary` alongside `source => attachment_mp4` for Stream MP4 attachment URLs so compatible Pro releases can build consistent safe signing context.
@@ -215,6 +224,9 @@ This plugin sends media and configuration-related data to **Bunny.net** only whe
 * Initial Stream + Media Library integration direction (pre–Free extraction readme described a broader feature set; current Free scope is described in this file from 0.8.9 onward).
 
 == Upgrade Notice ==
+
+= 1.0.5 =
+Stream format support alignment release: broader default-path upload validation and documentation clarifications. Primary Stream attachment URLs remain MP4 fallback URLs; no settings migration required.
 
 = 1.0.4 =
 Developer alignment release for Pro private-delivery integrations. Free behavior remains public/basic; no settings migration required.

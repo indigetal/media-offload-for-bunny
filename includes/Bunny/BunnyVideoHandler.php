@@ -14,6 +14,23 @@ if (!defined('ABSPATH')) {
 class BunnyVideoHandler {
     private static $instance = null;
     private const DIRECT_UPLOAD_MEMORY_SAFETY_BUFFER = 16777216; // 16 MiB.
+    /**
+     * Bunny-compatible subset of WordPress default video MIME types for Media Library uploads.
+     *
+     * This is not Bunny's full documented container list, and it does not extend
+     * WordPress's default upload MIME support.
+     */
+    private const SUPPORTED_STREAM_MIME_TYPES = [
+        'video/mp4',
+        'video/x-matroska',
+        'video/webm',
+        'video/quicktime',
+        'video/avi',
+        'video/x-flv',
+        'video/x-ms-wmv',
+        'video/mpeg',
+    ];
+
     private $apiClient;
     public $video_base_url;
     private $access_key;
@@ -31,6 +48,13 @@ class BunnyVideoHandler {
         return self::$instance;
     }
 
+    /**
+     * Get the Stream playback URLs currently exposed by the Free Media Library path.
+     *
+     * The primary attachment URL intentionally remains Bunny's `play_720p.mp4`
+     * MP4 fallback URL. This assumes MP4 fallback was enabled in Bunny before
+     * upload; Free does not verify fallback enablement or file availability.
+     */
     public function getPlaybackUrls($postId) {
         $videoId = get_post_meta($postId, BunnyMetadataManager::VIDEO_ID_META_KEY, true);
         if (empty($videoId)) {
@@ -163,6 +187,7 @@ class BunnyVideoHandler {
         }
 
         $pullZone = BunnyConfigurationStore::getStreamPullZoneHostname();
+        // Preserve the primary attachment URL contract; Free does not probe MP4 fallback availability.
         $playbackUrl = "https://{$pullZone}/{$videoId}/play_720p.mp4";
 
         return [
@@ -412,9 +437,27 @@ class BunnyVideoHandler {
     /**
      * Validate MIME type before file upload.
      */
+    public static function getSupportedMimeTypes() {
+        return self::SUPPORTED_STREAM_MIME_TYPES;
+    }
+
+    /**
+     * Determine whether a MIME type is supported for the default Stream upload path.
+     *
+     * @param string $mimeType MIME type to check.
+     * @return bool True when the MIME type is supported.
+     */
+    public static function isSupportedMimeType($mimeType) {
+        if (!is_string($mimeType)) {
+            return false;
+        }
+
+        return in_array($mimeType, self::SUPPORTED_STREAM_MIME_TYPES, true);
+    }
+
     public function validateMimeType($filePath) {
         $mime_type = mime_content_type($filePath);
-        if (!in_array($mime_type, ['video/mp4', 'video/webm'])) {
+        if (!self::isSupportedMimeType($mime_type)) {
             return new \WP_Error('invalid_mime', __('Invalid file type.', 'indigetal-media-offload-for-bunny-net'));
         }
         return true;
