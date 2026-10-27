@@ -13,6 +13,9 @@ if (!defined('ABSPATH')) {
 
 class BunnyVideoHandler {
     private static $instance = null;
+    public const STATUS_STATE_PENDING = 'pending';
+    public const STATUS_STATE_READY = 'ready';
+    public const STATUS_STATE_FAILED = 'failed';
     private const DIRECT_UPLOAD_MEMORY_SAFETY_BUFFER = 16777216; // 16 MiB.
     /**
      * Bunny-compatible subset of WordPress default video MIME types for Media Library uploads.
@@ -520,12 +523,39 @@ class BunnyVideoHandler {
     }
 
     /**
+     * Classify a Bunny Get Video status.
+     *
+     * Get Video VideoModelStatus values:
+     * 0 Created, 1 Uploaded, 2 Processing, 3 Transcoding, 4 Finished,
+     * 5 Error, 6 UploadFailed, 7 JitSegmenting, 8 JitPlaylistsCreated.
+     * Values outside 0-8 classify as pending.
+     *
+     * Stable Free extension surface: method name, parameters, and return keys are maintained
+     * for add-on compatibility unless a release explicitly documents a breaking change.
+     *
+     * @param int $status Bunny Get Video status value.
+     * @return string One of STATUS_STATE_PENDING, STATUS_STATE_READY, or STATUS_STATE_FAILED.
+     */
+    public static function classifyVideoStatus($status) {
+        $status = (int) $status;
+
+        if (4 === $status) {
+            return self::STATUS_STATE_READY;
+        }
+
+        if (5 === $status || 6 === $status) {
+            return self::STATUS_STATE_FAILED;
+        }
+
+        return self::STATUS_STATE_PENDING;
+    }
+
+    /**
      * Retrieve encoding status for a Bunny Stream video.
      *
-     * Bunny returns:
-     * - 3 = fully finished
-     * - 4 = one resolution finished and playable
-     * - 5 = failed
+     * Status is Bunny's Get Video VideoModelStatus: 3 Transcoding, 4 Finished,
+     * 5 Error, and 6 UploadFailed. Bunny's webhook callbacks number statuses
+     * differently. Use classifyVideoStatus() for the pending, ready, and failed classes.
      *
      * @param string $videoId Bunny Stream video GUID.
      * @param int    $attachmentId Optional attachment ID for thumbnail metadata writes
@@ -562,7 +592,7 @@ class BunnyVideoHandler {
             $encodeProgress = (int) $response['encode_progress'];
         }
 
-        if ($attachmentId > 0 && in_array($status, [3, 4], true)) {
+        if ($attachmentId > 0 && self::STATUS_STATE_READY === self::classifyVideoStatus($status)) {
             $stored_video_id = (string) get_post_meta($attachmentId, BunnyMetadataManager::VIDEO_ID_META_KEY, true);
 
             if ('' !== $stored_video_id && $videoId === $stored_video_id) {
