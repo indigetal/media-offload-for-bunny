@@ -1346,7 +1346,7 @@ class BunnySettings {
         echo '<div class="wrap"><div id="indigetal-offload-admin-wrapper">';
         echo '<header class="bmo-admin-header">';
         echo '<h1 class="bmo-admin-header__brand">';
-        echo '<img src="' . esc_url(self::pluginAssetUrl('assets/indigetal-offload-logo-type.svg')) . '" alt="' . esc_attr__('Indigetal Media Offload', 'indigetal-media-offload-for-bunny-net') . '" width="308" height="58" decoding="async">';
+        echo '<img src="' . esc_url(self::pluginAssetUrl('assets/indigetal-offload-logo-type.svg')) . '" alt="' . esc_attr__('Indigetal Media Offload', 'indigetal-media-offload-for-bunny-net') . '" width="308" height="33" decoding="async">';
         echo '</h1>';
         echo '</header>';
         self::renderAdminTabs($active_tab);

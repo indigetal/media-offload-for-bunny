@@ -108,7 +108,7 @@
     .bmo-admin-header__brand img {
       display: block;
       height: auto;
-      /* Wider wordmark (750×140 viewBox); ~+100px vs old cap so on-screen size matches previous 208px-wide art. */
+      /* Wordmark viewBox 1306.67×140. The 308px cap stays; the img height follows that aspect. */
       max-width: min(308px, 100%);
     }
   }
