@@ -509,29 +509,34 @@ class BunnyMediaLibrary {
         }
 
         $status = isset($statusResponse['status']) ? (int) $statusResponse['status'] : -1;
+        $state  = BunnyVideoHandler::classifyVideoStatus($status);
 
-        if (5 === $status) {
-            BunnyLogger::log("syncVideoThumbnailMetadata: Bunny reported permanent failure for attachment {$attachmentId}. Stopping retries.", 'error');
+        if (BunnyVideoHandler::STATUS_STATE_FAILED === $state) {
+            BunnyLogger::log(
+                "syncVideoThumbnailMetadata: Bunny reported failure (status {$status}) for attachment {$attachmentId}. Stopping retries.",
+                'error'
+            );
             return;
         }
 
-        if (in_array($status, [0, 1, 2], true)) {
+        if (BunnyVideoHandler::STATUS_STATE_PENDING === $state) {
+            if ($status < 0 || $status > 8) {
+                BunnyLogger::log(
+                    "syncVideoThumbnailMetadata: Attachment {$attachmentId} returned unexpected Bunny status {$status}; retrying.",
+                    'warning'
+                );
+            }
             $this->scheduleNextThumbnailSyncAttempt($attachmentId, $attempt, "status {$status}");
             return;
         }
 
-        if (in_array($status, [3, 4], true)) {
+        if (BunnyVideoHandler::STATUS_STATE_READY === $state) {
             BunnyLogger::log(
                 "syncVideoThumbnailMetadata: Attachment {$attachmentId} is playable (status {$status}) but thumbnail metadata is still missing after status refresh.",
                 'warning'
             );
             return;
         }
-
-        BunnyLogger::log(
-            "syncVideoThumbnailMetadata: Attachment {$attachmentId} returned unexpected Bunny status {$status}. Stopping retries.",
-            'warning'
-        );
     }
 
     private function getBunnyThumbnailContext($attachment_id) {
@@ -612,7 +617,7 @@ class BunnyMediaLibrary {
             'processing'         => true,
             'previewPreparing'   => true,
             'hasThumbnail'       => false,
-            'previewReadyStatus' => 3,
+            'previewReadyStatus' => 4,
             'attachmentId'       => $attachment_id,
             'videoId'            => $video_id,
             'restNamespace'      => BunnyStreamStatusController::REST_NAMESPACE,
