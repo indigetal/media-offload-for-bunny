@@ -58,7 +58,7 @@
             processing: true,
             previewPreparing: true,
             hasThumbnail: !!(data.thumb || data.image),
-            previewReadyStatus: 3,
+            previewReadyStatus: 4,
             attachmentId: data.id,
             videoId: videoId,
             statusRoute: config.statusRoute || '/indigetal-offload/v1/stream/video-status',
@@ -374,22 +374,21 @@
         });
     }
 
-    function handlePollResult(state, result) {
-        var attachmentId = String(state.attachmentId || '');
-        var status = parseInt(result && result.status, 10);
-        var encodeProgress = parseInt(result && result.encodeProgress, 10);
+    function handlePollResult(overlayState, result) {
+        var attachmentId = String(overlayState.attachmentId || '');
+        var state = result && result.state;
 
-        if (3 === status || (4 === status && encodeProgress >= 100)) {
+        if ('ready' === state) {
             terminalStates[attachmentId] = 'ready';
             stopPolling();
-            renderOverlay(state);
+            renderOverlay(overlayState);
             return;
         }
 
-        if (5 === status) {
+        if ('failed' === state) {
             terminalStates[attachmentId] = 'failed';
             stopPolling();
-            renderOverlay(state);
+            renderOverlay(overlayState);
             return;
         }
 

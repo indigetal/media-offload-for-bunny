@@ -12,6 +12,7 @@ references/
 # Build Artifacts
 node_modules/
 indigetal-media-offload-for-bunny-net-build/
+indigetal-media-offload-for-bunny-net/
 indigetal-media-offload-for-bunny-net.zip
 
 # WordPress.org SVN release checkout (local only)
