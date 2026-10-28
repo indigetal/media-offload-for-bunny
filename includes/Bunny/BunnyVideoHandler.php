@@ -584,6 +584,7 @@ class BunnyVideoHandler {
         }
 
         $status = (int) $response['status'];
+        $state = self::classifyVideoStatus($status);
         $encodeProgress = 0;
 
         if (isset($response['encodeProgress'])) {
@@ -592,21 +593,49 @@ class BunnyVideoHandler {
             $encodeProgress = (int) $response['encode_progress'];
         }
 
-        if ($attachmentId > 0 && self::STATUS_STATE_READY === self::classifyVideoStatus($status)) {
+        $encodeProgress = max(0, min(100, $encodeProgress));
+
+        if ($attachmentId > 0) {
             $stored_video_id = (string) get_post_meta($attachmentId, BunnyMetadataManager::VIDEO_ID_META_KEY, true);
 
             if ('' !== $stored_video_id && $videoId === $stored_video_id) {
                 $attachment = get_post($attachmentId);
 
                 if ($attachment && 'attachment' === $attachment->post_type) {
-                    $this->updatePlayableAttachmentMeta($attachmentId, $videoId, $response);
+                    if (self::STATUS_STATE_READY === $state) {
+                        $this->updatePlayableAttachmentMeta($attachmentId, $videoId, $response);
+                    }
+
+                    /**
+                     * Fires on every attachment-scoped Bunny Stream status check.
+                     *
+                     * An attachment-scoped check has an attachment ID above 0, post type
+                     * attachment, and a stored video ID equal to $videoId. The action fires
+                     * after the ready thumbnail write on every such check. It does not fire
+                     * for attachment ID 0, a missing post, or a video-ID mismatch.
+                     *
+                     * @param int                  $attachmentId   Attachment ID.
+                     * @param string               $videoId        Bunny Stream video GUID.
+                     * @param int                  $status         Get Video VideoModelStatus.
+                     * @param string               $state          pending, ready, or failed.
+                     * @param int                  $encodeProgress Encoding progress, clamped to 0-100.
+                     * @param array<string, mixed> $response       Bunny Get Video response.
+                     */
+                    do_action('indigetal_offload_stream_video_status_checked',
+                        $attachmentId,
+                        $videoId,
+                        $status,
+                        $state,
+                        $encodeProgress,
+                        $response
+                    );
                 }
             }
         }
 
         return [
             'status'         => $status,
-            'encodeProgress' => max(0, min(100, $encodeProgress)),
+            'encodeProgress' => $encodeProgress,
             'remoteResponse' => $response,
         ];
     }

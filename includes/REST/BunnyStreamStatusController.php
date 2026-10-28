@@ -186,6 +186,7 @@ class BunnyStreamStatusController {
                 'success'        => true,
                 'status'         => (int) $result['status'],
                 'encodeProgress' => (int) $result['encodeProgress'],
+                'state'          => BunnyVideoHandler::classifyVideoStatus((int) $result['status']),
             ]
         );
     }
