@@ -4,7 +4,7 @@ Tags: bunny, media, offload, video, cdn
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 8.0
-Stable tag: 1.0.5
+Stable tag: 1.1.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -124,7 +124,7 @@ External privacy controllers remain responsible for authorization checks and for
 
 **REST (breaking change for direct clients)**
 
-* Namespace **`indigetal-offload/v1`** (breaking change from the pre-1.0.1 REST namespace). Example: `GET /wp-json/indigetal-offload/v1/stream/video-status` — Stream encode status polling (`upload_files` capability).
+* Namespace **`indigetal-offload/v1`** (breaking change from the pre-1.0.1 REST namespace). Example: `GET /wp-json/indigetal-offload/v1/stream/video-status` — Stream encode status polling (`upload_files` capability). The response is `{ success, status, encodeProgress, state }`, where `state` is `pending`, `ready`, or `failed`.
 
 **Post and user meta (attachment / user records)**
 
@@ -140,6 +140,12 @@ These instance methods call Bunny.net Stream APIs (paginated collection list and
 * **collectionNameForUser( $user_id )** — Returns the remote collection name `user_{userId}` used with Bunny.net and `resolveCollectionIdForUser()`.
 
 See PHPDoc on each method for stable add-on contract notes.
+
+**Stream encoding status**
+
+`BunnyVideoHandler::classifyVideoStatus( $status )` maps a Bunny Stream Get Video status. `4` is `ready`. `5` and `6` are `failed`. `0-3`, `7`, `8`, and every value outside `0-8` are `pending`.
+
+* **indigetal_offload_stream_video_status_checked** (action) — Fires on every successful attachment-scoped status check, after any thumbnail write. Arguments, in order: `$attachmentId`, `$videoId`, `$status`, `$state`, `$encodeProgress`, `$response`. Attachment-scoped means the attachment ID is above 0, the post type is `attachment`, and the stored video ID equals `$videoId`. It does not fire for attachment ID 0, a missing post, or a video-ID mismatch.
 
 **WP_Error codes**
 
@@ -174,6 +180,16 @@ This plugin sends media and configuration-related data to **Bunny.net** only whe
 **Deleting content:** Removing a WordPress attachment can remove the linked Bunny Storage objects and Stream video as described elsewhere in this readme. Uninstall data retention is summarized on the plugin’s **About & Privacy** tab and in the FAQ above.
 
 == Changelog ==
+
+= 1.1.0 =
+* Status mapping: 4 is ready, 3 is still transcoding, and 5 and 6 are failed. Other values, including 7, 8, and anything outside 0-8, stay pending.
+* Thumbnails: write Stream thumbnail meta only when the status is ready (4).
+* Thumbnail sync: the background cron retries through transcoding and stops when encoding has failed.
+* Media overlay: ready when `state` is `ready`, failed when `state` is `failed`, and keep polling otherwise.
+* Developer API: `BunnyVideoHandler::classifyVideoStatus()`, the video-status `state` field, and the `indigetal_offload_stream_video_status_checked` action.
+* Tested up to WordPress 7.1.
+* Version alignment: plugin header, `INDIGETAL_OFFLOAD_VERSION`, `package.json`, and Stable tag are 1.1.0.
+* Admin: fix the settings logo display.
 
 = 1.0.5 =
 * Stream upload formats: broaden Media Library Stream validation to Bunny-compatible formats WordPress allows by default, including MP4/M4V, MKV, WebM, MOV/QT, AVI, FLV, WMV, and MPEG/MPG/MPE.
@@ -224,6 +240,9 @@ This plugin sends media and configuration-related data to **Bunny.net** only whe
 * Initial Stream + Media Library integration direction (pre–Free extraction readme described a broader feature set; current Free scope is described in this file from 0.8.9 onward).
 
 == Upgrade Notice ==
+
+= 1.1.0 =
+Stream encoding status is classified as pending, ready, or failed. No settings migration is required.
 
 = 1.0.5 =
 Stream format support alignment release: broader default-path upload validation and documentation clarifications. Primary Stream attachment URLs remain MP4 fallback URLs; no settings migration required.
