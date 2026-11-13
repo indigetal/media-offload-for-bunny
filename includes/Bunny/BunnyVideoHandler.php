@@ -16,6 +16,10 @@ class BunnyVideoHandler {
     public const STATUS_STATE_PENDING = 'pending';
     public const STATUS_STATE_READY = 'ready';
     public const STATUS_STATE_FAILED = 'failed';
+    /**
+     * Highest MP4 rendition height selected for the attachment URL.
+     */
+    private const MP4_FALLBACK_MAX_HEIGHT = 720;
     private const DIRECT_UPLOAD_MEMORY_SAFETY_BUFFER = 16777216; // 16 MiB.
     /**
      * Bunny-compatible subset of WordPress default video MIME types for Media Library uploads.
@@ -54,9 +58,10 @@ class BunnyVideoHandler {
     /**
      * Get the Stream playback URLs currently exposed by the Free Media Library path.
      *
-     * The primary attachment URL intentionally remains Bunny's `play_720p.mp4`
-     * MP4 fallback URL. This assumes MP4 fallback was enabled in Bunny before
-     * upload; Free does not verify fallback enablement or file availability.
+     * The MP4 file is the highest stored rendition at or below 720p. With no
+     * stored list, or nothing at or below 720p, the file is `play_720p.mp4`.
+     * Free assumes MP4 fallback was enabled in Bunny and does not verify
+     * fallback enablement or that the file exists.
      */
     public function getPlaybackUrls($postId) {
         $videoId = get_post_meta($postId, BunnyMetadataManager::VIDEO_ID_META_KEY, true);
@@ -66,9 +71,10 @@ class BunnyVideoHandler {
 
         $pullZone = BunnyConfigurationStore::getStreamPullZoneHostname();
         $iframeUrl = get_post_meta($postId, BunnyMetadataManager::IFRAME_URL_META_KEY, true);
+        $storedList = get_post_meta($postId, BunnyMetadataManager::AVAILABLE_RESOLUTIONS_META_KEY, true);
 
         return [
-            'mp4'    => "https://{$pullZone}/{$videoId}/play_720p.mp4",
+            'mp4'    => "https://{$pullZone}/{$videoId}/" . self::selectMp4FileName($storedList),
             'iframe' => $iframeUrl, // No need to reconstruct dynamically
         ];
     }
@@ -740,6 +746,40 @@ class BunnyVideoHandler {
         ksort($kept, SORT_NUMERIC);
 
         return implode(',', $kept);
+    }
+
+    /**
+     * Select the MP4 file from a stored rendition list.
+     *
+     * The highest stored height at or below the ceiling wins. An empty list,
+     * a malformed list, or a list with nothing at or below the ceiling selects
+     * `play_720p.mp4`.
+     *
+     * @param mixed $storedList Stored available-resolutions value.
+     * @return string File name, for example `play_480p.mp4`.
+     */
+    private static function selectMp4FileName($storedList) {
+        $normalized = self::normalizeAvailableResolutions($storedList);
+
+        if ('' === $normalized) {
+            return 'play_720p.mp4';
+        }
+
+        $selectedHeight = 0;
+
+        foreach (explode(',', $normalized) as $part) {
+            $height = (int) $part;
+
+            if ($height >= 1 && $height <= self::MP4_FALLBACK_MAX_HEIGHT && $height > $selectedHeight) {
+                $selectedHeight = $height;
+            }
+        }
+
+        if ($selectedHeight < 1) {
+            return 'play_720p.mp4';
+        }
+
+        return 'play_' . $selectedHeight . 'p.mp4';
     }
 
     /**

@@ -858,10 +858,12 @@ class BunnyMediaLibrary {
     }
 
     /**
-     * Override wp_get_attachment_url to use the preserved Stream MP4 fallback URL if available.
+     * Override wp_get_attachment_url with the Stream MP4 URL for this attachment.
      *
-     * Free continues to expose `play_720p.mp4` as the primary WordPress
-     * attachment URL and does not verify Bunny MP4 fallback availability.
+     * The MP4 file is the highest stored rendition at or below 720p. With no
+     * stored list, or nothing at or below 720p, the file is `play_720p.mp4`.
+     * Free assumes MP4 fallback was enabled in Bunny and does not verify
+     * fallback enablement or that the file exists.
      *
      * @param string $url The original attachment URL.
      * @param int    $postId The attachment post ID.
