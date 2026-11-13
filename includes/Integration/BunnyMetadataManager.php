@@ -13,6 +13,7 @@ class BunnyMetadataManager {
     public const THUMBNAIL_URL_META_KEY = '_indigetal_offload_thumbnail_url';
     public const VIDEO_WIDTH_META_KEY = '_indigetal_offload_video_width';
     public const VIDEO_HEIGHT_META_KEY = '_indigetal_offload_video_height';
+    public const AVAILABLE_RESOLUTIONS_META_KEY = '_indigetal_offload_video_available_resolutions';
     public const COLLECTION_ID_META_KEY = '_indigetal_offload_collection_id';
 
     private static function buildAttachmentMetaArgs($description, $type = 'string', $show_in_rest = true, $extra_args = []) {
@@ -65,6 +66,7 @@ class BunnyMetadataManager {
         register_post_meta( 'attachment', self::THUMBNAIL_URL_META_KEY, self::buildAttachmentMetaArgs( 'Bunny Stream thumbnail URL' ) );
         register_post_meta( 'attachment', self::VIDEO_WIDTH_META_KEY, self::buildAttachmentMetaArgs( 'Bunny Stream video width in pixels', 'integer' ) );
         register_post_meta( 'attachment', self::VIDEO_HEIGHT_META_KEY, self::buildAttachmentMetaArgs( 'Bunny Stream video height in pixels', 'integer' ) );
+        register_post_meta( 'attachment', self::AVAILABLE_RESOLUTIONS_META_KEY, self::buildAttachmentMetaArgs( 'Bunny Stream available MP4 rendition heights (comma-separated, ascending)' ) );
         register_post_meta(
             'attachment',
             BunnyVideoMetadataSync::LAST_REMOTE_REFRESH_ATTEMPT_AT_META_KEY,

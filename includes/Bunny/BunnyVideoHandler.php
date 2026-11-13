@@ -604,6 +604,7 @@ class BunnyVideoHandler {
                 if ($attachment && 'attachment' === $attachment->post_type) {
                     if (self::STATUS_STATE_READY === $state) {
                         $this->updatePlayableAttachmentMeta($attachmentId, $videoId, $response);
+                        self::storeAvailableResolutions($attachmentId, $response);
                     }
 
                     /**
@@ -667,6 +668,78 @@ class BunnyVideoHandler {
                 }
             }
         }
+    }
+
+    /**
+     * Store the normalized MP4 rendition list from a ready Bunny record.
+     *
+     * The caller must already have matched the record to the attachment's video.
+     * The stored value is comma-separated `Np` heights, sorted numerically ascending.
+     * A non-ready status, or an empty list, leaves any stored value unchanged.
+     *
+     * @param int   $attachmentId Attachment ID.
+     * @param mixed $record       Bunny Get Video record.
+     * @return bool Whether update_post_meta wrote the list.
+     */
+    public static function storeAvailableResolutions($attachmentId, $record) {
+        $attachmentId = (int) $attachmentId;
+
+        if ($attachmentId <= 0 || !is_array($record)) {
+            return false;
+        }
+
+        $status = (int) ($record['status'] ?? -1);
+
+        if (self::STATUS_STATE_READY !== self::classifyVideoStatus($status)) {
+            return false;
+        }
+
+        $normalized = self::normalizeAvailableResolutions($record['availableResolutions'] ?? null);
+
+        if ('' === $normalized) {
+            return false;
+        }
+
+        return (bool) update_post_meta(
+            $attachmentId,
+            BunnyMetadataManager::AVAILABLE_RESOLUTIONS_META_KEY,
+            $normalized
+        );
+    }
+
+    /**
+     * Normalize a rendition list to comma-separated heights, ascending.
+     *
+     * Keeps trimmed values matching a positive height plus "p", drops duplicates,
+     * and sorts them numerically. A non-string or an empty result returns ''.
+     *
+     * @param mixed $value Raw availableResolutions value.
+     * @return string
+     */
+    private static function normalizeAvailableResolutions($value) {
+        if (!is_string($value)) {
+            return '';
+        }
+
+        $kept = [];
+
+        foreach (explode(',', $value) as $part) {
+            $part = trim($part);
+
+            if (!preg_match('/^(\d+)p$/', $part, $matches) || (int) $matches[1] < 1) {
+                continue;
+            }
+
+            $kept[(int) $matches[1]] = $matches[1] . 'p';
+        }
+
+        if ([] === $kept) {
+            return '';
+        }
+
+        ksort($kept, SORT_NUMERIC);
+
+        return implode(',', $kept);
     }
 
     /**

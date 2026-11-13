@@ -143,6 +143,7 @@ function indigetal_offload_uninstall_delete_post_meta() {
         '_indigetal_offload_thumbnail_url',
         '_indigetal_offload_video_width',
         '_indigetal_offload_video_height',
+        '_indigetal_offload_video_available_resolutions',
         '_indigetal_offload_video_last_remote_refresh_attempt_at',
         '_indigetal_offload_video_last_successful_remote_refresh_at',
         '_indigetal_offload_video_title_dirty',
