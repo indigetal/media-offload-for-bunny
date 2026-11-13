@@ -516,6 +516,10 @@ class BunnyVideoMetadataSync {
     /**
      * Normalize Bunny video-details responses into a stable internal metadata shape.
      *
+     * The returned array includes `status` (int, -1 when absent) and
+     * `availableResolutions` (string, '' when absent or not a string).
+     * Normalizing a normalized array returns the same array.
+     *
      * @param mixed $response Raw Bunny GET/POST response body.
      * @return array<string, mixed>|\WP_Error
      */
@@ -549,6 +553,8 @@ class BunnyVideoMetadataSync {
             self::TITLE_FIELD       => isset($response['title']) ? (string) $response['title'] : '',
             self::DESCRIPTION_FIELD => $description,
             'metaTags'              => $meta_tags,
+            'status'                => (int) ($response['status'] ?? -1),
+            'availableResolutions'  => is_string($response['availableResolutions'] ?? null) ? $response['availableResolutions'] : '',
         ];
     }
 
@@ -829,6 +835,7 @@ class BunnyVideoMetadataSync {
         }
 
         self::markSuccessfulRemoteRefresh($attachment_id);
+        BunnyVideoHandler::storeAvailableResolutions($attachment_id, $remote_metadata);
 
         $attachment = get_post($attachment_id);
         if (!($attachment instanceof \WP_Post) || 'attachment' !== $attachment->post_type) {
