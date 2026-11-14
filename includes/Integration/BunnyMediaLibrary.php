@@ -56,6 +56,7 @@ class BunnyMediaLibrary {
         self::$hooks_registered = true;
 
         add_filter('wp_get_attachment_url', [$this, 'filterBunnyVideoURL'], 10, 2);
+        add_filter('render_block_core/video', [$this, 'filterCoreVideoBlockSrc'], 10, 2);
         add_filter('wp_prepare_attachment_for_js', [$this, 'filterAttachmentForJs'], 10, 3);
         add_filter('wp_get_attachment_image_src', [$this, 'filterAttachmentImageSrc'], 10, 4);
         add_filter('wp_get_attachment_image_attributes', [$this, 'filterAttachmentImageAttributes'], 10, 3);
@@ -890,6 +891,82 @@ class BunnyMediaLibrary {
         $filtered = apply_filters('indigetal_offload_stream_url', $mp4, $postId, ['source' => 'attachment_mp4', 'context' => 'primary']);
 
         return is_string($filtered) && '' !== $filtered ? esc_url_raw($filtered) : esc_url_raw($mp4);
+    }
+
+    /**
+     * Replace a saved core/video src with the current Stream attachment URL.
+     *
+     * The saved src can carry an expired signed token. Only server render is
+     * refreshed, because the editor preview reads the saved attribute.
+     *
+     * Replacement runs only when the block id is a positive integer, the
+     * attachment has a stored video ID, the saved src host equals the Stream
+     * pull zone hostname (case-insensitive), the saved src path starts with
+     * /{stored video ID}/, and the current attachment URL is a non-empty string.
+     *
+     * @param mixed $block_content Rendered block HTML.
+     * @param mixed $block         Parsed block.
+     * @return mixed Updated HTML, or the original content on every non-match.
+     */
+    public function filterCoreVideoBlockSrc($block_content, $block) {
+        if (!is_string($block_content) || '' === $block_content) {
+            return $block_content;
+        }
+
+        $raw_id = null;
+
+        if (is_array($block) && isset($block['attrs']) && is_array($block['attrs']) && array_key_exists('id', $block['attrs'])) {
+            $raw_id = $block['attrs']['id'];
+        }
+
+        if (!is_int($raw_id) || $raw_id < 1) {
+            return $block_content;
+        }
+
+        $video_id = strtolower((string) preg_replace(
+            '/[^a-f0-9\-]/i',
+            '',
+            (string) get_post_meta($raw_id, BunnyMetadataManager::VIDEO_ID_META_KEY, true)
+        ));
+
+        if ('' === $video_id) {
+            return $block_content;
+        }
+
+        $processor = new \WP_HTML_Tag_Processor($block_content);
+
+        if (!$processor->next_tag('video')) {
+            return $block_content;
+        }
+
+        $saved_src = $processor->get_attribute('src');
+
+        if (!is_string($saved_src) || '' === $saved_src) {
+            return $block_content;
+        }
+
+        $pull_zone = strtolower(trim((string) BunnyConfigurationStore::getStreamPullZoneHostname()));
+        $saved_host = wp_parse_url($saved_src, PHP_URL_HOST);
+
+        if ('' === $pull_zone || !is_string($saved_host) || '' === $saved_host || strtolower($saved_host) !== $pull_zone) {
+            return $block_content;
+        }
+
+        $saved_path = wp_parse_url($saved_src, PHP_URL_PATH);
+
+        if (!is_string($saved_path) || 0 !== strpos(strtolower($saved_path), '/' . $video_id . '/')) {
+            return $block_content;
+        }
+
+        $current_url = wp_get_attachment_url($raw_id);
+
+        if (!is_string($current_url) || '' === $current_url) {
+            return $block_content;
+        }
+
+        $processor->set_attribute('src', $current_url);
+
+        return $processor->get_updated_html();
     }
 
     /**
