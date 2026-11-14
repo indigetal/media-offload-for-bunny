@@ -4,7 +4,7 @@ Tags: bunny, media, offload, video, cdn
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 8.0
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -31,7 +31,7 @@ Configure advanced Bunny.net edge rules (including token auth at the CDN) in the
 
 Bunny Stream may support additional containers outside WordPress's default upload path. This plugin does not add WordPress MIME support for `.vod`, `.ts`, `.amv`, or literal `.4mv` uploads.
 
-For Stream-backed WordPress attachment URLs, Free continues to return Bunny's MP4 fallback URL shape, `https://{stream_pull_zone}/{video_id}/play_720p.mp4`. Enable Bunny Stream MP4 fallback on the library before uploading videos that should use those direct attachment URLs; this plugin does not verify MP4 fallback enablement or fallback file existence in this pass.
+For Stream-backed WordPress attachment URLs, Free returns Bunny's MP4 fallback, `https://{stream_pull_zone}/{video_id}/play_{N}p.mp4`. `N` is the highest rendition at or below 720p that Bunny reported once encoding finished. Until Free has stored that list, the file is `play_720p.mp4`. Enable Bunny Stream MP4 fallback on the library before uploading videos that should use those direct attachment URLs; this plugin does not verify MP4 fallback enablement or that the fallback file exists.
 
 For privacy-aware integrations, Free owns the base Storage/Stream offload and unsigned URL rewriting surfaces. Private delivery, signed URL generation, and external privacy-controller hooks are Pro responsibilities; see the developer FAQ below for the Pro-only contract names.
 
@@ -75,6 +75,13 @@ No. Stream playback URLs (including embed-style delivery such as `player.mediade
 = Are URLs signed or private? =
 Not from this Free plugin. URLs use your configured Pull Zone hostnames and paths (and Stream identifiers where applicable). See **About & Privacy** on the same Media settings screen.
 
+= Why doesn't a new video's MP4 link play right away? =
+The attachment URL returns 404 until Bunny finishes encoding. After that, core Video blocks pick up the right file and a fresh URL when the page renders. The block editor keeps showing the URL saved in the post.
+
+Older videos pick up the rendition list when they appear in a Media Library grid or modal page an administrator opens, or through Pro's bulk tool. Until then they use `play_720p.mp4`, which does not exist for sources below 720p.
+
+Page caches can keep serving old or signed URLs until they are purged.
+
 = What happens to local files after offload? =
 Separate toggles control optional removal of local files after successful Storage offload and after successful Stream upload. When enabled, WordPress may no longer keep a copy on disk while delivery continues from Bunny.net.
 
@@ -107,7 +114,7 @@ Indigetal Media Offload for Bunny.net documents an intentional extension surface
 **URL filters**
 
 * **indigetal_offload_storage_url** (filter) — Adjust Storage CDN URLs at rewrite time. The context array includes `context` values such as `primary` and `candidate`.
-* **indigetal_offload_stream_url** (filter) — Adjust Stream MP4 fallback URLs at rewrite time. Stream MP4 attachment URLs include `source => attachment_mp4` and `context => primary`.
+* **indigetal_offload_stream_url** (filter) — Adjust Stream MP4 fallback URLs at rewrite time. The file name may be any `play_{N}p.mp4`. Stream MP4 attachment URLs include `source => attachment_mp4` and `context => primary`.
 * **indigetal_offload_attachment_manifest** (filter) — Adjust the normalized attachment manifest array before use.
 
 **Private delivery contract (Pro-only)**
@@ -128,7 +135,7 @@ External privacy controllers remain responsible for authorization checks and for
 
 **Post and user meta (attachment / user records)**
 
-* `_indigetal_offload_video_id`, `_indigetal_offload_iframe_url`, `_indigetal_offload_thumbnail_url`, `_indigetal_offload_video_width`, `_indigetal_offload_video_height` — Stream attachment meta (REST-exposed where registered).
+* `_indigetal_offload_video_id`, `_indigetal_offload_iframe_url`, `_indigetal_offload_thumbnail_url`, `_indigetal_offload_video_width`, `_indigetal_offload_video_height`, `_indigetal_offload_video_available_resolutions` — Stream attachment meta (REST-exposed where registered).
 * `_indigetal_offload_offloaded`, `_indigetal_offload_manifest`, `_indigetal_offload_last_error` — Storage offload state.
 * `_indigetal_offload_collection_id` (user meta) — Bunny Stream collection GUID; remote collection **name** is `user_{userId}` (see **Stream collection resolution** below).
 
@@ -180,6 +187,12 @@ This plugin sends media and configuration-related data to **Bunny.net** only whe
 **Deleting content:** Removing a WordPress attachment can remove the linked Bunny Storage objects and Stream video as described elsewhere in this readme. Uninstall data retention is summarized on the plugin’s **About & Privacy** tab and in the FAQ above.
 
 == Changelog ==
+
+= 1.1.1 =
+* Stream MP4 URL: use the highest Bunny rendition at or below 720p, stored from `availableResolutions` after encoding finishes. The file stays `play_720p.mp4` until that list is stored.
+* Attachment meta: `_indigetal_offload_video_available_resolutions`.
+* Core Video: refresh the saved `src` when the page renders, so playback uses the current attachment URL.
+* Version alignment: plugin header, `INDIGETAL_OFFLOAD_VERSION`, `package.json`, and Stable tag are 1.1.1.
 
 = 1.1.0 =
 * Status mapping: 4 is ready, 3 is still transcoding, and 5 and 6 are failed. Other values, including 7, 8, and anything outside 0-8, stay pending.
@@ -240,6 +253,9 @@ This plugin sends media and configuration-related data to **Bunny.net** only whe
 * Initial Stream + Media Library integration direction (pre–Free extraction readme described a broader feature set; current Free scope is described in this file from 0.8.9 onward).
 
 == Upgrade Notice ==
+
+= 1.1.1 =
+Stream attachment URLs can use a stored MP4 rendition below 720p, and core Video blocks refresh that URL when the page renders. No settings migration is required.
 
 = 1.1.0 =
 Stream encoding status is classified as pending, ready, or failed. No settings migration is required.
