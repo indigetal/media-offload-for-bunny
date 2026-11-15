@@ -4,7 +4,7 @@ Tags: bunny, media, offload, video, cdn
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 8.0
-Stable tag: 1.1.1
+Stable tag: 1.1.2
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -188,6 +188,10 @@ This plugin sends media and configuration-related data to **Bunny.net** only whe
 
 == Changelog ==
 
+= 1.1.2 =
+* Stream upload: send the local video from disk on the server-side PUT instead of reading the whole file into one PHP string.
+* Remove the remaining-memory refusal. An unreadable file size still fails before upload.
+
 = 1.1.1 =
 * Stream MP4 URL: use the highest Bunny rendition at or below 720p, stored from `availableResolutions` after encoding finishes. The file stays `play_720p.mp4` until that list is stored.
 * Attachment meta: `_indigetal_offload_video_available_resolutions`.
@@ -253,6 +257,9 @@ This plugin sends media and configuration-related data to **Bunny.net** only whe
 * Initial Stream + Media Library integration direction (pre–Free extraction readme described a broader feature set; current Free scope is described in this file from 0.8.9 onward).
 
 == Upgrade Notice ==
+
+= 1.1.2 =
+Server-side Stream uploads send the local file from disk. No settings migration is required.
 
 = 1.1.1 =
 Stream attachment URLs can use a stored MP4 rendition below 720p, and core Video blocks refresh that URL when the page renders. No settings migration is required.

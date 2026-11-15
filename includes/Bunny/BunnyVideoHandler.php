@@ -20,7 +20,10 @@ class BunnyVideoHandler {
      * Highest MP4 rendition height selected for the attachment URL.
      */
     private const MP4_FALLBACK_MAX_HEIGHT = 720;
-    private const DIRECT_UPLOAD_MEMORY_SAFETY_BUFFER = 16777216; // 16 MiB.
+    /**
+     * Byte size where the direct Stream PUT adds Expect: 100-continue.
+     */
+    private const DIRECT_UPLOAD_EXPECT_THRESHOLD = 1048576;
     /**
      * Bunny-compatible subset of WordPress default video MIME types for Media Library uploads.
      *
@@ -123,25 +126,17 @@ class BunnyVideoHandler {
 
         $uploadEndpoint = "library/{$library_id}/videos/{$videoId}";
 
-        $videoData = file_get_contents($filePath);
-        if ($videoData === false || strlen($videoData) === 0) {
+        clearstatcache(true, $filePath);
+        $fileSize = filesize($filePath);
+        if (false === $fileSize || 0 === $fileSize) {
             BunnyLogger::log("uploadVideo: Failed to read video file for {$filePath}.", 'error');
             $readError = new \WP_Error('video_file_read_failed', __('Failed to read the video file before uploading.', 'indigetal-media-offload-for-bunny-net'));
             $this->rollbackJustCreatedVideo($library_id, $videoId, 'file read failure');
             return $readError;
         }
 
-        $uploadResponse = $this->apiClient->executeWithRetry(function() use ($uploadEndpoint, $videoData) {
-            return wp_remote_request($this->video_base_url . $uploadEndpoint, [
-                'method'    => 'PUT',
-                'headers'   => [
-                    'AccessKey'    => $this->apiClient->getAccessKey(),
-                    'Accept'       => 'application/json',
-                    'Content-Type' => 'application/octet-stream'
-                ],
-                'body'      => $videoData,
-                'timeout'   => 300,
-            ]);
+        $uploadResponse = $this->apiClient->executeWithRetry(function() use ($uploadEndpoint, $filePath, $fileSize) {
+            return $this->requestDirectVideoPut($this->video_base_url . $uploadEndpoint, $filePath, (int) $fileSize);
         });
 
         if (is_wp_error($uploadResponse)) {
@@ -208,7 +203,80 @@ class BunnyVideoHandler {
     }
 
     /**
-     * Ensure the direct PUT upload path has enough PHP memory to read the file.
+     * PUT a local video file to Bunny Stream from disk.
+     *
+     * @param string $requestUrl Absolute request URL.
+     * @param string $filePath   Absolute local video path.
+     * @param int    $fileSize   File size in bytes.
+     * @return array|\WP_Error
+     */
+    private function requestDirectVideoPut($requestUrl, $filePath, $fileSize) {
+        $fileHandle = fopen($filePath, 'rb');
+        if (false === $fileHandle) {
+            return new \WP_Error(
+                'video_file_read_failed',
+                __('Failed to read the video file before uploading.', 'indigetal-media-offload-for-bunny-net')
+            );
+        }
+
+        $sentFile = false;
+        $callback = function ($handle, $requestArgs, $url) use ($requestUrl, $fileHandle, $fileSize, &$sentFile) {
+            if ($url !== $requestUrl) {
+                return;
+            }
+
+            curl_setopt($handle, \CURLOPT_POSTFIELDS, null);
+            curl_setopt($handle, \CURLOPT_UPLOAD, true);
+            curl_setopt($handle, \CURLOPT_INFILE, $fileHandle);
+            $infileSizeOption = \CURLOPT_INFILESIZE;
+            if (defined('CURLOPT_INFILESIZE_LARGE')) {
+                $infileSizeOption = \CURLOPT_INFILESIZE_LARGE;
+            }
+            curl_setopt($handle, $infileSizeOption, $fileSize);
+            $sentFile = true;
+        };
+
+        $headers = [
+            'AccessKey'      => $this->apiClient->getAccessKey(),
+            'Accept'         => 'application/json',
+            'Content-Type'   => 'application/octet-stream',
+            'Content-Length' => (string) $fileSize,
+        ];
+
+        if ($fileSize >= self::DIRECT_UPLOAD_EXPECT_THRESHOLD) {
+            $headers['Expect'] = '100-continue';
+        }
+
+        add_action('http_api_curl', $callback, PHP_INT_MAX, 3);
+
+        try {
+            $response = wp_remote_request($requestUrl, [
+                'method'      => 'PUT',
+                'headers'     => $headers,
+                'timeout'     => 300,
+                'redirection' => 0,
+            ]);
+        } finally {
+            remove_action('http_api_curl', $callback, PHP_INT_MAX);
+            fclose($fileHandle);
+        }
+
+        if (false === $sentFile && is_wp_error($response)) {
+            return $response;
+        }
+
+        if (false === $sentFile) {
+            return new \WP_Error(
+                'video_upload_failed',
+                __('The video upload did not send the local file.', 'indigetal-media-offload-for-bunny-net')
+            );
+        }
+
+        return $response;
+    }
+
+    /**
+     * Confirm the local video has a readable file size before the direct PUT.
      *
      * @param string $filePath Absolute local video path.
      * @return true|\WP_Error
@@ -216,59 +284,14 @@ class BunnyVideoHandler {
     private function validateDirectUploadMemory($filePath) {
         clearstatcache(true, $filePath);
 
-        $fileSize = filesize($filePath);
-        if (false === $fileSize) {
+        if (false === filesize($filePath)) {
             return new \WP_Error(
                 'video_file_size_unavailable',
                 __('Could not determine the video file size before uploading.', 'indigetal-media-offload-for-bunny-net')
             );
         }
 
-        $memoryLimit = $this->getMemoryLimitBytes();
-        if ($memoryLimit <= 0) {
-            return true;
-        }
-
-        $currentUsage = memory_get_usage(true);
-        $remainingMemory = max(0, $memoryLimit - $currentUsage);
-        $requiredMemory = (int) $fileSize + self::DIRECT_UPLOAD_MEMORY_SAFETY_BUFFER;
-
-        if ($remainingMemory >= $requiredMemory) {
-            return true;
-        }
-
-        return new \WP_Error(
-            'video_direct_upload_memory_limit_exceeded',
-            sprintf(
-                /* translators: 1: video file size, 2: remaining PHP memory, 3: required PHP memory */
-                __('This video is too large for the server-side Stream upload path. File size: %1$s. Available PHP memory: %2$s. Required memory: %3$s. Reduce the file size, raise the PHP memory limit, or upload from an environment with a higher memory ceiling.', 'indigetal-media-offload-for-bunny-net'),
-                size_format((int) $fileSize),
-                size_format((int) $remainingMemory),
-                size_format((int) $requiredMemory)
-            ),
-            [
-                'file_size'        => (int) $fileSize,
-                'memory_limit'     => (int) $memoryLimit,
-                'memory_usage'     => (int) $currentUsage,
-                'remaining_memory' => (int) $remainingMemory,
-                'required_memory'  => (int) $requiredMemory,
-            ]
-        );
-    }
-
-    /**
-     * Return the configured PHP memory limit in bytes.
-     *
-     * @return int
-     */
-    private function getMemoryLimitBytes() {
-        $memoryLimit = ini_get('memory_limit');
-
-        if (false === $memoryLimit || '' === $memoryLimit) {
-            return 0;
-        }
-
-        return (int) wp_convert_hr_to_bytes($memoryLimit);
+        return true;
     }
 
     /**
