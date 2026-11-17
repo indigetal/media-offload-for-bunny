@@ -22,6 +22,11 @@ class BunnyStorageClient {
     const MAX_ATTEMPTS = 3;
 
     /**
+     * Byte size where the direct Storage PUT adds Expect: 100-continue.
+     */
+    private const DIRECT_UPLOAD_EXPECT_THRESHOLD = 1048576;
+
+    /**
      * Published Bunny Storage base URLs by primary region.
      *
      * @var array<string, string>
@@ -144,9 +149,21 @@ class BunnyStorageClient {
             );
         }
 
-        $body = file_get_contents($local_path);
+        clearstatcache(true, $local_path);
 
-        if (false === $body) {
+        if (!is_file($local_path)) {
+            return new \WP_Error(
+                'indigetal_offload_storage_read_failed',
+                __('Failed to read the local file for Bunny Storage upload.', 'indigetal-media-offload-for-bunny-net'),
+                [
+                    'local_path' => $local_path,
+                ]
+            );
+        }
+
+        $file_size = filesize($local_path);
+
+        if (false === $file_size) {
             return new \WP_Error(
                 'indigetal_offload_storage_read_failed',
                 __('Failed to read the local file for Bunny Storage upload.', 'indigetal-media-offload-for-bunny-net'),
@@ -157,12 +174,6 @@ class BunnyStorageClient {
         }
 
         $headers = $this->getDefaultHeaders();
-        $checksum = $this->calculateFileChecksum($local_path);
-
-        if ('' !== $checksum) {
-            $headers['Checksum'] = $checksum;
-        }
-
         $filetype = wp_check_filetype(basename($local_path));
 
         if (!empty($filetype['type'])) {
@@ -172,7 +183,6 @@ class BunnyStorageClient {
         return [
             'method'      => 'PUT',
             'headers'     => $headers,
-            'body'        => $body,
             'timeout'     => self::UPLOAD_TIMEOUT,
             'redirection' => 0,
         ];
@@ -226,6 +236,112 @@ class BunnyStorageClient {
     }
 
     /**
+     * PUT a local file to Bunny Storage from disk.
+     *
+     * @param string               $request_url Absolute request URL.
+     * @param string               $local_path  Absolute local file path.
+     * @param array<string,string> $headers     Stable request headers.
+     * @return array|\WP_Error
+     */
+    private function requestDirectStoragePut($request_url, $local_path, array $headers) {
+        $request_headers = $headers;
+        clearstatcache(true, $local_path);
+
+        if (!is_file($local_path)) {
+            return new \WP_Error(
+                'indigetal_offload_storage_read_failed',
+                __('Failed to read the local file for Bunny Storage upload.', 'indigetal-media-offload-for-bunny-net'),
+                [
+                    'local_path' => $local_path,
+                ]
+            );
+        }
+
+        $file_size = filesize($local_path);
+
+        if (false === $file_size) {
+            return new \WP_Error(
+                'indigetal_offload_storage_read_failed',
+                __('Failed to read the local file for Bunny Storage upload.', 'indigetal-media-offload-for-bunny-net'),
+                [
+                    'local_path' => $local_path,
+                ]
+            );
+        }
+
+        $checksum = $this->calculateFileChecksum($local_path);
+
+        if ('' !== $checksum) {
+            $request_headers['Checksum'] = $checksum;
+        }
+
+        $file_handle = fopen($local_path, 'rb');
+
+        if (false === $file_handle) {
+            return new \WP_Error(
+                'indigetal_offload_storage_read_failed',
+                __('Failed to read the local file for Bunny Storage upload.', 'indigetal-media-offload-for-bunny-net'),
+                [
+                    'local_path' => $local_path,
+                ]
+            );
+        }
+
+        $request_headers['Content-Length'] = (string) $file_size;
+
+        if ($file_size >= self::DIRECT_UPLOAD_EXPECT_THRESHOLD) {
+            $request_headers['Expect'] = '100-continue';
+        }
+
+        $sent_file = false;
+        $callback = function ($handle, $request_args, $url) use ($request_url, $file_handle, $file_size, &$sent_file) {
+            if ($url !== $request_url) {
+                return;
+            }
+
+            curl_setopt($handle, \CURLOPT_POSTFIELDS, null);
+            curl_setopt($handle, \CURLOPT_UPLOAD, true);
+            curl_setopt($handle, \CURLOPT_INFILE, $file_handle);
+            $infile_size_option = \CURLOPT_INFILESIZE;
+            if (defined('CURLOPT_INFILESIZE_LARGE')) {
+                $infile_size_option = \CURLOPT_INFILESIZE_LARGE;
+            }
+            curl_setopt($handle, $infile_size_option, $file_size);
+            $sent_file = true;
+        };
+
+        add_action('http_api_curl', $callback, PHP_INT_MAX, 3);
+
+        try {
+            $response = wp_remote_request($request_url, [
+                'method'      => 'PUT',
+                'headers'     => $request_headers,
+                'timeout'     => self::UPLOAD_TIMEOUT,
+                'redirection' => 0,
+            ]);
+        } finally {
+            remove_action('http_api_curl', $callback, PHP_INT_MAX);
+            fclose($file_handle);
+        }
+
+        if (false === $sent_file && is_wp_error($response)) {
+            return $response;
+        }
+
+        if (false === $sent_file) {
+            return new \WP_Error(
+                'indigetal_offload_storage_upload_not_sent',
+                __('The storage upload received a response, but the local file was not sent.', 'indigetal-media-offload-for-bunny-net'),
+                [
+                    'local_path' => $local_path,
+                ]
+            );
+        }
+
+        return $response;
+    }
+
+    /**
      * Upload a local file to Bunny Storage.
      *
      * @param string $local_path  Absolute local file path.
@@ -253,7 +369,11 @@ class BunnyStorageClient {
 
         BunnyLogger::log("Uploading file to Bunny Storage: {$remote_path}", 'info');
 
-        return $this->requestWithRetry($request_url, $request_args, $remote_path, 'upload', 201);
+        $attempt_request = function () use ($request_url, $local_path, $request_args) {
+            return $this->requestDirectStoragePut($request_url, $local_path, $request_args['headers']);
+        };
+
+        return $this->requestWithRetry($request_url, $request_args, $remote_path, 'upload', 201, $attempt_request);
     }
 
     /**
@@ -377,9 +497,10 @@ class BunnyStorageClient {
      * @param string $remote_path   Remote path for context/logging.
      * @param string $operation     Human-readable operation label.
      * @param int    $success_code  Expected success HTTP status.
+     * @param callable|null $attempt_request Optional per-attempt request callback.
      * @return array|\WP_Error
      */
-    private function requestWithRetry($request_url, array $request_args, $remote_path, $operation, $success_code) {
+    private function requestWithRetry($request_url, array $request_args, $remote_path, $operation, $success_code, $attempt_request = null) {
         $attempt = 0;
         $last_error = null;
 
@@ -387,7 +508,11 @@ class BunnyStorageClient {
             $attempt++;
             $this->maybeWaitForRetryAfter();
 
-            $response = wp_remote_request($request_url, $request_args);
+            if (is_callable($attempt_request)) {
+                $response = $attempt_request();
+            } else {
+                $response = wp_remote_request($request_url, $request_args);
+            }
 
             if (is_wp_error($response)) {
                 $last_error = $this->prepareTransportError($response, $remote_path, $operation);
